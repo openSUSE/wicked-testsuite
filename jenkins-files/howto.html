@@ -1,0 +1,53 @@
+<html>
+  <title>How to create a new test suite for Wicked</title>
+  <body>
+    <h1>How to create a new test suite for Wicked</h1>
+    <ol>
+      <li><a href="http://almond.arch.suse.de:8080/login?">Log into the
+        server</a> as an identified user.</li>
+      <li>Go to
+        <a href="http://almond.arch.suse.de:8080/view/Test%20suites/">Test
+          suites</a> tab.</li>
+      <li>On the left, select
+        <a href="http://almond.arch.suse.de:8080/view/Test%20suites/newJob">New
+          Item</a>.</li>
+      <li>A form appears.
+        <ul>
+          <li>In the <b>Name</b> field, type <b>wicked-<i>branch</i></b> or
+            <b>wicked-<i>branch</i>-nanny</b>.</li>
+          <li>Press the <b>Copy existing item</b> radio button.</li>
+          <li>In the <b>Copy from</b> field, select either <b>wicked-master</b>
+            or <b>wicked-master-nanny</b>.</li>
+          <li>Press <b>OK</b>.</li>
+        </ul>
+      </li>
+      <li>The new test suite is created, and you are presented with another
+        dialog page to set up its characteristics.</li>
+        <ul>
+          <li>In the <b>Description</b> field, it is interesting to mention who
+            you are, he name of your branch, and whether nanny is enabled or
+            not.</li>
+          <li>In the <b>Source code management</b> / <b>Repositories</b>, type
+            in your git URL, like
+            <b>https://github.com/<i>yourname</i>/wicked.git</b>.</li>
+          <li>In the <b>Source code management</b> / <b>Branches to build</b>,
+            type in your branch specification, like
+            <b>*/<i>branchname</i></b>.</li>
+          <li>In the second <b>Build</b> / <b>Execute shell script</b> input
+            area, check on the last line whether it's
+            <b>wicked-with-nanny.xml</b> or <b>wicked-without-nanny.xml</b>
+            that is used.</li>
+          <li>Validate and exit with <b>Save</b> button.</li>
+        </ul>
+      </li>
+    </ol>
+    <p>
+      A new build should start automatically within 10 minutes. To make it
+      happen immediately, you can use the <b>Start build</b> link on the test
+      suite's page.
+    </p>
+    <p>
+      It is nice also to remove old test suites that you do not need anymore.
+    </p>
+  </body>
+</html>

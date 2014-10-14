@@ -1,0 +1,8 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+NAME='Bridge 1'
+
+BRIDGE='yes'
+BRIDGE_STP='on'
+BRIDGE_FORWARDDELAY='15'
+BRIDGE_PORTS='bond0 dummy1'

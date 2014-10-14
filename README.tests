@@ -1,0 +1,290 @@
+Tests summary
+
+
+1 - Basic tests
+===============
+
+network: private -------------------------------------------------------------
+inside:  eth0
+outside: virbr1
+
+                       IPv4                   IPv6
+
+static tests           10.11.12/24            fd00:cafe:babe::/64
+                       ref: .1                ref: ::1
+                       sut: .123              sut: ::123
+
+dynamic tests          10.20.30/24            fd00:dead:beef::/64
+                       ref: .1                ref: ::1
+                       sut: ?                 sut: ?
+
+network: private2 -------------------------------------------------------------
+inside:  eth1
+outside: virbr2
+
+                       IPv4                   IPv6
+
+static tests           172.16/16              fd00:c0de:ba5e::/48
+                       ref: .0.1              ref: ::1
+                       sut: .0.123            sut: ::123
+
+
+2 - Virtual interfaces tests
+============================
+
+bonding -----------------------------------------------------------------------
+bond0 = eth0 + eth1
+
+                       IPv4                   IPv6
+
+static tests           192.168.50/24          fd00:deca:fbad:50::/64
+                       ref: .1                ref: ::1
+                       sut: .123              sut: ::123
+
+vlan --------------------------------------------------------------------------
+eth1.42 = eth1 tag 42
+
+                       IPv4                   IPv6
+
+static tests           42.42.42/24            fd00:4242:4242::/48
+                       ref: .1                ref: ::1
+                       sut: .123              sut: ::123
+
+bridge ------------------------------------------------------------------------
+br1 = eth1 + dummy1
+
+                       IPv4                   IPv6
+
+static tests           172.16/16              fd00:c0de:ba5e::/48
+                       ref: .0.1              ref: ::1
+                       sut: .100.200          sut: ::100:200
+
+macvtap -----------------------------------------------------------------------
+macvtap1 = eth1 MAC 0e:0e:0e:0e:0e:0e
+
+                       IPv4                   IPv6
+
+static tests           172.16/16              fd00:c0de:ba5e::/48
+                       ref: .0.1              ref: ::1
+                       sut: .17.18            sut: :17::18
+
+tun/tap -----------------------------------------------------------------------
+tun1 = eth1 layer 3 encapsulated by openvpn
+tap1 = eth1 layer 2 encapsulated by openvpn
+
+                       IPv4                   IPv6
+
+static tests           /32                    /128
+                       ref: 10.55.5.1         ref: fd00:555:2368::1
+                       sut: 10.55.5.123       fd00:555:2368::123
+
+
+3 - Combinatory tests
+=====================
+
+mix1 --------------------------------------------------------------------------
+        fd00:c0de:ba5e:1::1/64
+                 172.16.1.1/24   eth0.1
+                                    |
+ref                               eth0
+                                    :
+                                    :
+sut                               eth0   dummy0
+                                    \     /
+                                      br0
+                                       |
+                   172.16.1.123/16   br0.1
+          fd00:c0de:ba5e:1::123/48
+
+
+mix2 --------------------------------------------------------------------------
+       fd00:c0de:ba5e:1::1/64
+                172.16.1.1/24   eth0.1
+                                   |           fd00:c0de:ba5e::1/64
+ref                              eth0    eth1  172.16.0.1/24
+                                   :      :
+                                   :      :
+sut                              eth0    eth1
+                                   |      |
+                                eth0.1    |
+                                    \     /
+                   172.16.1.123/16    br0
+          fd00:c0de:ba5e:1::123/48
+
+
+mix3 --------------------------------------------------------------------------
+       fd00:c0de:ba5e:1::1/64                     fd00:c0de:ba5e:1664:1/64
+                172.16.1.1/24   eth0.1   eth1.1   172.16.64.1/24
+                                   |        |
+ref                              eth0     eth1
+                                   :        :
+                                   :        :
+sut                              eth0     eth1
+                                   |        |
+                                eth0.1   eth1.1
+                                    \     /
+                   172.16.1.123/16    br0
+          fd00:c0de:ba5e:1::123/48
+
+
+mix4 --------------------------------------------------------------------------
+           fd00:deca:fbad:50::1/64
+                   192.168.50.1/24   bond1
+                                   /       \
+ref                             eth0.1   eth1.1
+                                   :        :
+                                   :        :
+sut                              eth0     eth1
+                                   |        |
+                                eth0.1   eth1.1
+                                    \     /
+                 192.168.50.123/24   bond1
+         fd00:deca:fbad:50::123/64
+
+
+mix5 --------------------------------------------------------------------------
+        fd00:deca:fbad:50::1/64
+                172.168.50.1/24  bond0
+                                /     \
+ref                           eth0   eth1
+                                :      :
+                                :      :
+sut                           eth0   eth1
+                                \     /
+                                 bond0   dummy0
+                                    \     /
+                 192.168.50.123/24    br1
+         fd00:deca:fbad:50::123/64
+
+
+mix6 --------------------------------------------------------------------------
+         fd00:4242:4242::1/48
+                42.42.42.1/24  bond0.42
+                                   |
+                                 bond0
+                                /     \
+ref                           eth0   eth1
+                                :      :
+                                :      :
+sut                           eth0   eth1
+                                \     /
+                                 bond0   dummy0
+                                    \     /
+                                      br1
+                                       |
+                   42.42.42.123/24  br1.42
+            fd00:4242:4242::123/48
+
+
+mix7 --------------------------------------------------------------------------
+       fd00:4242:4242::1/48                      fd00:7373:7373::1/48
+              42.42.42.1/24  bond0.42  bond0.73  73.73.73.1/24
+                                  \     /
+                                   bond0
+                                  /     \
+ref                             eth0   eth1
+                                  :      :
+                                  :      :
+sut                             eth0   eth1
+                                  \     /
+                                   bond0
+                                  /     \
+            42.42.42.123/24  bond0.42  bond0.73  73.73.73.123/24
+     fd00:4242:4242::123/48                      fd00:7373:7373::123/48
+
+mix8 --------------------------------------------------------------------------
+       fd00:4242:4242::1/48                      fd00:7373:7373::1/48
+              42.42.42.1/24  bond0.42  bond0.73  73.73.73.1/24
+                                  \     /
+                                   bond0
+                                  /     \
+ref                             eth0   eth1
+                                  :      :
+                                  :      :
+sut                             eth0   eth1
+                                  \     /
+                                   bond0
+                                  /     \
+                             bond0.42  bond0.73
+                             /   |       |    \
+                         dummy0  |       |  dummy1
+                                 |       |
+               42.42.42.123/24  br42   br73  73.73.73.123/24
+        fd00:4242:4242::123/48               fd00:7373:7373::123/48
+
+
+5 - Settings tests
+==================
+
+IPv6, RA settings ------------------------------------------------------------
+
+Server settings
+    radvd settings  radvd  dhcpd4  dhcpd6
+    --------------  -----  ------  ------
+    see below       on     on      on
+    (AdvAutonomous=on, AdvDefaultLifetime not 0)
+
+            radvd settings             Client s.         Expected results
+-------------------------------------  ---------  -----------------------------
+AdvManaged   AdvOther    /64    RDNSS  BOOTPROTO  Dyn IPv6    IPv6   DNS from
+  Flag      ConfigFlag  prefix  RDNSS             addresses  route     IPv6
+  off          off        no      -     static       -         yes      -
+
+  off          off        no    given   static       -         yes    RDNSS
+
+  off          off       yes      -     static    autoconf     yes      -
+
+  off          off       yes    given   static    autoconf     yes    RDNSS
+
+  off          on         no      -      dhcp        -         yes   DHCPv6
+
+  off          on         no    given    dhcp        -         yes   DHCPv6 +
+                                                                      RDNSS
+  off          on        yes      -      dhcp     autoconf     yes   DHCPv6
+
+  off          on        yes    given    dhcp     autoconf     yes   DHCPv6 +
+                                                                      RDNSS
+  on        (ignored)     no      -      dhcp     DHCPv6       yes   DHCPv6
+
+  on        (ignored)     no    given    dhcp     DHCPv6       yes   DHCPv6 +
+                                                                      RDNSS
+  on        (ignored)    yes      -      dhcp     DHCPv6 +     yes   DHCPv6
+                                                  autoconf
+  on        (ignored)    yes    given    dhcp     DHCPv6 +     yes   DHCPv6 +
+                                                  autoconf            RDNSS
+
+
+IPv6, failing servers --------------------------------------------------------
+
+radvd settings
+    AdvManaged   AdvOther    /64    RDNSS     Adv      AdvDefault
+      Flag      ConfigFlag  prefix  RDNSS  Autonomous  Lifetime
+    ----------  ----------  ------  -----  ----------  ----------
+       on       (ignored)    yes    given     on         not 0
+
+   Server settings       Client s.           Expected results
+-----------------------  ---------  -----------------------------------
+radvd   dhcpd4   dhcpd6  BOOTPROTO    Dyn IP      Routes       DNS
+server                               addresses
+ off      on       on     static        -           -           -
+
+ off      on       on      dhcp      DHCPv4 (*)  DHCPv4 (*)  DHCPv4 (*)
+
+ off      on       on     dhcp6         (*)         (*)         (*)
+
+  on     off      off     static     autoconf      IPv6        RDNSS
+
+  on     off      off      dhcp      autoconf      IPv6        RDNSS
+
+  on     off      off     dhcp6      autoconf      IPv6        RDNSS
+
+  on      on      off     static     autoconf      IPv6        RDNSS
+
+  on      on      off      dhcp      DHCPv4 +     DHCPv4 +    DHCPv4 +
+                                     autoconf      IPv6        RDNSS
+  on      on      off     dhcp6      DHCPv4 +     DHCPv4 +    DHCPv4 +
+                                     autoconf      IPv6        RDNSS
+
+(*) DHCPv6 is unpredictable, because it depends on the
+last RA received before switching off the radvd server
+

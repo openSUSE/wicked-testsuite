@@ -1,0 +1,3 @@
+NAME='Mix 1 Ethernet'
+STARTMODE='manual'
+BOOTPROTO='static'

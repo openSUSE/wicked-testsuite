@@ -1,0 +1,49 @@
+<interface>
+  <name>br0.1</name>
+
+  <vlan>
+    <device>br0</device>
+    <tag>1</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>172.16.1.123/16</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:c0de:ba5e:1::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>br0</name>
+
+  <bridge>
+    <stp>true</stp>
+    <forward-delay>15</forward-delay>
+    <ports>
+      <port>
+        <device>eth0</device>
+      </port>
+      <port>
+        <device>dummy0</device>
+      </port>
+    </ports>
+  </bridge>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
+
+<interface>
+  <name>dummy0</name>
+
+  <dummy>
+    <address>42:41:40:3F:3E:3D</address>
+  </dummy>
+</interface>

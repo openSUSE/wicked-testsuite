@@ -1,0 +1,314 @@
+#! /bin/bash
+#  ^^^^^^^^^
+# Bash is really needed to use this script...
+#
+# Copyright (c) 2002 Marius Tomaschewski, Germany.
+#
+# Author: Marius Tomaschewski <mt@mt-home.net>
+#
+# Simple firewall script using iptables-save/restore
+#
+### BEGIN INIT INFO
+# Provides:       iptables
+# Required-Start:
+# Required-Stop:  $syslog
+# Default-Start:  2 3 5
+# Default-Stop:   0 1 6
+# Description:    Start IP-tables filter rules
+### END INIT INFO
+
+# Shell functions sourced from /etc/rc.status:
+#      rc_check         check and set local and overall rc status
+#      rc_status        check and set local and overall rc status
+#      rc_status -v     ditto but be verbose in local rc status
+#      rc_status -v -r  ditto and clear the local rc status
+#      rc_failed        set local and overall rc status to failed
+#      rc_failed <num>  set local and overall rc status to <num><num>
+#      rc_reset         clear local rc status (overall remains)
+#      rc_exit          exit appropriate to overall rc status
+. /etc/rc.status
+
+# Return values acc. to LSB for all commands but status:
+# 0 - success
+# 1 - generic or unspecified error
+# 2 - invalid or excess argument(s)
+# 3 - unimplemented feature (e.g. "reload")
+# 4 - insufficient privilege
+# 5 - program is not installed
+# 6 - program is not configured
+# 7 - program is not running
+# 
+# Note that starting an already running service, stopping
+# or restarting a not-running service as well as the restart
+# with force-reload (in case signalling is not supported) are
+# considered a success.
+
+#
+# several iptables modules to load
+#
+IPTABLES_MODULES="ip_tables iptable_filter iptable_mangle iptable_nat"
+IPTABLES_MODULES="$IPTABLES_MODULES ip6_tables ip6table_filter ip6table_mangle"
+IPTABLES_MODULES="$IPTABLES_MODULES ip_conntrack_ftp xt_conntrack ip_nat_ftp"
+
+#
+# load module list from config if avaliable
+#
+[ -r /etc/sysconfig/iptables ] && . /etc/sysconfig/iptables
+[ -r /etc/sysconfig/firewall ] && . /etc/sysconfig/firewall
+
+#
+# helper functions
+#
+check_not_installed()
+{
+    test -x "$2" || {
+        echo "$2 is not installed"
+        test "x$1x" = "xstopx" && exit 0 || exit 5
+    }
+}
+check_not_configured()
+{
+    test -r "$2" || {
+        echo "$2 does not exists"
+        test "x$1x" = "xstopx" && exit 0 || exit 6
+    }
+}
+
+#
+# check config
+#
+ip4tablesrc=/etc/ip4tablesrc
+check_not_configured "$1" "$ip4tablesrc"
+ip6tablesrc=/etc/ip6tablesrc
+check_not_configured "$1" "$ip6tablesrc"
+
+#
+# check tools
+#
+ip4tables=/usr/sbin/iptables
+check_not_installed "$1" "$ip4tables"
+ip4tables_load=/usr/sbin/iptables-restore
+check_not_installed "$1" "$ip4tables_load"
+ip4tables_save=/usr/sbin/iptables-save
+check_not_installed "$1" "$ip4tables_save"
+
+ip6tables=/usr/sbin/ip6tables
+check_not_installed "$1" "$ip6tables"
+ip6tables_load=/usr/sbin/ip6tables-restore
+check_not_installed "$1" "$ip6tables_load"
+ip6tables_save=/usr/sbin/ip6tables-save
+check_not_installed "$1" "$ip6tables_save"
+
+modprobe=/sbin/modprobe
+if test -n "$IPTABLES_MODULES" ; then
+    check_not_installed "$1" "$modprobe"
+fi
+
+#
+# where to get table names from
+#
+ip4_tables_names="/proc/net/ip_tables_names"
+ip6_tables_names="/proc/net/ip6_tables_names"
+
+
+load_modules ()
+{
+  want=$@
+  have=$(sed -e "s/ .*//" < /proc/modules 2>/dev/null)
+  load=""
+
+  for wmod in $want ; do
+    found=no
+    for hmod in $have ; do
+      if test "$hmod" == "$wmod" ; then
+        found=yes ; break
+      fi
+    done
+    if test "$found" != yes ; then
+      load="$load $wmod"
+    fi
+  done
+  for lmod in $load ; do
+    $modprobe $lmod
+    rc_check
+  done
+}
+
+rmmod_modules ()
+{
+  todo=$@
+  have=$(sed -e "s/ .*//" < /proc/modules 2>/dev/null)
+  doit=""
+  for tmod in $todo ; do
+    for hmod in $have ; do
+      if test "$mod" == "$hmod" ; then
+        $modprobe -r $tmod
+        rc_check
+        break
+      fi
+    done
+  done
+}
+
+flush_reset_v4tables ()
+{
+  policy=$1
+  [ -n "$policy" ] || policy=DROP
+  tables=$(cat $ip4_tables_names 2>/dev/null)
+  for table in $tables ; do
+    $ip4tables -t $table -F
+    while read chain name rest ; do
+      if test "$chain" == "Chain" ; then
+        if test -z "${rest//*policy*/}" ; then
+          $ip4tables -t $table -P $name $policy
+        else
+          $ip4tables -t $table -X $name
+        fi
+      fi
+    done < <($ip4tables -t $table -L -n)
+  done
+}
+
+flush_reset_v6tables ()
+{
+  policy=$1
+  [ -n "$policy" ] || policy=DROP
+  tables=$(cat $ip6_tables_names 2>/dev/null)
+  for table in $tables ; do
+    $ip6tables -t $table -F
+    while read chain name rest ; do
+      if test "$chain" == "Chain" ; then
+        if test -z "${rest//*policy*/}" ; then
+          $ip6tables -t $table -P $name $policy
+        else
+          $ip6tables -t $table -X $name
+        fi
+      fi
+    done < <($ip6tables -t $table -L -n)
+  done
+}
+
+# First reset status of this service
+rc_reset
+
+cmd="$1" ; shift
+
+ipv4=no
+ipv6=no
+while test $# -gt 0 ; do
+	case "$1" in
+	    -4|--ipv4) ipv4=yes ; shift ;;
+	    -6|--ipv6) ipv6=yes ; shift ;;
+	    *) break ;;
+	esac
+done
+# when no -4 or -6 requested, enable both
+if test "$ipv4" = no -a "$ipv6" = no ; then
+	ipv4=yes
+	ipv6=yes
+fi
+
+case "$cmd" in
+    start)
+	if test -n "$IPTABLES_MODULES" ; then
+	    echo -n "Loading netfilter modules "
+	    load_modules $IPTABLES_MODULES
+            rc_status -v
+	fi
+
+	if test "$ipv4" = "yes" ; then
+		echo -n "Starting IPv4 filter "
+		flush_reset_v4tables ACCEPT
+		$ip4tables_load $ip4tablesrc
+		rc_status -v
+	fi
+
+	if test "$ipv6" = "yes" ; then
+		echo -n "Starting IPv6 filter "
+		flush_reset_v6tables ACCEPT
+		$ip6tables_load $ip6tablesrc
+		rc_status -v
+	fi
+
+	;;
+    block)
+	if test "$ipv4" = "yes" ; then
+		echo -n "Blocking all IPv4 traffic "
+		flush_reset_v4tables DROP
+		rc_status -v
+	fi
+
+	if test "$ipv6" = "yes" ; then
+		echo -n "Blocking all IPv6 traffic "
+		flush_reset_v6tables DROP
+		rc_status -v
+	fi
+	;;
+    list)
+	if test "$ipv4" = "yes" ; then
+	    tables=$(cat $ip4_tables_names | grep "$1" 2>/dev/null)
+	    for table in $tables ; do
+	        echo "====== IPv4 table '$table' ======"
+	        $ip4tables -t $table -L -nv
+                echo ""
+	    done
+        fi
+
+	if test "$ipv6" = "yes" ; then
+	    tables=$(cat $ip6_tables_names | grep "$1" 2>/dev/null)
+	    for table in $tables ; do
+	        echo "====== IPv6 table '$table' ======"
+	        $ip6tables -t $table -L -nv
+                echo ""
+	    done
+        fi
+	;;
+    stop)
+	if test "$ipv4" = "yes" ; then
+		echo -n "Shutting down IPv4 filter "
+		flush_reset_v4tables ACCEPT
+		rc_status -v
+	fi
+
+	if test "$ipv6" = "yes" ; then
+		echo -n "Shutting down IPv6 filter "
+		flush_reset_v6tables ACCEPT
+		rc_status -v
+	fi
+
+	if test -n "$IPTABLES_MODULES" -a \
+	   "$ipv4" = "yes" -a "$ipv6" = "yes" ; then
+	    echo -n "Disabling netfilter modules "
+	    rmmod_modules $IPTABLES_MODULES
+	    rc_status -v
+	fi
+	;;
+    reload|restart)
+	## Stop the service and regardless of whether it was
+	## running or not, start it again.
+	$0 stop
+	$0 start
+	# Remember status and be quiet
+	rc_status
+	;;
+    status)
+	echo -n "Checking for IP filter: "
+	## Check status with checkproc(8), if process is running
+	## checkproc will return with exit status 0.
+
+	# Status has a slightly different for the status command:
+	# 0 - service running
+	# 1 - service dead, but /var/run/  pid  file exists
+	# 2 - service dead, but /var/lock/ lock file exists
+	# 3 - service not running
+
+	$ip4tables -L -nv > /dev/null 2>&1
+	rc_status -v
+	;;
+    *)
+	echo "Usage: $0 {start|stop|status|restart|reload|block}"
+	exit 1
+	;;
+esac
+rc_exit
+

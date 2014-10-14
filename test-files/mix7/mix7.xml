@@ -1,0 +1,68 @@
+<interface>
+  <name>bond0.42</name>
+
+  <vlan>
+    <device>bond0</device>
+    <tag>42</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>42.42.42.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:4242:4242::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>bond0.73</name>
+
+  <vlan>
+    <device>bond0</device>
+    <tag>73</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>73.73.73.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:7373:7373::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>bond0</name>
+
+  <bond>
+    <mode>active-backup</mode>
+    <miimon>
+      <frequency>100</frequency>
+    </miimon>
+    <slaves>
+      <slave>
+        <device>eth0</device>
+      </slave>
+      <slave>
+        <device>eth1</device>
+      </slave>
+    </slaves>
+  </bond>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
+
+<interface>
+  <name>eth1</name>
+</interface>
