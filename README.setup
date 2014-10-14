@@ -1,7 +1,8 @@
 Virtual machines
 ================
 
-There are three KVM virtual machines:
+IF you choose to use virtual machines, we recommend you use three KVM
+virtual machines:
 o build host
 o system under test
 o reference server
