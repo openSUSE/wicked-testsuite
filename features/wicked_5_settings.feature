@@ -45,3 +45,13 @@ Feature: Wicked 5 settings
     And I bring down eth0
     Then the capture file should not contain a DHCP release
 
+  Scenario: Set up ethtool options
+    Given the system under tests in running on real hardware
+    When I set up the speed of eth0 to 10 Mbit/s
+    Then the speed of eth0 should be 10 Mbit/s
+    #
+    When I set up the speed of eth0 to 100 Mbit/s
+    Then the speed of eth0 should be 100 Mbit/s
+    #
+    When I set up the speed of eth0 to 1000 Mbit/s
+    Then the speed of eth0 should be 1000 Mbit/s
