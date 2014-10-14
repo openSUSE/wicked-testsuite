@@ -292,7 +292,7 @@ Then /^I should not have dynamic routes to the outside World$/ do
 end
 
 Then /^eth0 should have a dynamic address after a while$/ do
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -331,7 +331,7 @@ Then /^both machines should have a new ([^ ]*) card$/ do |interface|
 end
 
 Then /^([^ ]*) should be enslaved$/ do |interface|
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -343,8 +343,8 @@ Then /^([^ ]*) should be enslaved$/ do |interface|
 end
 
 Then /^I should be able to ping the other side of the aggregated link$/ do
-  # WORKAROUND (the@skip_ping_test part)
-  if @skip_next_steps or @skip_ping_test
+  # WORKAROUND (the @skip_when_virtual_machine part)
+  if @skip_when_no_hotplug or @skip_when_virtual_machine
     puts "(skipped)"
     next
   end
@@ -636,6 +636,18 @@ Then /^the capture file should not contain a DHCP release$/ do
     "root", "tcpdump -r /tmp/tcpdump -v"
   local.should == 0; remote.should == 0; command.should == 0
   out.should_not include "DHCP-Message Option 53, length 1: Release"
+end
+
+Then /^the speed of eth0 should be (\d*) Mbit\/s$/ do |speed|
+  if @skip_when_virtual_machine
+    puts "(skipped)"
+    next
+  end
+  SUT.test_and_drop_results "root", "log.sh Step: Then the speed of eth0 should be #{speed} Mbit/s"
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "testuser", "ethtool eth0"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "Speed: #{speed}Mb/s"
 end
 
 Then /^I should obtain an autonomous IPv6 address$/ do

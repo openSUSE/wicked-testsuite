@@ -38,7 +38,7 @@ When /^I ask to see all network interfaces$/ do
 end
 
 When /^I bring up ([^ ]*)$/ do |interface|
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -154,7 +154,7 @@ When /^I set up dynamic IP addresses for ([^ ]*) from XML files$/ do |interface|
 end
 
 When /^I deconnect violently ([^ ]*)$/ do |interface|
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -165,7 +165,7 @@ When /^I deconnect violently ([^ ]*)$/ do |interface|
 end
 
 When /^I reconnect ([^ ]*)$/ do |interface|
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -226,7 +226,7 @@ When /^I bring down all cards at once$/ do
 end
 
 When /^I aggregate eth0 and eth1 from legacy files$/ do
-  if @skip_next_steps
+  if @skip_when_no_hotplug
     puts "(skipped)"
     next
   end
@@ -1222,6 +1222,28 @@ When /^I sniff DHCP on the reference machine$/ do
   local, remote, command = REF.test_and_drop_results \
     "root", "tcpdump -w /tmp/tests/tcpdump -w /tmp/tcpdump -n -i eth0 'port 67' &"
   local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I set up the speed of eth0 to (\d*) Mbit\/s$/ do |speed|
+  if @skip_when_virtual_machine
+    puts "(skipped)"
+    next
+  end
+  SUT.test_and_drop_results "root", "log.sh Step: When I set up the speed of eth0 to #{speed} Mbit/s"
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/ethtool-options/ifcfg-eth0-#{speed}mbps", \
+                "/tmp/tests/ifcfg-eth0", false
+  local.should == 0; remote.should == 0
+  #
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth0"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /I let ([^ ]*) wait for a router announcement$/ do |interface|

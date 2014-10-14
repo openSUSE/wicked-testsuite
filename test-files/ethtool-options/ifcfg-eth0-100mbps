@@ -1,0 +1,7 @@
+BOOTPROTO='dhcp'
+NAME='Ethernet Card 0'
+
+ETHTOOL_OPTIONS="speed 100 duplex full"
+
+STARTMODE='auto'
+USERCONTROL='no'
