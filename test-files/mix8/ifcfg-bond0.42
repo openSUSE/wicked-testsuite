@@ -1,0 +1,6 @@
+STARTMODE='auto'
+BOOTPROTO='static'
+
+VLAN_PROTOCOL='ieee802-1q'
+ETHERDEVICE='bond0'
+VLAN_ID='42'

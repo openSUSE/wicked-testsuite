@@ -1,0 +1,108 @@
+Virtual machines
+================
+
+There are three KVM virtual machines:
+o build host
+o system under test
+o reference server
+
+Create the virtual networks and the virtual machines:
+o Create a bridge br1 containing your real networking card
+    # brctl addbr br1
+    # brctl addif eth0 (for example)
+  and configure those interfaces in
+    /etc/sysconfig/network-br1
+    /etc/sysconfig/eth0
+o Run the script ./setup-networks.sh
+o Run the script ./setup-vms.sh
+
+For each virtual machine:
+o Connect to it with VNC.
+o Install an operating system: I suggest
+  - openSUSE 13.1 on the reference machine
+  - the latest release candidate of SLES 12 on both the
+    build host and on the system under tests.
+  There's no need for a separate home partition.
+  There's no need to install GNOME nor KDE.
+  Create one ordinary user named "builduser" on the build host, and
+  one ordinary user named "testuser" on the reference and the system
+  under tests.
+o Make sure the two first networking cards are named correctly:
+  - build: "eth0"
+  - reference: "eth0", "eth1" and "eth2"
+  - sut: "eth0" and "eth1"
+  inside the virtual machine, otherwise fix them with yast2.
+  Also fix the hostname to be "build", "reference" or "sut" in yast2.
+o Install twopence_test_server into the VM in /root directory of
+  "reference" and "sut", as described in Twopence's README
+  (install it for example with scp).
+
+On the build server only:
+o Install make, gcc, git, libgcrypt-devel, libnl3-devel,
+          dbus-1-devel, and libiw-devel
+
+On the reference server only:
+o Install radvd, dhcp-server, tcpdump, and openvpn
+
+On the system under tests only:
+o Install openvpn and ndisc6
+
+Basic network and files configuration setup:
+o Run the script ./setup-basic-config.sh
+
+
+Networking summary
+==================
+
+network: private1 ----------------------------------------
+outside: virbr1
+inside:  eth0
+
+                  IPv4              IPv6
+
+static tests      10.11.12/24       fd00:cafe:babe::/64
+                  reference: .1     reference: ::1
+                  sut: .123         sut: ::123
+
+dynamic tests     10.20.30/24       fd00:dead:beef::/64
+                  reference: .1     reference: ::1
+                  sut: ?            sut: ?
+
+network: private2 -----------------------------------------
+outside: virbr2
+inside:  eth1
+
+                  IPv4              IPv6
+
+static tests      172.16/16         fd00:c0de:ba5e::/48
+                  reference: .0.1   reference: ::1
+                  sut: .0.123       sut: ::123
+
+bonding ---------------------------------------------------
+inside: bond0 = eth0 + eth1
+
+                  IPv4              IPv6
+
+static tests      192.168.50/24     fd00:deca:fbad:50::/64
+                  reference: .1     reference: ::1
+                  sut: .123         sut: ::123
+
+vlan ------------------------------------------------------
+inside: eth1.42 = eth1 tag 42
+
+                  IPv4              IPv6
+
+static tests      42.42.42/24       fd00:4242:4242::/48
+                  reference: .1     reference: ::1
+                  sut: .123         sut: ::123
+
+bridge ----------------------------------------------------
+inside: br1, includes eth1
+
+                  IPv4              IPv6
+
+static tests      172.16/16         fd00:c0de:ba5e::/48
+                  reference: .0.1   reference: ::1
+                  sut: .100.200     sut: ::100:200
+
+etc.

@@ -1,0 +1,47 @@
+Feature: Wicked 5 settings
+
+  In order to be able to set up network interfaces
+  As a network administrator who plays with the network settings
+  I should be able to use the new Wicked network interfaces broker
+
+  Background:
+    When the reference machine is set up correctly
+    And the system under test is set up correctly
+    And there is no core dump
+    And the wicked services are started
+    And the interfaces are in a basic state
+    And the routing table is empty
+    And there is no virtual interface left on any machine
+
+  # All the tests below assume that eth0 is set by default with DHCP and RADVD
+
+  Scenario: Set up DNS with static declaration and DHCPv4
+    When I bring up eth0
+    Then I should have the statically declared DNS server
+    And I should obtain a DNS server by DHCPv4
+
+  Scenario: Set up DNS only with static declaration
+    When I bring up eth0
+    And I bring down eth0
+    Then I should have the statically declared DNS server
+    But I should not obtain a DNS server by DHCPv4
+
+  Scenario: Set up the MTU with DHCP
+    When I set up the MTU on the reference server
+    And I bring up eth0
+    Then I should have the correct MTU on eth0
+
+  Scenario: Release DHCP addresses when requested
+    When the DHCP client has to release the leases at the end
+    And I sniff DHCP on the reference machine
+    And I bring up eth0
+    And I bring down eth0
+    Then the capture file should contain a DHCP release
+
+  Scenario: Do not release DHCP addresses when not requested
+    When the DHCP client has to keep the leases at the end
+    And I sniff DHCP on the reference machine
+    And I bring up eth0
+    And I bring down eth0
+    Then the capture file should not contain a DHCP release
+

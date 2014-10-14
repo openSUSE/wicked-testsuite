@@ -1,0 +1,72 @@
+<interface>
+  <name>br1.42</name>
+
+  <vlan>
+    <device>br1</device>
+    <tag>42</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>42.42.42.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:4242:4242::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>br1</name>
+
+  <bridge>
+    <stp>true</stp>
+    <forward-delay>15</forward-delay>
+    <ports>
+      <port>
+        <device>bond0</device>
+      </port>
+      <port>
+        <device>dummy1</device>
+      </port>
+    </ports>
+  </bridge>
+</interface>
+
+<interface>
+  <name>bond0</name>
+
+  <bond>
+    <mode>active-backup</mode>
+    <miimon>
+      <frequency>100</frequency>
+    </miimon>
+    <slaves>
+      <slave>
+        <device>eth0</device>
+      </slave>
+      <slave>
+        <device>eth1</device>
+      </slave>
+    </slaves>
+  </bond>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
+
+<interface>
+  <name>eth1</name>
+</interface>
+
+<interface>
+  <name>dummy1</name>
+
+  <dummy>
+    <address>52:51:50:4F:4E:4D</address>
+  </dummy>
+</interface>

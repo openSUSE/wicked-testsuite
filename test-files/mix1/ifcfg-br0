@@ -1,0 +1,8 @@
+NAME='Mix 1 bridge'
+STARTMODE='manual'
+BOOTPROTO='static'
+
+BRIDGE='yes'
+BRIDGE_STP='on'
+BRIDGE_FORWARDDELAY='15'
+BRIDGE_PORTS='eth0'

@@ -1,0 +1,4 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+NAME='Ethernet card 1'
+USERCONTROL='no'

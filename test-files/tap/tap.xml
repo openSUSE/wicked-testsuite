@@ -1,0 +1,34 @@
+<interface>
+  <name>tap1</name>
+
+  <tap />
+
+  <ipv4:static>
+    <address>
+      <local>10.5.55.123/32</local>
+      <peer>10.5.55.1</peer>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:555:2368::123/128</local>
+      <peer>fd00:555:2368::1</peer>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth1</name>
+
+  <ipv4:static>
+    <address>
+      <local>172.16.0.123/16</local>
+    </address>
+  </ipv4:static>
+  <ipv6:static>
+    <address>
+      <local>fd00:c0de:ba5e::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>

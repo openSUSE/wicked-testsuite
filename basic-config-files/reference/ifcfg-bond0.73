@@ -1,0 +1,9 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+
+VLAN='yes'
+ETHERDEVICE='bond0'
+VLAN_ID='73'
+
+IPADDR='73.73.73.1/24'
+IPADDR6='fd00:7373:7373::1/48'

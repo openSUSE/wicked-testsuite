@@ -1,0 +1,4 @@
+STARTMODE='auto'
+BOOTPROTO='dhcp'
+USERCONTROL='no'
+NAME='Ethernet Card 2'

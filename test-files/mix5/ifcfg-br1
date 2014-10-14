@@ -1,0 +1,11 @@
+STARTMODE='auto'
+NAME='Bridge 1'
+BOOTPROTO='static'
+
+IPADDR='192.168.50.123/24'
+IPADDR6='fd00:deca:fbad:50::123/64'
+
+BRIDGE='yes'
+BRIDGE_STP='on'
+BRIDGE_FORWARDDELAY='15'
+BRIDGE_PORTS='bond0 dummy1'

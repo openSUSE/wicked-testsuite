@@ -1,0 +1,5 @@
+NAME='Mix 8 Dummy link'
+STARTMODE='auto'
+BOOTPROTO='static'
+
+LLADDR='6E:6F:70:71:72:73'

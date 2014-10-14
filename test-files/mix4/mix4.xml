@@ -1,0 +1,56 @@
+<interface>
+  <name>bond1</name>
+
+  <bond>
+    <mode>balance-tlb</mode>
+    <miimon>
+      <frequency>80</frequency>
+    </miimon>
+    <slaves>
+      <slave>
+        <device>eth0.1</device>
+      </slave>
+      <slave>
+        <device>eth1.1</device>
+      </slave>
+    </slaves>
+  </bond>
+
+  <ipv4:static>
+    <address>
+      <local>192.168.50.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:deca:fbad:50::123/64</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0.1</name>
+
+  <vlan>
+    <device>eth0</device>
+    <tag>1</tag>
+  </vlan>
+</interface>
+
+<interface>
+  <name>eth1.1</name>
+
+  <vlan>
+    <device>eth1</device>
+    <tag>1</tag>
+  </vlan>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
+
+<interface>
+  <name>eth1</name>
+</interface>

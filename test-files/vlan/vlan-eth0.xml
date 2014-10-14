@@ -1,0 +1,31 @@
+<interface>
+  <name>eth0.42</name>
+
+  <control>
+    <mode>auto</mode>
+    <link-detection>
+      <require-link />
+    </link-detection>
+  </control>
+
+  <vlan>
+    <device>eth0</device>
+    <tag>42</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>42.42.42.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:4242:4242::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
