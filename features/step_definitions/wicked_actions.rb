@@ -599,6 +599,126 @@ local, remote, command = SUT.test_and_drop_results "testuser", "wait_for_cmd_fai
 local.should == 0; remote.should == 0; command.should == 0
 end
 
+When /^I create a gre interface from legacy files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a gre interface from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/gre/ifcfg-gre1", \
+                "/tmp/tests/ifcfg-gre1", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/gre/ifcfg-eth1", \
+                "/tmp/tests/ifcfg-eth1", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests gre1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create a gre interface from XML files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a gre interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/gre/gre.xml", \
+                "/tmp/tests/gre.xml", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/gre.xml gre1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/gre.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I establish routes for the GRE tunnel$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I establish routes for the GRE tunnel"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ip -4 route add #{GRE_4_SUT1} dev gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ip -6 route add #{GRE_6_SUT1} dev gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "ip -4 route add #{GRE_4_REF1}/32 dev gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "ip -6 route add #{GRE_6_REF1}/128 dev gre1"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I create a tunl interface from legacy files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a tunl interface from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/ipip/ifcfg-tunl1", \
+                "/tmp/tests/ifcfg-tunl1", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/ipip/ifcfg-eth1", \
+                "/tmp/tests/ifcfg-eth1", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests tunl1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create a tunl interface from XML files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a tunl interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/ipip/ipip.xml", \
+                "/tmp/tests/ipip.xml", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/ipip.xml tunl1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/ipip.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I establish routes for the IPIP tunnel$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I establish routes for the IPIP tunnel"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ip -4 route add #{IPIP4_SUT1} dev tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "ip -4 route add #{IPIP4_REF1}/32 dev tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0.1(br0(eth0, dummy0), 1) from legacy files"
   local, remote, command = REF.test_and_drop_results \

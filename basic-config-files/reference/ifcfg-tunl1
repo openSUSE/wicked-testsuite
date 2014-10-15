@@ -1,0 +1,9 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+NAME='IPIP tunnel interface'
+
+TUNNEL='ipip'
+TUNNEL_LOCAL_IPADDR='172.16.0.1'
+TUNNEL_REMOTE_IPADDR='172.16.0.123'
+
+IPADDR='3.3.3.1'

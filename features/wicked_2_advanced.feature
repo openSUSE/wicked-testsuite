@@ -117,6 +117,30 @@ Feature: Wicked 2 advanced
     Then both machines should have a new tap1 card
     And I should be able to ping the other side of the layer 2 tunnel
 
+  Scenario: Create a gre interface from legacy ifcfg files
+    When I create a gre interface from legacy files
+    And I establish routes for the GRE tunnel
+    Then both machines should have a new gre1 card
+    And I should be able to ping the other side of the GRE tunnel
+
+  Scenario: Create a gre interface from wicked XML files
+    When I create a gre interface from XML files
+    And I establish routes for the GRE tunnel
+    Then both machines should have a new gre1 card
+    And I should be able to ping the other side of the GRE tunnel
+
+  Scenario: Create a tunl interface from legacy ifcfg files
+    When I create a tunl interface from legacy files
+    And I establish routes for the IPIP tunnel
+    Then both machines should have a new tunl1 card
+    And I should be able to ping the other side of the IPIP tunnel
+
+  Scenario: Create a tunl interface from wicked XML files
+    When I create a tunl interface from XML files
+    And I establish routes for the IPIP tunnel
+    Then both machines should have a new tunl1 card
+    And I should be able to ping the other side of the IPIP tunnel
+
 # TODO
 # ====
 #
@@ -137,8 +161,6 @@ Feature: Wicked 2 advanced
 # * slip
 #
 # Tunnels
-# * gre cisco generic router encapsulation
-# * ipip ip4 in ip4
 # * ip6ip6 ip6 in ip6
 # * sit ip4 in ip6
 #

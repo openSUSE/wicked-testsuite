@@ -34,6 +34,8 @@ twopence_inject $ref "basic-config-files/reference/ifcfg-bond0.42" "/etc/sysconf
 twopence_inject $ref "basic-config-files/reference/ifcfg-bond0.73" "/etc/sysconfig/network/ifcfg-bond0.73"
 twopence_inject $ref "basic-config-files/reference/ifcfg-tun1" "/etc/sysconfig/network/ifcfg-tun1"
 twopence_inject $ref "basic-config-files/reference/ifcfg-tap1" "/etc/sysconfig/network/ifcfg-tap1"
+twopence_inject $ref "basic-config-files/reference/ifcfg-gre1" "/etc/sysconfig/network/ifcfg-gre1"
+twopence_inject $ref "basic-config-files/reference/ifcfg-tunl1" "/etc/sysconfig/network/ifcfg-tunl1"
 
 echo "Configure and start the DHCP server"
 twopence_inject $ref "basic-config-files/reference/dhcpd" "/etc/sysconfig/dhcpd"
@@ -58,7 +60,7 @@ twopence_command $ref "chmod o+r /etc/radvd-*.conf"
 twopence_command $ref "ln -sf /etc/radvd-default.conf /etc/radvd.conf"
 twopence_command $ref "chkconfig radvd on"
 
-echo "Configure but do not start the openvpn server"
+echo "Configure, but do not start the openvpn server"
 twopence_inject $ref "basic-config-files/reference/openvpn-tun.conf" "/etc/openvpn/server-tun.conf"
 twopence_command $ref "chmod o+r /etc/openvpn/server-tun.conf"
 twopence_inject $ref "basic-config-files/reference/openvpn-tap.conf" "/etc/openvpn/server-tap.conf"
