@@ -76,7 +76,25 @@ tap1 = eth1 layer 2 encapsulated by openvpn
 
 static tests           /32                    /128
                        ref: 10.55.5.1         ref: fd00:555:2368::1
-                       sut: 10.55.5.123       fd00:555:2368::123
+                       sut: 10.55.5.123       sut: fd00:555:2368::123
+
+gre ---------------------------------------------------------------------------
+gre1 = eth1 + GRE encapsulation
+
+                       IPv4                   IPv6
+
+static tests           /32                    /128
+                       ref: 2.2.2.1           ref: fd00:222::1
+                       sut: 2.2.2.123         sut: fd00:222::123
+
+ipip --------------------------------------------------------------------------
+tunl1 = eth1 + IP in IP encapsulation
+
+                       IPv4                   IPv6
+
+static tests           /32                    N/A
+                       ref: 3.3.3.1
+                       sut: 3.3.3.123
 
 
 3 - Combinatory tests

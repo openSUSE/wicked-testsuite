@@ -1,0 +1,26 @@
+<interface>
+  <name>tunl1</name>
+  <description>IPIP tunnel interface</description>
+
+  <ipip>
+    <local-address>172.16.0.123</local-address>
+    <remote-address>172.16.0.1</remote-address>
+    <pmtudisc>false</pmtudisc>
+  </ipip>
+
+  <ipv4:static>
+    <address>
+      <local>3.3.3.123/32</local>
+    </address>
+  </ipv4:static>
+</interface>
+
+<interface>
+  <name>eth1</name>
+
+  <ipv4:static>
+    <address>
+      <local>172.16.0.123/24</local>
+    </address>
+  </ipv4:static>
+</interface>

@@ -154,6 +154,12 @@ When /^there is no virtual interface left on any machine$/ do
   outref.should_not include "tap1:"
   outsut.should_not include "tap1:"
   #
+  outref.should_not include "gre1@"
+  outsut.should_not include "gre1@"
+  #
+  outref.should_not include "tunl1@"
+  outsut.should_not include "tunl1@"
+  #
   outref.should_not include "bond0:"
   outsut.should_not include "bond0:"
   #
