@@ -96,6 +96,15 @@ static tests           /32                    N/A
                        ref: 3.3.3.1
                        sut: 3.3.3.123
 
+sit ---------------------------------------------------------------------------
+sit1 = eth1 + SIT encapsulation
+
+                       IPv4                   IPv6
+
+static tests           N/A                    /128
+                                              ref: fd00:333::1
+                                              sut: fd00:333::123
+
 
 3 - Combinatory tests
 =====================

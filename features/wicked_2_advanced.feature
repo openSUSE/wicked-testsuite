@@ -123,6 +123,18 @@ Feature: Wicked 2 advanced
     Then both machines should have a new tunl1 card
     And I should be able to ping the other side of the IPIP tunnel
 
+  Scenario: Create a sit interface from legacy ifcfg files
+    When I create a sit interface from legacy files
+    And I establish routes for the SIT tunnel
+    Then both machines should have a new sit1 card
+    And I should be able to ping the other side of the SIT tunnel
+
+  Scenario: Create a sit interface from wicked XML files
+    When I create a sit interface from XML files
+    And I establish routes for the SIT tunnel
+    Then both machines should have a new sit1 card
+    And I should be able to ping the other side of the SIT tunnel
+
 # TODO
 # ====
 #
@@ -142,11 +154,8 @@ Feature: Wicked 2 advanced
 # * pppoe
 # * slip
 #
-# Tunnels
-# * ip6ip6 ip6 in ip6
-# * sit ip4 in ip6
-#
 # Other virtual
+# * ip6ip6 IPv6 in IPv6 tunnel
 # * macvlan several MAC addresses on same card
 #
 # Important/supported interfaces are, in decreasing order of priority:
