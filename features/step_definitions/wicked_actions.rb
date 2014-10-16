@@ -614,7 +614,7 @@ When /^I create a gre interface from legacy files$/ do
                 "/tmp/tests/ifcfg-eth1", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -639,7 +639,7 @@ When /^I create a gre interface from XML files$/ do
                 "/tmp/tests/gre.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/gre.xml eth1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -685,7 +685,7 @@ When /^I create a tunl interface from legacy files$/ do
                 "/tmp/tests/ifcfg-eth1", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -710,7 +710,7 @@ When /^I create a tunl interface from XML files$/ do
                 "/tmp/tests/ipip.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/ipip.xml eth1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -750,7 +750,7 @@ When /^I create a sit interface from legacy files$/ do
                 "/tmp/tests/ifcfg-eth1", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -775,7 +775,7 @@ When /^I create a sit interface from XML files$/ do
                 "/tmp/tests/sit.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    # this should not be needed: depandancies should be handled
+    # this should not be needed: dependencies should be handled
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/sit.xml eth1"
     local.should == 0; remote.should == 0; command.should == 0
