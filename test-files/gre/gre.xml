@@ -5,7 +5,6 @@
   <gre>
     <local-address>172.16.0.123</local-address>
     <remote-address>172.16.0.1</remote-address>
-    <pmtudisc>false</pmtudisc>
   </gre>
 
   <ipv4:static>
