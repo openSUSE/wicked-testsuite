@@ -1,13 +1,6 @@
 <interface>
   <name>eth0.42</name>
 
-  <control>
-    <mode>auto</mode>
-    <link-detection>
-      <require-link />
-    </link-detection>
-  </control>
-
   <vlan>
     <device>eth0</device>
     <tag>42</tag>
