@@ -118,6 +118,24 @@ Feature: Wicked 1 basic
     And I reconnect eth0
     Then eth0 should have a dynamic address after a while
 
+  Scenario: Set up a second card
+    # This assumes that the defaults for first card use DHCP and RADVD
+    # and that the defaults for second card use fixed addresses
+    When I bring up eth0
+    And I bring up eth1
+    Then eth0 should use the dynamic addresses
+    And eth1 should use the static addresses
+    And I should be able to ping a reference machine from my dynamic address
+    And I should follow the correct IPv4 route to a reference machine from eth1
+    And I should follow the correct IPv6 route to a reference machine from eth1
+
+  Scenario: Stop several cards at once
+    When I bring up eth0
+    And I bring up eth1
+    And I bring down all cards at once
+    Then the interface eth0 should be down
+    And the interface eth1 should be down
+
 # TODO
 # ====
 #
