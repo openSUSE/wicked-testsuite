@@ -353,17 +353,17 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
     "testuser", "ping -q -c1 -W1 #{BOND4_REF}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{BOND6_REF}"
+    "testuser", "ping6 -q -c1 -W1 #{BOND6_REF}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping the other side of the VLAN$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the VLAN"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{V42_4_REF}"
+    "testuser", "ping -q -c1 -W1 #{V42_4_REF}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{V42_6_REF}"
+    "testuser", "ping6 -q -c1 -W1 #{V42_6_REF}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -405,10 +405,10 @@ end
 Then /^I should be able to ping through the bridge$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping through the bridge"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{STAT4_REF1} -I br1"
+    "testuser", "ping -q -c1 -W1 #{STAT4_REF1} -I br1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{STAT6_REF1} -I br1"
+    "testuser", "ping6 -q -c1 -W1 #{STAT6_REF1} -I br1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -431,37 +431,44 @@ end
 Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the layer 3 tunnel"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{OVPN4_REF1} -I tun1"
+    "testuser", "ping -q -c1 -W1 #{OVPN4_REF1} -I tun1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{OVPN6_REF1} -I tun1"
+    "testuser", "ping6 -q -c1 -W1 #{OVPN6_REF1} -I tun1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the layer 2 tunnel"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{OVPN4_REF1} -I tap1"
+    "testuser", "ping -q -c1 -W1 #{OVPN4_REF1} -I tap1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{OVPN6_REF1} -I tap1"
+    "testuser", "ping6 -q -c1 -W1 #{OVPN6_REF1} -I tap1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping the other side of the GRE tunnel$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the GRE tunnel"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{GRE_4_REF1} -I gre1"
+    "testuser", "ping -q -c1 -W1 #{GRE_4_REF1} -I gre1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{GRE_6_REF1} -I gre1"
+    "testuser", "ping6 -q -c1 -W1 #{GRE_6_REF1} -I gre1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping the other side of the IPIP tunnel$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the IPIP tunnel"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{IPIP4_REF1} -I tunl1"
+    "testuser", "ping -q -c1 -W1 #{IPIP4_REF1} -I tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+Then /^I should be able to ping the other side of the SIT tunnel$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the SIT tunnel"
+  local, remote, command = SUT.test_and_drop_results \
+    "testuser", "ping6 -q -c1 -W1 #{SIT_6_REF1} -I sit1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -477,10 +484,10 @@ end
 Then /^I should be able to ping eth0\.1 on the other side$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping eth0.1 on the other side"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{VLAN4_REF0}"
+    "testuser", "ping -q -c1 -W1 #{VLAN4_REF0}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{VLAN6_REF0}"
+    "testuser", "ping6 -q -c1 -W1 #{VLAN6_REF0}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -496,19 +503,19 @@ end
 Then /^I should be able to ping eth1 on the other side$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping eth1 on the other side"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{STAT4_REF1}"
+    "testuser", "ping -q -c1 -W1 #{STAT4_REF1}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{STAT6_REF1}"
+    "testuser", "ping6 -q -c1 -W1 #{STAT6_REF1}"
 end
 
 Then /^I should be able to ping eth1\.1 on the other side$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping eth1.1 on the other side"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{VLAN4_REF1}"
+    "testuser", "ping -q -c1 -W1 #{VLAN4_REF1}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{VLAN6_REF1}"
+    "testuser", "ping6 -q -c1 -W1 #{VLAN6_REF1}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -526,10 +533,10 @@ Then /^I should be able to ping bond(\d) on the other side$/ do |x|
   # Almost the same as "I should be able to ping the other side of the aggregated link"
   # Only the log message changes
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{BOND4_REF}"
+    "testuser", "ping -q -c1 -W1 #{BOND4_REF}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{BOND6_REF}"
+    "testuser", "ping6 -q -c1 -W1 #{BOND6_REF}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -556,20 +563,20 @@ Then /^I should be able to ping bond0.42 on the other side$/ do
   # Almost the same as "I should be able to ping the other side of the VLAN"
   # Only the log message changes
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{V42_4_REF}"
+    "testuser", "ping -q -c1 -W1 #{V42_4_REF}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{V42_6_REF}"
+    "testuser", "ping6 -q -c1 -W1 #{V42_6_REF}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping bond0.73 on the other side$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping bond0.73 on the other side"
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping -q -c1 -W1 #{V73_4_REF}"
+    "testuser", "ping -q -c1 -W1 #{V73_4_REF}"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-   "testuser", "ping6 -q -c1 -W1 #{V73_6_REF}"
+    "testuser", "ping6 -q -c1 -W1 #{V73_6_REF}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 

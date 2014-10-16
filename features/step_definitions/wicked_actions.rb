@@ -614,6 +614,10 @@ When /^I create a gre interface from legacy files$/ do
                 "/tmp/tests/ifcfg-eth1", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
+    local.should == 0; remote.should == 0; command.should == 0
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests gre1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -635,6 +639,10 @@ When /^I create a gre interface from XML files$/ do
                 "/tmp/tests/gre.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/gre.xml eth1"
+    local.should == 0; remote.should == 0; command.should == 0
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/gre.xml gre1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -677,6 +685,10 @@ When /^I create a tunl interface from legacy files$/ do
                 "/tmp/tests/ifcfg-eth1", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
+    local.should == 0; remote.should == 0; command.should == 0
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests tunl1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -698,6 +710,10 @@ When /^I create a tunl interface from XML files$/ do
                 "/tmp/tests/ipip.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/ipip.xml eth1"
+    local.should == 0; remote.should == 0; command.should == 0
     local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/ipip.xml tunl1"
     local.should == 0; remote.should == 0; command.should == 0
@@ -716,6 +732,71 @@ When /^I establish routes for the IPIP tunnel$/ do
   #
   local, remote, command = SUT.test_and_drop_results \
     "root", "ip -4 route add #{IPIP4_REF1}/32 dev tunl1"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I create a sit interface from legacy files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a sit interface from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup sit1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/sit/ifcfg-sit1", \
+                "/tmp/tests/ifcfg-sit1", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/sit/ifcfg-eth1", \
+                "/tmp/tests/ifcfg-eth1", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth1"
+    local.should == 0; remote.should == 0; command.should == 0
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests sit1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create a sit interface from XML files$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I create a sit interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ifup sit1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/sit/sit.xml", \
+                "/tmp/tests/sit.xml", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    # this should not be needed: depandancies should be handled
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/sit.xml eth1"
+    local.should == 0; remote.should == 0; command.should == 0
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/sit.xml sit1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/sit.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I establish routes for the SIT tunnel$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: When I establish routes for the SIT tunnel"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ip -6 route add #{SIT_6_SUT1} dev sit1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "ip -6 route add #{SIT_6_REF1}/128 dev sit1"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
