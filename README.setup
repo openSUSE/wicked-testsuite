@@ -39,7 +39,7 @@ o Install twopence_test_server into the VM in /root directory of
   (install it for example with scp).
 
 On the build server only:
-o Install make, gcc, git, libgcrypt-devel, libnl3-devel,
+o Install make, gcc, git, rpm-build, libgcrypt-devel, libnl3-devel,
           dbus-1-devel, and libiw-devel
 
 On the reference server only:
