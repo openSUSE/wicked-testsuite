@@ -1,0 +1,7 @@
+BOOTPROTO='static'
+NAME='Ethernet Card 1'
+
+IPADDR='172.16.0.123/16'
+
+STARTMODE='auto'
+USERCONTROL='no'
