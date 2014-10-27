@@ -1,0 +1,25 @@
+<interface>
+  <name>sit1</name>
+  <description>SIT tunnel interface</description>
+
+  <sit>
+    <local-address>172.16.0.123</local-address>
+    <remote-address>172.16.0.1</remote-address>
+  </sit>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:333::123/128</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth1</name>
+
+  <ipv4:static>
+    <address>
+      <local>172.16.0.123/24</local>
+    </address>
+  </ipv4:static>
+</interface>
