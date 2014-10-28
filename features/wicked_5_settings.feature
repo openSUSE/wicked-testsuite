@@ -56,17 +56,17 @@ Feature: Wicked 5 settings
     When I set up the speed of eth0 to 1000 Mbit/s
     Then the speed of eth0 should be 1000 Mbit/s
 
-#  Scenario: autoip option
+#  Scenario: Use autoip option
 #    When I set up eth0 with autoip option
 #    Then I should obtain a link-local IPv4 address
 #    But I should not obtain an address by DHCPv4
 
-#  Scenario: dhcp+autoip option
+#  Scenario: Use dhcp+autoip option
 #    When I set up eth0 with dhcp+autoip option
 #    Then I should not obtain a link-local IPv4 address
 #    But I should obtain an address by DHCPv4
 
-#  Scenario: No dhcpd server, dhcp+autoip option
+#  Scenario: No dhcpd server, use dhcp+autoip option
 #    When I set up eth0 with dhcp+autoip option
 #    And dhcpd is switched off
 #    Then I should obtain a link-local IPv4 address
