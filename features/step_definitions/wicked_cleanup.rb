@@ -94,6 +94,11 @@ def prepareReference()
       "root", "ip link delete dev sit1"
     local.should == 0; remote.should == 0; command.should == 0
   end
+  if out.include? "gre0:" or out.include? "tunl0:" or out.include? "sit0:"
+    local, remote, command = REF.test_and_drop_results \
+      "root", "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 
   # start the interfaces if needed
   out, local, remote, command = REF.test_and_store_results_together \
@@ -200,10 +205,15 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # stop tunnels
+  # stop tunnels if any
   out, local, remote, command = SUT.test_and_store_results_together \
-    "root", "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
+    "testuser", "ip link show"
   local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "gre0@" or out.include? "tunl0@" or out.include? "sit0:"
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
