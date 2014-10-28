@@ -674,6 +674,22 @@ Then /^the speed of eth0 should be (\d*) Mbit\/s$/ do |speed|
   out.should include "Speed: #{speed}Mb/s"
 end
 
+Then /^I should obtain a link-local IPv4 address$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: Then I should obtain a link-local IPv4 address"
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "testuser", "ip address show dev eth0"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet 169.254."
+end
+
+Then /^I should not obtain a link-local IPv4 address$/ do
+  SUT.test_and_drop_results "root", "log.sh Step: Then I should obtain a link-local IPv4 address"
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "testuser", "ip address show dev eth0"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should_not include "inet 169.254."
+end
+
 Then /^I should obtain an autonomous IPv6 address$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should obtain an autonomous IPv6 address"
   out, local, remote, command = SUT.test_and_store_results_together \

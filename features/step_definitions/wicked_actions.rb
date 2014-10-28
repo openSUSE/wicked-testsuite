@@ -1447,6 +1447,24 @@ When /^I set up the speed of eth0 to (\d*) Mbit\/s$/ do |speed|
   end
 end
 
+When /^I set up eth0 with ([^ ]*) option$/ do |option|
+  SUT.test_and_drop_results "root", "log.sh Step: When I set up eth0 with #{option} option"
+  local, remote = SUT.inject_file \
+    "testuser", "test-files/autoip-options/ifcfg-eth0-#{option}", \
+                "/tmp/tests/ifcfg-eth0", false
+  local.should == 0; remote.should == 0
+  #
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests eth0"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
 When /I let ([^ ]*) wait for a router announcement$/ do |interface|
   SUT.test_and_drop_results "root", "log.sh Step: When I let #{interface} wait for a router announcement"
   local, remote, command = SUT.test_and_drop_results \
