@@ -200,6 +200,11 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # stop tunnels
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "root", "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
+  local.should == 0; remote.should == 0; command.should == 0
+
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
     "root", "systemctl start wickedd.service"
