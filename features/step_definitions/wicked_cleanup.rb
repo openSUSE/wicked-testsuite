@@ -211,7 +211,7 @@ def prepareSut()
   local.should == 0; remote.should == 0; command.should == 0
   if out.include? "gre0@" or out.include? "tunl0@" or out.include? "sit0:"
     local, remote, command = SUT.test_and_drop_results \
-      "root", "modprobe -r ip_gre ip_tunnel tunnel4 gre ipip sit"
+      "root", "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
 
