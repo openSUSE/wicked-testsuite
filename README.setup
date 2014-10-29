@@ -1,8 +1,40 @@
-Virtual machines
+Testing topology
 ================
 
-IF you choose to use virtual machines, we recommend you use three KVM
-virtual machines:
+The ideal topology for testing Wicked is as below:
+
++-------------+             +------------+
+| Test suite  |             |            |
+|  (with      |    ssh      |   Build    |
+|   Jenkins   +-------------+   host     |
+|   as an     |             |            |
+|   option)   |             |            |
++-+---------+-+             +------------+
+  |         |
+  | serial, |
+  | ssh,    +---------------------+ serial, ssh,
+  | or virtio                     | or virtio
+  |                               |
++-+----------+              +-----+------+
+|            |     eth0     |            |
+|            +--------------+            |
+|            |     eth1     |   System   |
+| Reference  +--------------+   Under    |
+|   server   |   ib0.8001   |   Tests    |
+|            +--------------+            |
+|            |     ...      |            |
++------------+              +------------+
+
+The build host and the system under tests can be one single
+machine. If they are different machines, they have to run
+the same system (use the same version of libraries).
+
+
+With virtual machines
+=====================
+
+If you choose to use virtual machines, we recommend you use
+three KVM virtual machines:
 o build host
 o system under test
 o reference server
@@ -19,28 +51,41 @@ o Run the script ./setup-vms.sh
 
 For each virtual machine:
 o Connect to it with VNC.
-o Install an operating system: I suggest
-  - openSUSE 13.1 on the reference machine
-  - the latest release candidate of SLES 12 on both the
-    build host and on the system under tests.
-  There's no need for a separate home partition.
-  There's no need to install GNOME nor KDE.
-  Create one ordinary user named "builduser" on the build host, and
-  one ordinary user named "testuser" on the reference and the system
-  under tests.
-o Make sure the two first networking cards are named correctly:
-  - build: "eth0"
-  - reference: "eth0", "eth1" and "eth2"
-  - sut: "eth0" and "eth1"
-  inside the virtual machine, otherwise fix them with yast2.
-  Also fix the hostname to be "build", "reference" or "sut" in yast2.
-o Install twopence_test_server into the VM in /root directory of
-  "reference" and "sut", as described in Twopence's README
+
+
+Installing the machines
+=======================
+
+Install an operating system: we suggest
+o openSUSE 13.1 on the reference machine
+o SLES 12 on both the build host
+  and on the system under tests.
+There's no need for a separate home partition.
+There's no need to install GNOME nor KDE.
+
+Create ordinary users:
+o one user named "builduser" on the build host,
+o one user named "testuser" on the reference machine
+  and on the system under tests.
+
+Make sure the two first networking cards are named correctly:
+o build: "eth0"
+o reference: "eth0", "eth1" and "eth2"
+o sut: "eth0" and "eth1"
+otherwise fix them with yast2.
+
+Also fix the hostname to be "build", "reference" or "sut"
+in yast2.
+
+Only if communicating with "reference" and "sut"
+through serial or virtio:
+o Install twopence_test_server in /root directory on
+  those machines, as described in Twopence's README
   (install it for example with scp).
 
 On the build server only:
-o Install make, gcc, git, rpm-build, libgcrypt-devel, libnl3-devel,
-          dbus-1-devel, and libiw-devel
+o Install make, gcc, git, rpm-build, libgcrypt-devel,
+          libnl3-devel, dbus-1-devel, and libiw-devel
 
 On the reference server only:
 o Install radvd, dhcp-server, tcpdump, and openvpn
@@ -48,8 +93,10 @@ o Install radvd, dhcp-server, tcpdump, and openvpn
 On the system under tests only:
 o Install openvpn and ndisc6
 
-Basic network and files configuration setup:
+Do the basic network and files configuration:
 o Run the script ./setup-basic-config.sh
+  (you might need to set up $build, $ref and $sut
+   variables in that script to accomodate your setup)
 
 
 Networking summary
