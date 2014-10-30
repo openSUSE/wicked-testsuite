@@ -1,0 +1,8 @@
+STARTMODE='auto'
+BOOTPROTO='static'
+
+IPOIB_MODE='connected'
+#IPOIB_UMCAST='disallowed'
+
+IPADDR='192.168.77.123/24'
+IPADDR6='fd00:deca:fbad:77::123/64'

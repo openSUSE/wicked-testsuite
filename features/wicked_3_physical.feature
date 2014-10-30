@@ -5,28 +5,45 @@ Feature: Wicked 3 physical
   I should be able to use the new Wicked network interfaces broker
 
   Background:
-    When the reference machine is set up correctly
-    And the system under test is set up correctly
-    And there is no core dump
-    And the wicked services are started
-    And the interfaces are in a basic state
-    And the routing table is empty
-    And there is no virtual interface left on any machine
+#    When the reference machine is set up correctly
+#    And the system under test is set up correctly
+#    And there is no core dump
+#    And the wicked services are started
+#    And the interfaces are in a basic state
+#    And the routing table is empty
+#    And there is no virtual interface left on any machine
 
-# all infiniband tests with dhcp
+# all infiniband tests with dhcpv4 and dhcpv6
   Scenario: Create an infiniband interface from legacy ifcfg files, unreliable datagram mode
+    Given infiniband is supported on both machines
+    When I create an infiniband interface in datagram mode from legacy files
 
   Scenario: Create an infiniband interface from wicked XML files, unreliable datagram mode
+    Given infiniband is supported on both machines
+    When I create an infiniband interface in datagram mode from XML files
 
   Scenario: Create an infiniband interface from legacy ifcfg files, connected mode
+    Given infiniband is supported on both machines
+    When I create an infiniband interface in connected mode from legacy files
 
   Scenario: Create an infiniband interface from wicked XML files, connected mode
+    Given infiniband is supported on both machines
+    When I create an infiniband interface in connected mode from XML files
+
+# what about the multicast flag?
 
   Scenario: Create an infiniband child interface from legacy ifcfg files
+    Given infiniband is supported on both machines
 
   Scenario: Create an infiniband child interface from wicked XML files
+    Given infiniband is supported on both machines
 
   Scenario: Use infiniband bonding
+    Given infiniband is supported on both machines
+
+
+# especially dhcp with ib-bond is interessting as the mac changes when bond changes to another nic.
+# ask pth@suse.de -- perhaps there is a multiport one and we initialize only 1 port by default.
 
 # TODO
 # ====
