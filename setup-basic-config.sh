@@ -38,7 +38,9 @@ twopence_inject $ref "basic-config-files/reference/ifcfg-tap1" "/etc/sysconfig/n
 twopence_inject $ref "basic-config-files/reference/ifcfg-gre1" "/etc/sysconfig/network/ifcfg-gre1"
 twopence_inject $ref "basic-config-files/reference/ifcfg-tunl1" "/etc/sysconfig/network/ifcfg-tunl1"
 twopence_inject $ref "basic-config-files/reference/ifcfg-sit1" "/etc/sysconfig/network/ifcfg-sit1"
-twopence_inject $ref "basic-config-files/reference/ifcfg-ib0" "/etc/sysconfig/network/ifcfg-ib0"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-datagram" "/etc/sysconfig/network/ifcfg-ib0-datagram"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-connected" "/etc/sysconfig/network/ifcfg-ib0-connected"
+twopence_command $ref "ln -sf /etc/sysconfig/network/ifcfg-ib0-connected /etc/sysconfig/network/ifcfg-ib0"
 
 echo "Configure and start the DHCP server"
 twopence_inject $ref "basic-config-files/reference/dhcpd" "/etc/sysconfig/dhcpd"
