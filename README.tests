@@ -4,7 +4,7 @@ Tests summary
 1 - Basic tests
 ===============
 
-network: private -------------------------------------------------------------
+network: private1 ------------------------------------------------------------
 inside:  eth0
 outside: virbr1
 
