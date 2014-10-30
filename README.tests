@@ -106,8 +106,8 @@ static tests           N/A                    /128
                                               sut: fd00:333::123
 
 
-3 - Virtual interfaces tests
-============================
+3 - Physical interfaces tests
+=============================
 
 infiniband --------------------------------------------------------------------
 

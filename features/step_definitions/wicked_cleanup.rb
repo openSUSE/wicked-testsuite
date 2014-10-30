@@ -150,6 +150,9 @@ def prepareReference()
   end
   if !out.include? "dhcpd6 -6"
     local, remote, command = REF.test_and_drop_results \
+      "root", "ln -sf /etc/dhcpd6-default.conf /etc/dhcpd6.conf"
+    local.should == 0; remote.should == 0; command.should == 0
+    local, remote, command = REF.test_and_drop_results \
       "root", "systemctl start dhcpd6.service"
     local.should == 0; remote.should == 0; command.should == 0
   end
@@ -174,6 +177,17 @@ def prepareReference()
     local.should == 0; remote.should == 0; command.should == 0
     local, remote, command = REF.test_and_drop_results \
       "root", "systemctl restart dhcpd.service"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+  local, remote, command = REF.test_and_drop_results \
+    "testuser", "grep '# Default configuration' /etc/dhcpd6.conf"
+  local.should == 0; remote.should == 0
+  if command != 0
+    local, remote, command = REF.test_and_drop_results \
+      "root", "ln -sf /etc/dhcpd-default.conf /etc/dhcpd6.conf"
+    local.should == 0; remote.should == 0; command.should == 0
+    local, remote, command = REF.test_and_drop_results \
+      "root", "systemctl restart dhcpd6.service"
     local.should == 0; remote.should == 0; command.should == 0
   end
 

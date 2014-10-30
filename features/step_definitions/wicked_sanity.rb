@@ -49,6 +49,11 @@ When /^the reference machine is set up correctly$/ do
   out.should include "# Default configuration"
   #
   out, local, remote, command = REF.test_and_store_results_together \
+    "testuser", "cat /etc/dhcpd6.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "# Default configuration"
+  #
+  out, local, remote, command = REF.test_and_store_results_together \
     "testuser", "cat /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "# Default configuration"
