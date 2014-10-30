@@ -100,6 +100,16 @@ def prepareReference()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # Remove extra physical interfaces if any
+  out, local, remote, command = REF.test_and_store_results_together \
+    "testuser", "ip link show"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "ib0:"
+    local, remote, command = REF.test_and_drop_results \
+      "root", "ip link delete dev ib0"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
   # start the interfaces if needed
   out, local, remote, command = REF.test_and_store_results_together \
     "testuser", "ip address show dev eth0"

@@ -17,18 +17,26 @@ Feature: Wicked 3 physical
   Scenario: Create an infiniband interface from legacy ifcfg files, unreliable datagram mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in datagram mode from legacy files
+#    Then both machines should have a new ib0 card
+    And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from wicked XML files, unreliable datagram mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in datagram mode from XML files
+#    Then both machines should have a new ib0 card
+    And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from legacy ifcfg files, connected mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in connected mode from legacy files
+#    Then both machines should have a new ib0 card
+    And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from wicked XML files, connected mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in connected mode from XML files
+#    Then both machines should have a new ib0 card
+    And I should be able to ping the other side of the infiniband link
 
 # what about the multicast flag?
 

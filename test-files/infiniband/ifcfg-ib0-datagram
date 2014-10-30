@@ -4,5 +4,5 @@ BOOTPROTO='static'
 IPOIB_MODE='datagram'
 #IPOIB_UMCAST='disallowed'
 
-IPADDR='192.168.77.1/24'
-IPADDR6='fd00:deca:fbad:77::1/64'
+IPADDR='192.168.77.123/24'
+IPADDR6='fd00:deca:fbad:77::123/64'

@@ -146,6 +146,18 @@ When /^there is no virtual interface left on any machine$/ do
   #
   outsut.should_not include "br0.1@"
   #
+  outref.should_not include "bond0:"
+  outsut.should_not include "bond0:"
+  #
+  outref.should_not include "bond1:"
+  outsut.should_not include "bond1:"
+  #
+  outref.should_not include "bond0.42@"
+  outsut.should_not include "bond0.42@"
+  #
+  outref.should_not include "bond0.73@"
+  outsut.should_not include "bond0.73@"
+  #
   outsut.should_not include "macvtap1:"
   #
   outref.should_not include "tun1:"
@@ -172,15 +184,6 @@ When /^there is no virtual interface left on any machine$/ do
   outref.should_not include "sit1:"
   outsut.should_not include "sit1:"
   #
-  outref.should_not include "bond0:"
-  outsut.should_not include "bond0:"
-  #
-  outref.should_not include "bond1:"
-  outsut.should_not include "bond1:"
-  #
-  outref.should_not include "bond0.42@"
-  outsut.should_not include "bond0.42@"
-  #
-  outref.should_not include "bond0.73@"
-  outsut.should_not include "bond0.73@"
+  outref.should_not include "ib0:"
+  outsut.should_not include "ib1:"
 end

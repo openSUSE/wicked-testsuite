@@ -800,7 +800,7 @@ When /^I establish routes for the SIT tunnel$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I create an infiniband interface in datagram mode from legacy files$/ do
+When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
     next
@@ -808,13 +808,16 @@ When /^I create an infiniband interface in datagram mode from legacy files$/ do
 # Hack:
 # TODO ALT_SUT => SUT
 #      ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in datagram mode from legacy files"
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/sysconfig/network/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
   #
   local, remote = ALT_SUT.inject_file \
-    "testuser", "test-files/infiniband/ifcfg-ib0-datagram", \
+    "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
                 "/tmp/tests/ifcfg-ib0", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
@@ -828,7 +831,7 @@ When /^I create an infiniband interface in datagram mode from legacy files$/ do
   end
 end
 
-When /^I create an infiniband interface in datagram mode from XML files$/ do
+When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
     next
@@ -836,53 +839,14 @@ When /^I create an infiniband interface in datagram mode from XML files$/ do
 # Hack:
 # TODO ALT_SUT => SUT
 #      ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in datagram mode from XML files"
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from XML files"
   local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ifup ib0"
+    "root", "ln -sf /etc/sysconfig/network/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
   local.should == 0; remote.should == 0; command.should == 0
-end
-
-
-When /^I create an infiniband interface in connected mode from legacy files$/ do
-  if @skip_when_no_infiniband
-    puts "(skipped)"
-    next
-  end
-# Hack:
-# TODO ALT_SUT => SUT
-#      ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in connected mode from legacy files"
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
   #
-  local, remote = ALT_SUT.inject_file \
-    "testuser", "test-files/infiniband/ifcfg-ib0-connected", \
-                "/tmp/tests/ifcfg-ib0", false
-  local.should == 0; remote.should == 0
-  if (CONFIGURE_PRECISELY)
-    local, remote, command = ALT_SUT.test_and_drop_results \
-      "root", "wic.sh ifup --ifconfig compat:/tmp/tests ib0"
-    local.should == 0; remote.should == 0; command.should == 0
-  else
-    local, remote, command = ALT_SUT.test_and_drop_results \
-      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-end
-
-When /^I create an infiniband interface in connected mode from XML files$/ do
-  if @skip_when_no_infiniband
-    puts "(skipped)"
-    next
-  end
-# Hack:
-# TODO ALT_SUT => SUT
-#      ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in connected mode from XML files"
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ifup ib0"
-  local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do

@@ -472,6 +472,18 @@ Then /^I should be able to ping the other side of the SIT tunnel$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+Then /^I should be able to ping the other side of the infiniband link$/ do
+# Hack:
+# TODO ALT_SUT => SUT
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the infiniband link"
+  local, remote, command = ALT_SUT.test_and_drop_results \
+    "testuser", "ping -q -c1 -W1 #{IBP_4_REF} -I ib0"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_SUT.test_and_drop_results \
+    "testuser", "ping6 -q -c1 -W1 #{IBP_6_REF} -I ib0"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 Then /^br0\.1 should have the correct address$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then br0.1 should have the correct address"
   out, local, remote, command = SUT.test_and_store_results_together \
