@@ -1,0 +1,20 @@
+<interface>
+  <name>ib0</name>
+
+  <infiniband>
+    <mode>datagram</mode>
+    <multicast>disallowed</multicast>
+  </infiniband>
+
+  <ipv4:static>
+    <address>
+      <local>192.168.77.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:deca:fbad:77::123/64</local>
+    </address>
+  </ipv6:static>
+</interface>

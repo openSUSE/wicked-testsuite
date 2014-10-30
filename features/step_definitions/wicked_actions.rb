@@ -847,6 +847,19 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote = ALT_SUT.inject_file \
+    "testuser", "test-files/infiniband/infiniband-#{mode}.xml", \
+                "/tmp/tests/infiniband.xml", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml sit1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do
