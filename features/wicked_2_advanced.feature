@@ -154,9 +154,12 @@ Feature: Wicked 2 advanced
 # * pppoe
 # * slip
 #
-# Other virtual
+# Virtual
 # * ip6ip6 IPv6 in IPv6 tunnel
-# * macvlan several MAC addresses on same card
+#
+#
+# PRIORITIES
+# ==========
 #
 # Important/supported interfaces are, in decreasing order of priority:
 #     Ethernet, vlan, bridge, bond
