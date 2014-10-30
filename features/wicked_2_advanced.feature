@@ -138,15 +138,6 @@ Feature: Wicked 2 advanced
 # TODO
 # ====
 #
-# Physical (not testable with QEmu)
-# * wlan WiFi interfaces
-# * isdn telephone interfaces
-# * infiniband
-# * token ring
-# * firewire
-# * ctcm s390 mainframes
-# * iucv s390 mainframes
-#
 # Point to point
 # * ppp with null-modem serial line (not written)
 # * ppp with plain old serial modems (not written)
@@ -154,16 +145,5 @@ Feature: Wicked 2 advanced
 # * pppoe
 # * slip
 #
-# Virtual
+# Tunnel
 # * ip6ip6 IPv6 in IPv6 tunnel
-#
-#
-# PRIORITIES
-# ==========
-#
-# Important/supported interfaces are, in decreasing order of priority:
-#     Ethernet, vlan, bridge, bond
-#     ibft, infiniband + child
-#     wireless, sit, gre, ipip
-#     pppoe
-
