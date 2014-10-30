@@ -32,6 +32,11 @@ end
 puts "Reference server is accessed through: " + TARGET_REF
 REF = Twopence::init(TARGET_REF)
 
+# Hack - to be removed
+# TODO
+ALT_SUT = Twopence::init("ssh:10.121.8.133")
+ALT_REF = Twopence::init("ssh:10.121.8.239")
+
 # Addresses for system under test
 DHCP4_SUT0 = "10.20.30."
 RADVD_SUT0 = "fd00:dead:beef:"

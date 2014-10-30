@@ -25,10 +25,6 @@ The ideal topology for testing Wicked is as below:
 |            |     ...      |            |
 +------------+              +------------+
 
-The build host and the system under tests can be one single
-machine. If they are different machines, they have to run
-the same system (use the same version of libraries).
-
 
 With virtual machines
 =====================
