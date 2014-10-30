@@ -14,44 +14,57 @@ Feature: Wicked 3 physical
 #    And there is no virtual interface left on any machine
 
 # all infiniband tests with dhcpv4 and dhcpv6
+# TODO currently static assignements
+
   Scenario: Create an infiniband interface from legacy ifcfg files, unreliable datagram mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in datagram mode from legacy files
+# Hack: would land on wrong machine
+# TODO remove comment sign
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from wicked XML files, unreliable datagram mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in datagram mode from XML files
+# Hack: would land on wrong machine
+# TODO remove comment sign
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from legacy ifcfg files, connected mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in connected mode from legacy files
+# Hack: would land on wrong machine
+# TODO remove comment sign
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
   Scenario: Create an infiniband interface from wicked XML files, connected mode
     Given infiniband is supported on both machines
     When I create an infiniband interface in connected mode from XML files
+# Hack: would land on wrong machine
+# TODO remove comment sign
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
 # what about the multicast flag?
+# TODO test it as well
 
   Scenario: Create an infiniband child interface from legacy ifcfg files
     Given infiniband is supported on both machines
+# TODO to be written
 
   Scenario: Create an infiniband child interface from wicked XML files
     Given infiniband is supported on both machines
+# TODO to be written
 
   Scenario: Use infiniband bonding
     Given infiniband is supported on both machines
+# TODO to be written
 
-
-# especially dhcp with ib-bond is interessting as the mac changes when bond changes to another nic.
-# ask pth@suse.de -- perhaps there is a multiport one and we initialize only 1 port by default.
+# especially dhcp with ib-bond is interesting as the mac changes when bond changes to another nic.
+# ask pth at suse.de -- perhaps there is a multiport one and we initialize only 1 port by default.
 
 # TODO
 # ====
