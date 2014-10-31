@@ -13,20 +13,17 @@ Feature: Wicked 3 physical
 #    And the routing table is empty
 #    And there is no virtual interface left on any machine
 
-# all infiniband tests with dhcpv4 and dhcpv6
-# TODO currently static assignements
-
-  Scenario: Create an infiniband interface from legacy ifcfg files, unreliable datagram mode
+  Scenario: Create an infiniband interface from legacy ifcfg files, datagram mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in datagram mode from legacy files
+    When I create an infiniband interface in ud-nomux mode from legacy files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
-  Scenario: Create an infiniband interface from wicked XML files, unreliable datagram mode
+  Scenario: Create an infiniband interface from wicked XML files, datagram mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in datagram mode from XML files
+    When I create an infiniband interface in ud-mux mode from XML files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -34,7 +31,7 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from legacy ifcfg files, connected mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in connected mode from legacy files
+    When I create an infiniband interface in cm-nomux mode from legacy files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -42,7 +39,7 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from wicked XML files, connected mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in connected mode from XML files
+    When I create an infiniband interface in cm-mux mode from XML files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card

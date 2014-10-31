@@ -113,7 +113,7 @@ infiniband --------------------------------------------------------------------
 
                        IPv4                   IPv6
 
-static tests           192.168.77/24          fd00:deca:fbad:77::/64
+dynamic tests          192.168.77/24          fd00:deca:fbad:77::/64
                        ref: .1                ref: ::1
                        sut: .123              sut: ::123
 

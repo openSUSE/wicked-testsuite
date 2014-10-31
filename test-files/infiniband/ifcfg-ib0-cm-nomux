@@ -1,11 +1,8 @@
 STARTMODE='auto'
-BOOTPROTO='static'
+BOOTPROTO='dhcp'
 
-IPOIB_MODE='datagram'
+IPOIB_MODE='connected'
 # in order to test more combinations,
 # multicast is disallowed with legacy ifcfg files,
 # and allowed with wicked XML files
 IPOIB_UMCAST='disallowed'
-
-IPADDR='192.168.77.123/24'
-IPADDR6='fd00:deca:fbad:77::123/64'
