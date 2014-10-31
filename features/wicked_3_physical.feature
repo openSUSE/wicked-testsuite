@@ -48,9 +48,6 @@ Feature: Wicked 3 physical
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
-# what about the multicast flag?
-# TODO test it as well
-
   Scenario: Create an infiniband child interface from legacy ifcfg files
     Given infiniband is supported on both machines
 # TODO to be written

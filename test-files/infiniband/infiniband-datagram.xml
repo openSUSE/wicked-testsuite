@@ -3,7 +3,10 @@
 
   <infiniband>
     <mode>datagram</mode>
-    <multicast>disallowed</multicast>
+<!-- in order to test more combinations,
+     multicast is disallowed with legacy ifcfg files,
+     and allowed with wicked XML files -->
+    <multicast>allowed</multicast>
   </infiniband>
 
   <ipv4:static>
