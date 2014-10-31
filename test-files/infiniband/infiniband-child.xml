@@ -1,0 +1,20 @@
+<interface>
+  <name>ib0.8001</name>
+
+  <infiniband:child>
+    <device>ib0</device>
+    <pkey>0x8001</pkey>
+  </infiniband:child>
+
+  <ipv4:dhcp>
+    <enabled>true</enabled>
+    <defer-timeout>10</defer-timeout>
+    <acquire-timeout>10</acquire-timeout>
+  </ipv4:dhcp>
+
+  <ipv6:dhcp>
+    <enabled>true</enabled>
+    <defer-timeout>10</defer-timeout>
+    <acquire-timeout>10</acquire-timeout>
+  </ipv6:dhcp>
+</interface>

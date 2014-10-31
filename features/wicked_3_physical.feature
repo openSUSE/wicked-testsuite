@@ -5,6 +5,8 @@ Feature: Wicked 3 physical
   I should be able to use the new Wicked network interfaces broker
 
   Background:
+# Hack: would land on wrong machine
+# TODO remove comment signs
 #    When the reference machine is set up correctly
 #    And the system under test is set up correctly
 #    And there is no core dump
@@ -47,11 +49,19 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband child interface from legacy ifcfg files
     Given infiniband is supported on both machines
-# TODO to be written
+    When I create an infiniband child interface from ifcfg files
+# Hack: would land on wrong machine
+# TODO remove comment sign
+#    Then both machines should have a new ib0.8001 card
+    And I should be able to ping the other side of the infiniband child link
 
   Scenario: Create an infiniband child interface from wicked XML files
     Given infiniband is supported on both machines
-# TODO to be written
+    When I create an infiniband child interface from XML files
+# Hack: would land on wrong machine
+# TODO remove comment sign
+#    Then both machines should have a new ib0.8001 card
+    And I should be able to ping the other side of the infiniband child link
 
   Scenario: Use infiniband bonding
     Given infiniband is supported on both machines

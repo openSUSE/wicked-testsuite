@@ -109,6 +109,11 @@ def prepareReference()
       "root", "ip link delete dev ib0"
     local.should == 0; remote.should == 0; command.should == 0
   end
+  if out.include? "ib0.8001@"
+    local, remote, command = REF.test_and_drop_results \
+      "root", "ip link delete dev ib0.8001"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 
   # start the interfaces if needed
   out, local, remote, command = REF.test_and_store_results_together \
