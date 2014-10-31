@@ -43,6 +43,7 @@ twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-cm-nomux" "/etc/sys
 twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-ud-mux" "/etc/sysconfig/network/ifcfg-ib0-ud-mux"
 twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-cm-mux" "/etc/sysconfig/network/ifcfg-ib0-cm-mux"
 twopence_command $ref "ln -sf /etc/sysconfig/network/ifcfg-ib0-cm-nomux /etc/sysconfig/network/ifcfg-ib0"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0.8001" "/etc/sysconfig/network/ifcfg-ib0.8001"
 
 echo "Configure and start the DHCP server"
 twopence_inject $ref "basic-config-files/reference/dhcpd" "/etc/sysconfig/dhcpd"

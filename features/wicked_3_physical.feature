@@ -17,7 +17,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from legacy ifcfg files, datagram mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in ud-nomux mode from legacy files
+    When the reference machine is set up in infiniband ud-nomux mode
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband interface in ud-nomux mode from legacy files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -25,7 +27,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from wicked XML files, datagram mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in ud-mux mode from XML files
+    When the reference machine is set up in infiniband ud-mux mode
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband interface in ud-mux mode from XML files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -33,7 +37,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from legacy ifcfg files, connected mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in cm-nomux mode from legacy files
+    When the reference machine is set up in infiniband cm-nomux mode
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband interface in cm-nomux mode from legacy files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -41,7 +47,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband interface from wicked XML files, connected mode
     Given infiniband is supported on both machines
-    When I create an infiniband interface in cm-mux mode from XML files
+    When the reference machine is set up in infiniband cm-mux mode
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband interface in cm-mux mode from XML files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0 card
@@ -49,7 +57,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband child interface from legacy ifcfg files
     Given infiniband is supported on both machines
-    When I create an infiniband child interface from ifcfg files
+    When the reference machine has an infiniband child channel
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband child interface from legacy files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0.8001 card
@@ -57,7 +67,9 @@ Feature: Wicked 3 physical
 
   Scenario: Create an infiniband child interface from wicked XML files
     Given infiniband is supported on both machines
-    When I create an infiniband child interface from XML files
+    When the reference machine has an infiniband child channel
+    And the reference machine provides dynamic addresses over the infiniband links
+    And I create an infiniband child interface from XML files
 # Hack: would land on wrong machine
 # TODO remove comment sign
 #    Then both machines should have a new ib0.8001 card
@@ -65,8 +77,8 @@ Feature: Wicked 3 physical
 
   Scenario: Use infiniband bonding
     Given infiniband is supported on both machines
+    When the reference machine provides dynamic addresses over the infiniband links
 # TODO to be written
-
 # especially dhcp with ib-bond is interesting as the mac changes when bond changes to another nic.
 # ask pth at suse.de -- perhaps there is a multiport one and we initialize only 1 port by default.
 
