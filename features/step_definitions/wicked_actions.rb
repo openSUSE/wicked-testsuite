@@ -822,7 +822,6 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
     "root", "systemctl restart radvd"
   local.should == 0; remote.should == 0; command.should == 0
   #
-  #
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
                 "/tmp/tests/ifcfg-ib0", false
@@ -866,11 +865,79 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
     local, remote, command = ALT_SUT.test_and_drop_results \
-      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml sit1"
+      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml ib0"
     local.should == 0; remote.should == 0; command.should == 0
   else
     local, remote, command = ALT_SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create an infiniband child interface from legacy files$/ do |mode|
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
+# Hack:
+# TODO ALT_SUT => SUT
+#      ALT_REF => REF
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from legacy files"
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ifup ib0.8001"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart radvd"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = ALT_SUT.inject_file \
+    "testuser", "test-files/infiniband/ifcfg-ib0.8001", \
+                "/tmp/tests/ifcfg-ib0.8001", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests ib0.8001"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create an infiniband child interface from XML files$/ do |mode|
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
+# Hack:
+# TODO ALT_SUT => SUT
+#      ALT_REF => REF
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from XML files"
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ifup ib0.8001"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart radvd"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = ALT_SUT.inject_file \
+    "testuser", "test-files/infiniband/infiniband-child.xml", \
+                "/tmp/tests/infiniband-child.xml", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband-child.xml ib0.8001"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = ALT_SUT.test_and_drop_results \
+      "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband-child.xml all"
     local.should == 0; remote.should == 0; command.should == 0
   end
 end

@@ -191,4 +191,7 @@ When /^there is no virtual interface left on any machine$/ do
   #
   outref.should_not include "ib0:"
   outsut.should_not include "ib1:"
+  #
+  outref.should_not include "ib0.8001@"
+  outsut.should_not include "ib1.8001@"
 end
