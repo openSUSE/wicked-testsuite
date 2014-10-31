@@ -489,10 +489,10 @@ Then /^I should be able to ping the other side of the infiniband child link$/ do
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the infiniband child link"
   local, remote, command = ALT_SUT.test_and_drop_results \
-    "testuser", "ping -q -c1 -W1 #{IBCH4_REF} -I ib0"
+    "testuser", "ping -q -c1 -W1 #{IBCH4_REF} -I ib0.8001"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = ALT_SUT.test_and_drop_results \
-    "testuser", "ping6 -q -c1 -W1 #{IBCH6_REF} -I ib0"
+    "testuser", "ping6 -q -c1 -W1 #{IBCH6_REF} -I ib0.8001"
   local.should == 0; remote.should == 0; command.should == 0
 end
 

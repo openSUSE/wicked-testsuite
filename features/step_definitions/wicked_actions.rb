@@ -800,21 +800,43 @@ When /^I establish routes for the SIT tunnel$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |mode|
+When /^the reference machine is set up in infiniband ([^ ]*) mode$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
     next
   end
 # Hack:
-# TODO ALT_SUT => SUT
-#      ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
+# TODO ALT_REF => REF
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine is set up in infiniband #{mode} mode"
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ln -sf /etc/sysconfig/network/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^the reference machine has an infiniband child channel$/ do
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
+# Hack:
+# TODO ALT_REF => REF
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine has an infiniband child channel"
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ifup ib0.8001"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^the reference machine provides dynamic addresses over the infiniband links$/ do
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
+# Hack:
+# TODO ALT_REF => REF
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine provides dynamic addresses over the infiniband links"
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -822,6 +844,29 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
     "root", "systemctl restart radvd"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/dhcpd-infiniband.conf /etc/dhcpd.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart dhcpd"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/dhcpd6-infiniband.conf /etc/dhcpd6.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart dhcpd6"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |mode|
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
+# Hack:
+# TODO ALT_SUT => SUT
+  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
                 "/tmp/tests/ifcfg-ib0", false
@@ -844,21 +889,7 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
   end
 # Hack:
 # TODO ALT_SUT => SUT
-#      ALT_REF => REF
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from XML files"
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ln -sf /etc/sysconfig/network/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ifup ib0"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "systemctl restart radvd"
-  local.should == 0; remote.should == 0; command.should == 0
-  #
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-#{mode}.xml", \
                 "/tmp/tests/infiniband.xml", false
@@ -874,25 +905,14 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
   end
 end
 
-When /^I create an infiniband child interface from legacy files$/ do |mode|
+When /^I create an infiniband child interface from legacy files$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
     next
   end
 # Hack:
 # TODO ALT_SUT => SUT
-#      ALT_REF => REF
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from legacy files"
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ifup ib0.8001"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "systemctl restart radvd"
-  local.should == 0; remote.should == 0; command.should == 0
-  #
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0.8001", \
                 "/tmp/tests/ifcfg-ib0.8001", false
@@ -908,25 +928,14 @@ When /^I create an infiniband child interface from legacy files$/ do |mode|
   end
 end
 
-When /^I create an infiniband child interface from XML files$/ do |mode|
+When /^I create an infiniband child interface from XML files$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
     next
   end
 # Hack:
 # TODO ALT_SUT => SUT
-#      ALT_REF => REF
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from XML files"
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ifup ib0.8001"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "systemctl restart radvd"
-  local.should == 0; remote.should == 0; command.should == 0
-  #
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-child.xml", \
                 "/tmp/tests/infiniband-child.xml", false

@@ -1,0 +1,5 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+
+IPADDR='192.168.88.1/24'
+IPADDR6='fd00:deca:fbad:88::1/64'
