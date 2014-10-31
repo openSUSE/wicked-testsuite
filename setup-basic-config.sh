@@ -38,11 +38,13 @@ twopence_inject $ref "basic-config-files/reference/ifcfg-tap1" "/etc/sysconfig/n
 twopence_inject $ref "basic-config-files/reference/ifcfg-gre1" "/etc/sysconfig/network/ifcfg-gre1"
 twopence_inject $ref "basic-config-files/reference/ifcfg-tunl1" "/etc/sysconfig/network/ifcfg-tunl1"
 twopence_inject $ref "basic-config-files/reference/ifcfg-sit1" "/etc/sysconfig/network/ifcfg-sit1"
-twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-datagram" "/etc/sysconfig/network/ifcfg-ib0-datagram"
-twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-connected" "/etc/sysconfig/network/ifcfg-ib0-connected"
-twopence_command $ref "ln -sf /etc/sysconfig/network/ifcfg-ib0-connected /etc/sysconfig/network/ifcfg-ib0"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-ud-nomux" "/etc/sysconfig/network/ifcfg-ib0-ud-nomux"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-cm-nomux" "/etc/sysconfig/network/ifcfg-ib0-cm-nomux"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-ud-mux" "/etc/sysconfig/network/ifcfg-ib0-ud-mux"
+twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-cm-mux" "/etc/sysconfig/network/ifcfg-ib0-cm-mux"
+twopence_command $ref "ln -sf /etc/sysconfig/network/ifcfg-ib0-cm-nomux /etc/sysconfig/network/ifcfg-ib0"
 
-echo "Configure and start the DHCP servers"
+echo "Configure and start the DHCP server"
 twopence_inject $ref "basic-config-files/reference/dhcpd" "/etc/sysconfig/dhcpd"
 twopence_inject $ref "basic-config-files/reference/dhcpd-default.conf" "/etc/dhcpd-default.conf"
 twopence_inject $ref "basic-config-files/reference/dhcpd-route.conf" "/etc/dhcpd-route.conf"
@@ -51,6 +53,8 @@ twopence_inject $ref "basic-config-files/reference/dhcpd-infiniband.conf" "/etc/
 twopence_command $ref "chmod ugo+r /etc/dhcpd-*.conf"
 twopence_command $ref "ln -sf /etc/dhcpd-default.conf /etc/dhcpd.conf"
 twopence_command $ref "chkconfig dhcpd on"
+
+echo "Configure and start the DHCPv6 server"
 twopence_inject $ref "basic-config-files/reference/dhcpd6-default.conf" "/etc/dhcpd6-default.conf"
 twopence_inject $ref "basic-config-files/reference/dhcpd6-infiniband.conf" "/etc/dhcpd6-infiniband.conf"
 twopence_command $ref "chmod ugo+r /etc/dhcpd6-*.conf"
@@ -62,6 +66,7 @@ twopence_inject $ref "basic-config-files/reference/radvd-default.conf" "/etc/rad
 for ((i = 1; i <= 12; i++)); do
   twopence_inject $ref "basic-config-files/reference/radvd-${i}.conf" "/etc/radvd-${i}.conf"
 done
+twopence_inject $ref "basic-config-files/reference/radvd-infiniband.conf" "/etc/radvd-infiniband.conf"
 twopence_command $ref "chmod o+r /etc/radvd-*.conf"
 twopence_command $ref "ln -sf /etc/radvd-default.conf /etc/radvd.conf"
 twopence_command $ref "chkconfig radvd on"

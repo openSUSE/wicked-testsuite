@@ -815,6 +815,13 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart radvd"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
   #
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
@@ -845,6 +852,12 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = ALT_REF.test_and_drop_results \
     "root", "ifup ib0"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = ALT_REF.test_and_drop_results \
+    "root", "systemctl restart radvd"
   local.should == 0; remote.should == 0; command.should == 0
   #
   local, remote = ALT_SUT.inject_file \

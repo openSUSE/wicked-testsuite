@@ -9,15 +9,15 @@
     <multicast>allowed</multicast>
   </infiniband>
 
-  <ipv4:static>
-    <address>
-      <local>192.168.77.123/24</local>
-    </address>
-  </ipv4:static>
+  <ipv4:dhcp>
+    <enabled>true</enabled>
+    <defer-timeout>10</defer-timeout>
+    <acquire-timeout>10</acquire-timeout>
+  </ipv4:dhcp>
 
-  <ipv6:static>
-    <address>
-      <local>fd00:deca:fbad:77::123/64</local>
-    </address>
-  </ipv6:static>
+  <ipv6:dhcp>
+    <enabled>true</enabled>
+    <defer-timeout>10</defer-timeout>
+    <acquire-timeout>10</acquire-timeout>
+  </ipv6:dhcp>
 </interface>
