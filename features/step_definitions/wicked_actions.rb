@@ -867,6 +867,7 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
+ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/ifcfg-ib*"
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
                 "/tmp/tests/ifcfg-ib0", false
@@ -890,6 +891,7 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from XML files"
+ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/infiniband-*"
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-#{mode}.xml", \
                 "/tmp/tests/infiniband.xml", false

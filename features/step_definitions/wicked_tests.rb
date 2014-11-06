@@ -473,6 +473,10 @@ Then /^I should be able to ping the other side of the SIT tunnel$/ do
 end
 
 Then /^I should be able to ping the other side of the infiniband link$/ do
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the infiniband link"
@@ -485,6 +489,10 @@ Then /^I should be able to ping the other side of the infiniband link$/ do
 end
 
 Then /^I should be able to ping the other side of the infiniband child link$/ do
+  if @skip_when_no_infiniband
+    puts "(skipped)"
+    next
+  end
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: Then I should be able to ping the other side of the infiniband child link"
