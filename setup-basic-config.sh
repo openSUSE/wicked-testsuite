@@ -45,7 +45,7 @@ twopence_inject $ref "basic-config-files/reference/ifcfg-ib0-cm-mux" "/etc/sysco
 twopence_command $ref "ln -sf /etc/sysconfig/network/ifcfg-ib0-cm-nomux /etc/sysconfig/network/ifcfg-ib0"
 twopence_inject $ref "basic-config-files/reference/ifcfg-ib0.8001" "/etc/sysconfig/network/ifcfg-ib0.8001"
 
-echo "Configure and start the DHCP server"
+echo "Configure and enable the DHCP server"
 twopence_inject $ref "basic-config-files/reference/dhcpd" "/etc/sysconfig/dhcpd"
 twopence_inject $ref "basic-config-files/reference/dhcpd-default.conf" "/etc/dhcpd-default.conf"
 twopence_inject $ref "basic-config-files/reference/dhcpd-route.conf" "/etc/dhcpd-route.conf"
@@ -53,16 +53,16 @@ twopence_inject $ref "basic-config-files/reference/dhcpd-mtu.conf" "/etc/dhcpd-m
 twopence_inject $ref "basic-config-files/reference/dhcpd-infiniband.conf" "/etc/dhcpd-infiniband.conf"
 twopence_command $ref "chmod ugo+r /etc/dhcpd-*.conf"
 twopence_command $ref "ln -sf /etc/dhcpd-default.conf /etc/dhcpd.conf"
-twopence_command $ref "chkconfig dhcpd on"
+twopence_command $ref "systemctl enable dhcpd"
 
-echo "Configure and start the DHCPv6 server"
+echo "Configure and enable the DHCPv6 server"
 twopence_inject $ref "basic-config-files/reference/dhcpd6-default.conf" "/etc/dhcpd6-default.conf"
 twopence_inject $ref "basic-config-files/reference/dhcpd6-infiniband.conf" "/etc/dhcpd6-infiniband.conf"
 twopence_command $ref "chmod ugo+r /etc/dhcpd6-*.conf"
 twopence_command $ref "ln -sf /etc/dhcpd6-default.conf /etc/dhcpd6.conf"
-twopence_command $ref "chkconfig dhcpd6 on"
+twopence_command $ref "systemctl enable dhcpd6"
 
-echo "Configure and start the RADVD server"
+echo "Configure and enable the RADVD server"
 twopence_inject $ref "basic-config-files/reference/radvd-default.conf" "/etc/radvd-default.conf"
 for ((i = 1; i <= 12; i++)); do
   twopence_inject $ref "basic-config-files/reference/radvd-${i}.conf" "/etc/radvd-${i}.conf"
@@ -70,19 +70,17 @@ done
 twopence_inject $ref "basic-config-files/reference/radvd-infiniband.conf" "/etc/radvd-infiniband.conf"
 twopence_command $ref "chmod o+r /etc/radvd-*.conf"
 twopence_command $ref "ln -sf /etc/radvd-default.conf /etc/radvd.conf"
-twopence_command $ref "chkconfig radvd on"
+twopence_command $ref "systemctl enable radvd"
 
-echo "Configure, but do not start the openvpn server"
+echo "Configure the openvpn server"
 twopence_inject $ref "basic-config-files/reference/openvpn-tun.conf" "/etc/openvpn/server-tun.conf"
 twopence_command $ref "chmod o+r /etc/openvpn/server-tun.conf"
 twopence_inject $ref "basic-config-files/reference/openvpn-tap.conf" "/etc/openvpn/server-tap.conf"
 twopence_command $ref "chmod o+r /etc/openvpn/server-tap.conf"
 twopence_command $ref "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.conf"
 
-echo "Activate packet forwarding"
+echo "Enable packet forwarding"
 twopence_inject $ref "basic-config-files/reference/sysctl.conf" "/etc/sysctl.conf"
-twopence_command $ref "echo 1 > /proc/sys/net/ipv4/ip_forward"
-twopence_command $ref "echo 1 > /proc/sys/net/ipv6/conf/all/forwarding"
 
 
 echo
