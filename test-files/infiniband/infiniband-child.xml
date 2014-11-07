@@ -4,6 +4,8 @@
   <infiniband:child>
     <device>ib0</device>
     <pkey>0x8001</pkey>
+    <mode>datagram</mode>
+    <multicast>allowed</multicast>
   </infiniband:child>
 
   <ipv4:dhcp>
