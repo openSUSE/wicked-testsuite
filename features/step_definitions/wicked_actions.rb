@@ -915,6 +915,7 @@ When /^I create an infiniband child interface from legacy files$/ do
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from legacy files"
+ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/ifcfg-ib*"
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0.8001", \
                 "/tmp/tests/ifcfg-ib0.8001", false
@@ -938,6 +939,7 @@ When /^I create an infiniband child interface from XML files$/ do
 # Hack:
 # TODO ALT_SUT => SUT
   ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from XML files"
+ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/infiniband-*"
   local, remote = ALT_SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-child.xml", \
                 "/tmp/tests/infiniband-child.xml", false
