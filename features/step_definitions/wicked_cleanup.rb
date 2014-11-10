@@ -2,6 +2,11 @@
 
 # Prepare the reference machine
 def prepareReference()
+  # remove all symlinks to interface declarations
+  local, remote, command = REF.test_and_drop_results \
+    "root", "cleanup.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+
   # stop the bonding if any
   local, remote, command = REF.test_and_drop_results \
     "testuser", "ip link show dev bond0"
@@ -97,16 +102,6 @@ def prepareReference()
   if out.include? "gre0:" or out.include? "tunl0:" or out.include? "sit0:"
     local, remote, command = REF.test_and_drop_results \
       "root", "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-
-  # Remove extra physical interfaces if any
-  out, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "ip link show"
-  local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "ib0:"
-    local, remote, command = REF.test_and_drop_results \
-      "root", "ip link delete dev ib0"
     local.should == 0; remote.should == 0; command.should == 0
   end
   if out.include? "ib0.8001@"
@@ -254,7 +249,9 @@ def prepareSut()
 
   # ensure complete amnesia for wicked server
   local, remote, command = SUT.test_and_drop_results \
-    "root", "wicked ifdown --force device-down all"
+    "root", "wicked ifdown all"
+# Used to be
+#           "wicked ifdown --force device-down all"
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "root", "systemctl stop wickedd.service"
