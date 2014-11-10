@@ -82,6 +82,10 @@ twopence_command $ref "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.c
 echo "Enable packet forwarding"
 twopence_inject $ref "basic-config-files/reference/sysctl.conf" "/etc/sysctl.conf"
 
+echo "Install server-side  utilities"
+twopence_inject $ref "basic-config-files/reference/cleanup.sh" "/usr/local/bin/cleanup.sh"
+twopence_command $ref "chmod ugo+rx /usr/local/bin/*.sh"
+
 
 echo
 echo "### Setup the system under test ###"

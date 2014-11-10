@@ -5,23 +5,20 @@ Feature: Wicked 3 physical
   I should be able to use the new Wicked network interfaces broker
 
   Background:
-# Hack: would land on wrong machine
-# TODO remove comment signs
-#    When the reference machine is set up correctly
-#    And the system under test is set up correctly
-#    And there is no core dump
-#    And the wicked services are started
-#    And the interfaces are in a basic state
-#    And the routing table is empty
-#    And there is no virtual interface left on any machine
+    When the reference machine is set up correctly
+    And the system under test is set up correctly
+    And there is no core dump
+    And the wicked services are started
+    And the interfaces are in a basic state
+    And the routing table is empty
+    And there is no virtual interface left on any machine
 
   Scenario: Create an infiniband interface from legacy ifcfg files, datagram mode
     Given infiniband is supported on both machines
     When the reference machine is set up in infiniband ud-nomux mode
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband interface in ud-nomux mode from legacy files
-# Hack: would land on wrong machine
-# TODO remove comment sign
+# TODO incorrect, we always have an ib0 card - check its address
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
@@ -30,8 +27,7 @@ Feature: Wicked 3 physical
     When the reference machine is set up in infiniband ud-mux mode
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband interface in ud-mux mode from XML files
-# Hack: would land on wrong machine
-# TODO remove comment sign
+# TODO incorrect, we always have an ib0 card - check its address
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
@@ -40,8 +36,7 @@ Feature: Wicked 3 physical
     When the reference machine is set up in infiniband cm-nomux mode
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband interface in cm-nomux mode from legacy files
-# Hack: would land on wrong machine
-# TODO remove comment sign
+# TODO incorrect, we always have an ib0 card - check its address
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
@@ -50,8 +45,7 @@ Feature: Wicked 3 physical
     When the reference machine is set up in infiniband cm-mux mode
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband interface in cm-mux mode from XML files
-# Hack: would land on wrong machine
-# TODO remove comment sign
+# TODO incorrect, we always have an ib0 card - check its address
 #    Then both machines should have a new ib0 card
     And I should be able to ping the other side of the infiniband link
 
@@ -60,9 +54,7 @@ Feature: Wicked 3 physical
     When the reference machine has an infiniband child channel
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband child interface from legacy files
-# Hack: would land on wrong machine
-# TODO remove comment sign
-#    Then both machines should have a new ib0.8001 card
+    Then both machines should have a new ib0.8001 card
     And I should be able to ping the other side of the infiniband child link
 
   Scenario: Create an infiniband child interface from wicked XML files
@@ -70,9 +62,7 @@ Feature: Wicked 3 physical
     When the reference machine has an infiniband child channel
     And the reference machine provides dynamic addresses over the infiniband links
     And I create an infiniband child interface from XML files
-# Hack: would land on wrong machine
-# TODO remove comment sign
-#    Then both machines should have a new ib0.8001 card
+    Then both machines should have a new ib0.8001 card
     And I should be able to ping the other side of the infiniband child link
 
   Scenario: Use infiniband bonding
@@ -81,6 +71,8 @@ Feature: Wicked 3 physical
 # TODO to be written
 # especially dhcp with ib-bond is interesting as the mac changes when bond changes to another nic.
 # ask pth at suse.de -- perhaps there is a multiport one and we initialize only 1 port by default.
+# other plan: bond(ib0, eth0)
+#             bond(ib0.8002, ib0.8003)
 
 # TODO
 # ====
