@@ -1,4 +1,4 @@
-Feature: Wicked 5 settings
+Feature: Wicked 7 settings
 
   In order to be able to set up network interfaces
   As a network administrator who plays with the network settings
