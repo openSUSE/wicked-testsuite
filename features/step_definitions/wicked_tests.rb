@@ -711,7 +711,7 @@ Then /^I should obtain a link-local IPv4 address$/ do
 end
 
 Then /^I should not obtain a link-local IPv4 address$/ do
-  SUT.test_and_drop_results "root", "log.sh Step: Then I should obtain a link-local IPv4 address"
+  SUT.test_and_drop_results "root", "log.sh Step: Then I should not obtain a link-local IPv4 address"
   out, local, remote, command = SUT.test_and_store_results_together \
     "testuser", "ip address show dev eth0"
   local.should == 0; remote.should == 0; command.should == 0
