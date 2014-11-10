@@ -231,14 +231,20 @@ When /^I aggregate eth0 and eth1 from legacy files$/ do
     next
   end
   SUT.test_and_drop_results "root", "log.sh Step: When I aggregate eth0 and eth1 from legacy files"
+# TODO: useless precaution?
+#       if yes, remove
+#       if not, apply each time we bond eth0 and eth1
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop dhcpd"
+#  local.should == 0; remote.should == 0; command.should == 0
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop radvd"
+#  local.should == 0; remote.should == 0; command.should == 0
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop dhcpd6"
+#  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop dhcpd"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop radvd"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop dhcpd6"
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
@@ -271,14 +277,20 @@ end
 
 When /^I aggregate eth0 and eth1 from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I aggregate eth0 and eth1 from XML files"
+# TODO: useless precaution?
+#       if yes, remove
+#       if not, apply each time we bond eth0 and eth1
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop dhcpd"
+#  local.should == 0; remote.should == 0; command.should == 0
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop radvd"
+#  local.should == 0; remote.should == 0; command.should == 0
+#  local, remote, command = REF.test_and_drop_results \
+#    "root", "systemctl stop dhcpd6"
+#  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop dhcpd"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop radvd"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = REF.test_and_drop_results \
-    "root", "systemctl stop dhcpd6"
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
@@ -303,6 +315,9 @@ end
 When /^I create a VLAN on interface ([^ ]*) from legacy files$/ do |interface|
   SUT.test_and_drop_results "root", "log.sh Step: When I create a VLAN on interface #{interface} from legacy files"
   vlan = interface + ".42"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-#{vlan} /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup #{vlan}"
   local.should == 0; remote.should == 0; command.should == 0
@@ -331,6 +346,9 @@ end
 When /^I create a VLAN on interface ([^ ]*) from XML files$/ do |interface|
   SUT.test_and_drop_results "root", "log.sh Step: When I create a VLAN on interface #{interface} from XML files"
   vlan = interface + ".42"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-#{vlan} /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup #{vlan}"
   local.should == 0; remote.should == 0; command.should == 0
@@ -452,6 +470,9 @@ end
 When /^I create a tun interface from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tun interface from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup tun1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -476,6 +497,9 @@ end
 
 When /^I create a tun interface from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tun interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup tun1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -527,6 +551,9 @@ end
 When /^I create a tap interface from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tap interface from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup tap1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -551,6 +578,9 @@ end
 
 When /^I create a tap interface from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tap interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup tap1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -602,6 +632,9 @@ end
 When /^I create a gre interface from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a gre interface from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-gre1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup gre1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -630,6 +663,9 @@ end
 
 When /^I create a gre interface from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a gre interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-gre1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup gre1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -673,6 +709,9 @@ end
 When /^I create a tunl interface from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tunl interface from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tunl1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup tunl1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -701,6 +740,9 @@ end
 
 When /^I create a tunl interface from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a tunl interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-tunl1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup tunl1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -738,6 +780,9 @@ end
 When /^I create a sit interface from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a sit interface from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-sit1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup sit1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -766,6 +811,9 @@ end
 
 When /^I create a sit interface from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create a sit interface from XML files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-sit1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup sit1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -805,13 +853,11 @@ When /^the reference machine is set up in infiniband ([^ ]*) mode$/ do |mode|
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine is set up in infiniband #{mode} mode"
-  local, remote, command = ALT_REF.test_and_drop_results \
-    "root", "ln -sf /etc/sysconfig/network/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
+  SUT.test_and_drop_results "root", "log.sh Step: When the reference machine is set up in infiniband #{mode} mode"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -sf pool/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
   local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup ib0"
   local.should == 0; remote.should == 0; command.should == 0
 end
@@ -821,10 +867,11 @@ When /^the reference machine has an infiniband child channel$/ do
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine has an infiniband child channel"
-  local, remote, command = ALT_REF.test_and_drop_results \
+  SUT.test_and_drop_results "root", "log.sh Step: When the reference machine has an infiniband child channel"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-ib0.8001 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup ib0.8001"
   local.should == 0; remote.should == 0; command.should == 0
 end
@@ -834,27 +881,25 @@ When /^the reference machine provides dynamic addresses over the infiniband link
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_REF => REF
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When the reference machine provides dynamic addresses over the infiniband links"
-  local, remote, command = ALT_REF.test_and_drop_results \
+  SUT.test_and_drop_results "root", "log.sh Step: When the reference machine provides dynamic addresses over the infiniband links"
+  local, remote, command = REF.test_and_drop_results \
     "root", "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "systemctl restart radvd"
   local.should == 0; remote.should == 0; command.should == 0
   #
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "ln -sf /etc/dhcpd-infiniband.conf /etc/dhcpd.conf"
   local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "systemctl restart dhcpd"
   local.should == 0; remote.should == 0; command.should == 0
   #
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "ln -sf /etc/dhcpd6-infiniband.conf /etc/dhcpd6.conf"
   local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = ALT_REF.test_and_drop_results \
+  local, remote, command = REF.test_and_drop_results \
     "root", "systemctl restart dhcpd6"
   local.should == 0; remote.should == 0; command.should == 0
 end
@@ -864,20 +909,17 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_SUT => SUT
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
-ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/ifcfg-ib*"
-  local, remote = ALT_SUT.inject_file \
+  SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from legacy files"
+  local, remote = SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0-#{mode}", \
                 "/tmp/tests/ifcfg-ib0", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests ib0"
     local.should == 0; remote.should == 0; command.should == 0
   else
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
     local.should == 0; remote.should == 0; command.should == 0
   end
@@ -888,20 +930,17 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_SUT => SUT
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from XML files"
-ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/infiniband-*"
-  local, remote = ALT_SUT.inject_file \
+  SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband interface in #{mode} mode from XML files"
+  local, remote = SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-#{mode}.xml", \
                 "/tmp/tests/infiniband.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml ib0"
     local.should == 0; remote.should == 0; command.should == 0
   else
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband.xml all"
     local.should == 0; remote.should == 0; command.should == 0
   end
@@ -912,20 +951,17 @@ When /^I create an infiniband child interface from legacy files$/ do
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_SUT => SUT
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from legacy files"
-ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/ifcfg-ib*"
-  local, remote = ALT_SUT.inject_file \
+  SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from legacy files"
+  local, remote = SUT.inject_file \
     "testuser", "test-files/infiniband/ifcfg-ib0.8001", \
                 "/tmp/tests/ifcfg-ib0.8001", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests ib0.8001"
     local.should == 0; remote.should == 0; command.should == 0
   else
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig compat:/tmp/tests all"
     local.should == 0; remote.should == 0; command.should == 0
   end
@@ -936,20 +972,17 @@ When /^I create an infiniband child interface from XML files$/ do
     puts "(skipped)"
     next
   end
-# Hack:
-# TODO ALT_SUT => SUT
-  ALT_SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from XML files"
-ALT_SUT.test_and_drop_results "root", "rm /tmp/tests/infiniband-*"
-  local, remote = ALT_SUT.inject_file \
+  SUT.test_and_drop_results "root", "log.sh Step: When I create an infiniband child interface from XML files"
+  local, remote = SUT.inject_file \
     "testuser", "test-files/infiniband/infiniband-child.xml", \
                 "/tmp/tests/infiniband-child.xml", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_PRECISELY)
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband-child.xml ib0.8001"
     local.should == 0; remote.should == 0; command.should == 0
   else
-    local, remote, command = ALT_SUT.test_and_drop_results \
+    local, remote, command = SUT.test_and_drop_results \
       "root", "wic.sh ifup --ifconfig /tmp/tests/infiniband-child.xml all"
     local.should == 0; remote.should == 0; command.should == 0
   end
@@ -957,6 +990,9 @@ end
 
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0.1(br0(eth0, dummy0), 1) from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -993,6 +1029,9 @@ end
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0.1(br0(eth0, dummy0), 1) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -1013,6 +1052,9 @@ end
 
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0(eth0.1(eth0, 1), eth1) from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1049,6 +1091,9 @@ end
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0(eth0.1(eth0, 1), eth1) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -1070,7 +1115,13 @@ end
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth1.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth1.1"
@@ -1112,7 +1163,13 @@ end
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth1.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth1.1"
@@ -1136,10 +1193,19 @@ end
 When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth1.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth1.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond1"
@@ -1181,10 +1247,19 @@ end
 When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-eth1.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup eth1.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond1"
@@ -1207,6 +1282,9 @@ end
 
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br1(bond0(eth0, eth1), dummy1) from legacy files"
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1247,6 +1325,9 @@ end
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br1(bond0(eth0, eth1), dummy1) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   #
@@ -1268,7 +1349,13 @@ end
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
@@ -1314,7 +1401,13 @@ end
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
@@ -1338,10 +1431,19 @@ end
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.73 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.73"
@@ -1383,10 +1485,19 @@ end
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.73 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.73"
@@ -1410,10 +1521,19 @@ end
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from legacy files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from legacy files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.73 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.73"
@@ -1471,10 +1591,19 @@ end
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from XML files$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from XML files"
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "root", "ln -s pool/ifcfg-bond0.73 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "root", "ifup bond0.73"

@@ -5,7 +5,7 @@ When /^the reference machine is set up correctly$/ do
     "testuser", "ps aux"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "dhcpd -4"
-  out.should include "dhcpd6 -6"
+  out.should match /dhcpd6? -6/
   out.should include "radvd"
   out.should_not include "openvpn"
   out.should_not include "tcpdump"
@@ -114,13 +114,15 @@ When /^the interfaces are in a basic state$/ do
 end
 
 When /^the routing table is empty$/ do
+  # We admit eth2 as an exception, in case we want some direct link to the outside
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip -4 route show"
-  local.should == 0; remote.should == 0; command.should == 0
+    "testuser", "ip -4 route show | egrep -v eth2"
+  local.should == 0; remote.should == 0
   out.should be_empty
   #
+  # We also admit link-local or prefix-based addresses as exceptions
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip -6 route show | egrep -v \"fe80:|fd00:\""
+    "testuser", "ip -6 route show | egrep -v \"eth2|fe80:|fd00:\""
   local.should == 0; remote.should == 0
   out.should be_empty
 end
@@ -188,9 +190,6 @@ When /^there is no virtual interface left on any machine$/ do
   #
   outref.should_not include "sit1:"
   outsut.should_not include "sit1:"
-  #
-  outref.should_not include "ib0:"
-  outsut.should_not include "ib1:"
   #
   outref.should_not include "ib0.8001@"
   outsut.should_not include "ib1.8001@"
