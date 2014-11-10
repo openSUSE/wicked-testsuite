@@ -3,27 +3,29 @@ Testing topology
 
 The ideal topology for testing Wicked is as below:
 
-+-------------+             +------------+
-| Test suite  |             |            |
-|  (with      |    ssh      |   Build    |
-|   Jenkins   +-------------+   host     |
-|   as an     |             |            |
-|   option)   |             |            |
-+-+---------+-+             +------------+
-  |         |
-  | serial, |
-  | ssh,    +---------------------+ serial, ssh,
-  | or virtio                     | or virtio
-  |                               |
-+-+----------+              +-----+------+
-|            |     eth0     |            |
-|            +--------------+            |
-|            |     eth1     |   System   |
-| Reference  +--------------+   Under    |
-|   server   |   ib0.8001   |   Tests    |
-|            +--------------+            |
-|            |     ...      |            |
-+------------+              +------------+
+            +-------------+           +-------------+
+            |             |           |             |
+            | Test suite  |           |             |
+            |  (with      |    ssh    |   Build     |
+            |   Jenkins   +-----------+   host      |
+            |   as an     |           |             |
+            |   option)   |           |             |
+            |             |           |             |
+            +-+---------+-+           +-------------+
+              |         |
+              | serial, |
+              | ssh,    +---------------+ serial, ssh,
+ *********    | or virtio               | or virtio
+ * Outer *    |                         |
+ * World *  +-+-----------+           +-+-----------+
+ *********  |             |    eth0   |             |
+     |      |             +-----------+             |
+     | eth2 |  Reference  |    eth1   |   System    |
+     +------+  server     +-----------+   Under     |
+            |             |    ib0    |   Tests     |
+            |             +-----------+             |
+            |             |    ...    |             |
+            +-------------+           +-------------+
 
 
 With virtual machines
