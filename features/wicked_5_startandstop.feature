@@ -1,4 +1,4 @@
-Feature: Wicked 4 start and stop
+Feature: Wicked 5 start and stop
 
   In order to be able to set up network interfaces
   As a network administrator who starts and stops interfaces

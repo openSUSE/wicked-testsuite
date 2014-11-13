@@ -1,4 +1,4 @@
-Feature: Wicked 3 combinations
+Feature: Wicked 4 combinations
 
   In order to be able to set up network interfaces
   As a network administrator doing weird combinations
