@@ -80,10 +80,9 @@ export TARGET_SUT=&quot;@@SUT_TARGET@@&quot;
 export TARGET_REF=&quot;@@REF_TARGET@@&quot;
 
 twopence_command $TARGET_SUT &quot;rm -r /var/log/journal/*; systemctl restart systemd-journald&quot;
-cd /var/lib/jenkins/@@SUBDIR@@
-tar czf $WORKSPACE/test-suite.tgz features/ test-files/
 
 START_DATE=$(twopence_command $TARGET_SUT &quot;date +&apos;%Y-%m-%d %T&apos;&quot; | head -n 1)
+cd /var/lib/jenkins/@@SUBDIR@@
 cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
 
 twopence_command $TARGET_SUT &quot;journalctl -b -o short-precise --since=\&quot;$START_DATE\&quot; | grep -E \&quot;(wickedc|wickedd|wickedd-nanny|wickedd-auto4|wickedd-dhcp4|wickedd-dhcp6|wpa_supplicant|cucumber)\\[\&quot; | gzip &gt; /tmp/wicked_all.log.gz&quot;
@@ -98,7 +97,7 @@ grep -E &quot;(wickedd-auto4|wickedd-dhcp4|wickedd-dhcp6|wpa_supplicant|cucumber
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>test-suite.tgz, wicked_*.log</artifacts>
+      <artifacts>wicked_*.log</artifacts>
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
