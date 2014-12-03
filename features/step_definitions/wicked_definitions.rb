@@ -97,7 +97,7 @@ V73_4_REF  = "73.73.73.1"
 V73_6_REF  = "fd00:7373:7373::1"
 
 # Addresses for outside world
-STAT4_GAT = "10.121.0.1"                 # Real gateway to the outside
+STAT4_GAT = "10.161.0.1"                 # Real gateway to the outside
 STAT6_GAT = "2620:113:80c0:8080::1"
 STAT4_OUT = "8.8.8.8"                    # Google public DNS
 STAT6_OUT = "2001:4860:4860::8888"
