@@ -1,7 +1,7 @@
 #! /bin/bash
 
 for ((i = 0; i < 100; i++)); do
-  file=/etc/sysconfig/network/ifcfg-br$i
+  file=/tmp/tests/ifcfg-br$i
   if [ ! -e $file ]; then
     echo "BOOTPROTO=none"                >  $file
     echo "BRIDGE=yes"                    >> $file
