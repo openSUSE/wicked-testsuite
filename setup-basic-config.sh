@@ -106,6 +106,7 @@ gcc basic-config-files/sut/check_macvtap.c -o /tmp/a.out
 twopence_inject $sut "/tmp/a.out" "/usr/local/bin/check_macvtap"
 rm /tmp/a.out
 twopence_command $sut "chmod ugo+rx /usr/local/bin/check_macvtap"
+twopence_inject $sut "basic-config-files/sut/create_bridges.sh" "/usr/local/bin/create_bridges.sh"
 
 echo "Configure the addresses and routes"
 twopence_inject $sut "basic-config-files/sut/global-config" "/etc/sysconfig/network/config"
