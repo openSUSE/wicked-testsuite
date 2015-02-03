@@ -1684,6 +1684,20 @@ When /^I change VLAN config and ifreload$/ do
   end
 end
 
+When /^I create ([0-9]*) bridges$/ do |number|
+  SUT.test_and_drop_results "root", "log.sh Step: When I create #{number} bridges"
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "/usr/local/bin/create_many_bridges.sh #{number}"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I delete ([0-9]*) bridges$/ do |number|
+  SUT.test_and_drop_results "root", "log.sh Step: When I create #{number} bridges"
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "/usr/local/bin/delete_many_bridges.sh #{number}"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 When /^I set up the MTU on the reference server$/ do
   SUT.test_and_drop_results "root", "log.sh Step: When I set up the MTU on the reference server"
   local, remote, command = REF.test_and_drop_results \

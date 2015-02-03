@@ -62,6 +62,19 @@ Then /^the brief status of ([^ ]*) should not be "([^"]*)"$/ do |interface, stat
   @briefstatus.should_not match /#{interface}\s+#{state}/
 end
 
+Then /^all ([0-9]*) bridges should be (UP|deleted)$/ do |number, state|
+  SUT.test_and_drop_results "root", "log.sh Step: Then all #{number} bridges should be #{state}"
+  local, remote, command = SUT.test_and_drop_results \
+    "testuser", "/usr/local/bin/check_many_bridges.sh #{number} #{state}"
+end
+
+Then /^netlink messages should not contain "([^"]*)"$/ do |text|
+  SUT.test_and_drop_results "root", "log.sh Step: Then netlink messages should not contain #{text}"
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "root", "journalctl -b -u wickedd -u wickedd-dhcp4 | grep netlink"
+  out.should_not include "#{text}"
+end
+
 Then /^I should see all network interfaces$/ do
   SUT.test_and_drop_results "root", "log.sh Step: Then I should see all network interfaces"
   @showall.should match /^lo/

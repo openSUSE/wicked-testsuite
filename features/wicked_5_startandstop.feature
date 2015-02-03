@@ -208,3 +208,11 @@ Feature: Wicked 5 start and stop
     And the brief status of eth1 should be "enslaved"
     But the brief status of br1.42 should not be "up"
 
+  Scenario: Create many bridges and remove them
+    When I create 512 bridges
+    Then all 512 bridges should be UP
+    And netlink messages should not contain "No buffer space"
+    #
+    When I delete 512 bridges
+    Then all 512 bridges should be deleted
+

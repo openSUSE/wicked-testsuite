@@ -7,11 +7,6 @@ Before do |scenario|
   #
   prepareReference()
   #
-#print "here"
-#out, local, remote, command = SUT.test_and_store_results_together "testuser", "ls /"
-#print out
-#out, local, remote, command = SUT.test_and_store_results_together "testuser", "ls /var/run/wicked/nanny"
-#print out
   prepareSut()
   #
   fn = scenario.feature.name.split(/\n/)[0]
