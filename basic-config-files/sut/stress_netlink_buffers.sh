@@ -1,6 +1,11 @@
 #! /bin/bash
 
-for ((i = 0; i < 100; i++)); do
+# Try to saturate netlink buffers by creating many bridges
+
+[ -z "$1" ] && exit 1
+number=$1
+
+for ((i = 0; i < $number; i++)); do
   file=/tmp/tests/ifcfg-br$i
   if [ ! -e $file ]; then
     echo "BOOTPROTO=none"                >  $file
@@ -20,3 +25,18 @@ for ((i = 0; i < 100; i++)); do
     echo "STARTMODE=auto"                >> $file
   fi
 done
+
+wic.sh ifup --ifconfig compat:/tmp/tests all
+
+journalctl -u wickedd-dhcp4 > /tmp/tests/wickedd-dhcp4.log
+
+for ((i = 0; i < $number; i++)); do
+  file=/tmp/tests/ifcfg-br$i
+  wic.sh ifdown br$i
+  rm $file
+done
+
+if grep -q "No buffer space" /tmp/tests/wickedd-dhcp4.log; then
+  echo "No buffer space" >&2
+  exit 2
+fi

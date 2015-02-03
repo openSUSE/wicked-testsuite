@@ -101,7 +101,7 @@ twopence_inject $sut "basic-config-files/sut/ifbind.sh" "/usr/local/bin/ifbind.s
 twopence_inject $sut "basic-config-files/sut/log.sh" "/usr/local/bin/log.sh"
 twopence_inject $sut "basic-config-files/sut/wait_for_cmd_success.sh" "/usr/local/bin/wait_for_cmd_success.sh"
 twopence_inject $sut "basic-config-files/sut/wait_for_cmd_failure.sh" "/usr/local/bin/wait_for_cmd_failure.sh"
-twopence_inject $sut "basic-config-files/sut/create_bridges.sh" "/usr/local/bin/create_bridges.sh"
+twopence_inject $sut "basic-config-files/sut/stress_netlink_buffers.sh" "/usr/local/bin/stress_netlink_buffers.sh"
 twopence_command $sut "chmod ugo+rx /usr/local/bin/*.sh"
 gcc basic-config-files/sut/check_macvtap.c -o /tmp/a.out
 twopence_inject $sut "/tmp/a.out" "/usr/local/bin/check_macvtap"
