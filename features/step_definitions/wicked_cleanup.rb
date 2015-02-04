@@ -239,6 +239,11 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # stop bridges if any
+  local, remote, command = SUT.test_and_drop_results \
+    "root", "for bridge in $(brctl show | sed '1d; s/\t.*//; /^$/d'); do brctl delbr $bridge; done"
+  local.should == 0; remote.should == 0; command.should == 0
+
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
     "root", "systemctl start wickedd.service"
