@@ -239,11 +239,6 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # stop bridges if any
-  local, remote, command = SUT.test_and_drop_results \
-    "root", "for bridge in $(brctl show | sed '1d; s/\t.*//; /^$/d'); do brctl delbr $bridge; done"
-  local.should == 0; remote.should == 0; command.should == 0
-
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
     "root", "systemctl start wickedd.service"
@@ -251,6 +246,12 @@ def prepareSut()
   local, remote, command = SUT.test_and_drop_results \
     "root", "systemctl start wicked.service"
   local.should == 0; remote.should == 0; command.should == 0
+
+  # delete bridges if any
+  # not even sure it's needed
+  # local, remote, command = SUT.test_and_drop_results \
+  #   "root", "for bridge in \$(brctl show | sed '1d; s/\\t.*//; /^$/d'); do wicked ifdown --delete \$bridge; done"
+  # local.should == 0; remote.should == 0; command.should == 0
 
   # ensure complete amnesia for wicked server
   local, remote, command = SUT.test_and_drop_results \
