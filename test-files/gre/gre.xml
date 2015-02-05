@@ -5,10 +5,6 @@
   <gre>
     <local-address>172.16.0.123</local-address>
     <remote-address>172.16.0.1</remote-address>
-    <!-- WORKAROUND against bsc#901402
-         remove when fix has reached all tested versions -->
-    <pmtudisc>false</pmtudisc>
-    <!-- END WORKAROUND -->
   </gre>
 
   <ipv4:static>
