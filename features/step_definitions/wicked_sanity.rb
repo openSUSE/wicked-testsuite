@@ -2,7 +2,7 @@
 
 When /^the reference machine is set up correctly$/ do
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "ps aux"
+    "ps aux", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "dhcpd -4"
   out.should match /dhcpd6? -6/
@@ -11,17 +11,17 @@ When /^the reference machine is set up correctly$/ do
   out.should_not include "tcpdump"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "root", "iptables -t nat -L"
+    "iptables -t nat -L"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "MASQUERADE"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "root", "ip6tables -t nat -L"
+    "ip6tables -t nat -L"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "MASQUERADE"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser",  "ip address show dev eth0"
+    "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "#{DHCP4_REF0}"
   out.should include "#{STAT4_REF0}"
@@ -29,68 +29,68 @@ When /^the reference machine is set up correctly$/ do
   out.should include "#{STAT6_REF0}"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser",  "ip address show dev eth1"
+    "ip address show dev eth1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "#{STAT4_REF1}"
   out.should include "#{STAT6_REF1}"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser",  "ip -4 route show"
+    "ip -4 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /^default via .* dev eth2/
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser",  "ip -6 route show"
+    "ip -6 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /^default via .* dev eth2/
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "cat /etc/dhcpd.conf"
+    "cat /etc/dhcpd.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "# Default configuration"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "cat /etc/dhcpd6.conf"
+    "cat /etc/dhcpd6.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "# Default configuration"
   #
   out, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "cat /etc/radvd.conf"
+    "cat /etc/radvd.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "# Default configuration"
 end
 
 When /^there is no core dump$/ do
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ls /core*"
+    "ls /core*", "testuser"
   local.should == 0; remote.should == 0;
   command.should == 2
 end
 
 When /^the system under test is set up correctly$/ do
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ls /tmp/tests/ifcfg-* | grep -v ifcfg-lo"
+    "ls /tmp/tests/ifcfg-* | grep -v ifcfg-lo", "testuser"
   local.should == 0; remote.should == 0;
   out.should == ""
   #
   local, remote, command = SUT.test_and_drop_results \
-    "testuser", "ls /tmp/tests/ifroute-*"
+    "ls /tmp/tests/ifroute-*", "testuser"
   local.should == 0; remote.should == 0;
   command.should == 2
   #
   local, remote, command = SUT.test_and_drop_results \
-    "testuser", "grep WAIT_FOR_INTERFACES /tmp/tests/config"
+    "grep WAIT_FOR_INTERFACES /tmp/tests/config", "testuser"
   local.should == 0; remote.should == 0;
   command.should == 0
 end
 
 When /^the wicked services are started$/ do
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "systemctl status wickedd.service"
+    "systemctl status wickedd.service", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /\s[aA]ctive/
   #
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "systemctl status wicked.service"
+    "systemctl status wicked.service", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /\s[aA]ctive/
 end
@@ -98,17 +98,17 @@ end
 When /^the interfaces are in a basic state$/ do
   # lo is not DOWN
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip address show dev lo"
+    "ip address show dev lo", "testuser"
   local.should == 0; remote.should == 0
   out.should_not include "DOWN"
   # eth0 is DOWN
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip address show dev eth0"
+    "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "DOWN"
   # eth1 is DOWN
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip address show dev eth1"
+    "ip address show dev eth1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "DOWN"
 end
@@ -116,23 +116,23 @@ end
 When /^the routing table is empty$/ do
   # We admit eth2 as an exception, in case we want some direct link to the outside
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip -4 route show | egrep -v eth2"
+    "ip -4 route show | egrep -v eth2", "testuser"
   local.should == 0; remote.should == 0
   out.should be_empty
   #
   # We also admit link-local or prefix-based addresses as exceptions
   out, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip -6 route show | egrep -v \"eth2|fe80:|fd00:\""
+    "ip -6 route show | egrep -v \"eth2|fe80:|fd00:\"", "testuser"
   local.should == 0; remote.should == 0
   out.should be_empty
 end
 
 When /^there is no virtual interface left on any machine$/ do
   outref, local, remote, command = REF.test_and_store_results_together \
-    "testuser", "ip link show"
+    "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   outsut, local, remote, command = SUT.test_and_store_results_together \
-    "testuser", "ip link show"
+    "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   #
   outref.should_not include "eth0.42@"
