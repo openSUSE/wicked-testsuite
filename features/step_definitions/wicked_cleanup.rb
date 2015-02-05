@@ -101,10 +101,7 @@ def prepareReference()
   end
   if out.include? "gre0:" or out.include? "tunl0:" or out.include? "sit0:"
     local, remote, command = REF.test_and_drop_results \
-      "modprobe -r ip_gre ipip"
-    local.should == 0; remote.should == 0; command.should == 0
-    local, remote, command = REF.test_and_drop_results \
-      "modprobe -r gre sit ip_tunnel tunnel4"
+      "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
   if out.include? "ib0.8001@"
@@ -237,11 +234,8 @@ def prepareSut()
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   if out.include? "gre0@" or out.include? "tunl0@" or out.include? "sit0:"
-    local, remote, command = REF.test_and_drop_results \
-      "modprobe -r ip_gre ipip"
-    local.should == 0; remote.should == 0; command.should == 0
-    local, remote, command = REF.test_and_drop_results \
-      "modprobe -r gre sit ip_tunnel tunnel4"
+    local, remote, command = SUT.test_and_drop_results \
+      "modprobe -r gre ip_gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
 
