@@ -16,6 +16,7 @@ twopence_command $ref "sed -i 's/^DHCLIENT_BIN=.*$/DHCLIENT_BIN=\"dhclient\"/' /
 echo "Configure the firewall"
 twopence_command $ref "SuSEfirewall2 off"
 twopence_inject $ref "basic-config-files/reference/iptables" "/etc/init.d/iptables"
+twopence_command $ref "chmod ug+x /etc/init.d/iptables"
 twopence_command $ref "insserv iptables"
 twopence_inject $ref "basic-config-files/reference/ip4tablesrc" "/etc/ip4tablesrc"
 twopence_inject $ref "basic-config-files/reference/ip6tablesrc" "/etc/ip6tablesrc"
