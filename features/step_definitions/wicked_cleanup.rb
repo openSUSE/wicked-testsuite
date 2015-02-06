@@ -255,10 +255,11 @@ def prepareSut()
 
   # ensure complete amnesia for wicked server
   local, remote, command = SUT.test_and_drop_results \
-    "wicked ifdown all"
-# Used to be
-#   "wicked ifdown --force device-down all"
+    "wicked ifdown --force device-down all"
   local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl stop wickedd-nanny.service"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "systemctl stop wickedd.service"
   local.should == 0; remote.should == 0; command.should == 0
@@ -267,6 +268,9 @@ def prepareSut()
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start wickedd-nanny.service"
   local.should == 0; remote.should == 0; command.should == 0
 
   # prepare tests directory and restart loopback interface
