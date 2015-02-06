@@ -106,6 +106,6 @@ STAT6_OUT = "2001:4860:4860::8888"
 # Prevents "systemctl stop wickedd.service" from getting stuck for 90 seconds
 # (bsc#904921)
 puts "Workaround against bsc#904921..."
-SUT.test_and_drop_results "root", \
+SUT.test_and_drop_results \
   "sed -i \"/^Restart=/aKillSignal=SIGKILL\" /usr/lib/systemd/system/wickedd-nanny.service; systemctl daemon-reload"
 
