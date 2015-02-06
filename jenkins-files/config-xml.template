@@ -62,14 +62,19 @@ twopence_inject $TARGET_SUT wicked-0*.x86_64.rpm /root/wicked-$BUILD_NUMBER.x86_
 twopence_inject $TARGET_SUT wicked-service-0*.x86_64.rpm /root/wicked-service-$BUILD_NUMBER.x86_64.rpm
 twopence_inject $TARGET_SUT libwicked-0*.x86_64.rpm /root/libwicked-$BUILD_NUMBER.x86_64.rpm
 
+twopence_command $TARGET_SUT "service wicked stop"
+twopence_command $TARGET_SUT "service wickedd stop"
+
 twopence_command $TARGET_SUT &quot;rpm -qc wicked > /tmp/config-files&quot;
 twopence_command $TARGET_SUT &quot;rpm -e --nodeps \$(rpm -qa \&quot;*wicked*\&quot;)&quot;
 twopence_command $TARGET_SUT &quot;rm -f \$(cat /tmp/config-files)&quot;
 twopence_command $TARGET_SUT &quot;rpm -ih /root/wicked-$BUILD_NUMBER.x86_64.rpm /root/wicked-service-$BUILD_NUMBER.x86_64.rpm /root/libwicked-$BUILD_NUMBER.x86_64.rpm&quot;
 
-
 twopence_inject $TARGET_SUT /var/lib/jenkins/cucumber/jenkins-files/wicked-@@NANNY@@-nanny.xml /etc/wicked/common.xml
 twopence_command $TARGET_SUT &quot;chmod u=rw,go=r /etc/wicked/common.xml&quot;
+
+twopence_command $TARGET_SUT "service wickedd start"
+twopence_command $TARGET_SUT "service wicked start"
       </command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
