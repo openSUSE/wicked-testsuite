@@ -1,7 +1,7 @@
 # # # Tests # # #
 
 Then /^I should be able to bring up interface ([^ ]*)$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to bring up interface #{interface}"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to bring up interface #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup #{interface}"
   local.should == 0; remote.should == 0
@@ -9,7 +9,7 @@ Then /^I should be able to bring up interface ([^ ]*)$/ do |interface|
 end
 
 Then /^I should not be able to bring up interface ([^ ]*)$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then I should not be able to bring up interface #{interface}"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not be able to bring up interface #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup #{interface}"
   local.should == 0; remote.should == 0
@@ -17,7 +17,7 @@ Then /^I should not be able to bring up interface ([^ ]*)$/ do |interface|
 end
 
 Then /^all server daemons should be up and running$/ do
-  SUT.test_and_drop_results "log.sh Step: Then all server daemons should be up and running"
+  SUT.test_and_drop_results "log.sh \"Step: Then all server daemons should be up and running\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ps aux | grep wicked", "testuser"
   local.should == 0; remote.should == 0
@@ -29,7 +29,7 @@ Then /^all server daemons should be up and running$/ do
 end
 
 Then /^no more server daemon should be left$/ do
-  SUT.test_and_drop_results "log.sh Step: Then no more server daemon should be left"
+  SUT.test_and_drop_results "log.sh \"Step: Then no more server daemon should be left\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ps aux | grep wicked", "testuser"
   local.should == 0; remote.should == 0
@@ -37,7 +37,7 @@ Then /^no more server daemon should be left$/ do
 end
 
 Then /^the interface ([^ ]*) should be up and running$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then the interface #{interface} should be up and running"
+  SUT.test_and_drop_results "log.sh \"Step: Then the interface #{interface} should be up and running\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -45,7 +45,7 @@ Then /^the interface ([^ ]*) should be up and running$/ do |interface|
 end
 
 Then /^the interface ([^ ]*) should be down$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then the interface #{interface} should be down"
+  SUT.test_and_drop_results "log.sh \"Step: Then the interface #{interface} should be down\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -53,37 +53,37 @@ Then /^the interface ([^ ]*) should be down$/ do |interface|
 end
 
 Then /^the brief status of ([^ ]*) should be "([^"]*)"$/ do |interface, state|
-  SUT.test_and_drop_results "log.sh Step: Then the brief status of #{interface} should be #{state}"
+  SUT.test_and_drop_results "log.sh \"Step: Then the brief status of #{interface} should be #{state}\""
   @briefstatus.should match /#{interface}\s+#{state}/
 end
 
 Then /^the brief status of ([^ ]*) should not be "([^"]*)"$/ do |interface, state|
-  SUT.test_and_drop_results "log.sh Step: Then the brief status of #{interface} should be #{state}"
+  SUT.test_and_drop_results "log.sh \"Step: Then the brief status of #{interface} should be #{state}\""
   @briefstatus.should_not match /#{interface}\s+#{state}/
 end
 
 Then /^all ([0-9]*) bridges should be (UP|deleted)$/ do |number, state|
-  SUT.test_and_drop_results "log.sh Step: Then all #{number} bridges should be #{state}"
+  SUT.test_and_drop_results "log.sh \"Step: Then all #{number} bridges should be #{state}\""
   local, remote, command = SUT.test_and_drop_results \
     "/usr/local/bin/check_many_bridges.sh #{number} #{state}", "testuser"
 end
 
 Then /^netlink messages should not contain "([^"]*)"$/ do |text|
-  SUT.test_and_drop_results "log.sh Step: Then netlink messages should not contain #{text}"
+  SUT.test_and_drop_results "log.sh \"Step: Then netlink messages should not contain #{text}\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "journalctl -b -u wickedd -u wickedd-dhcp4 | grep netlink"
   out.should_not include "#{text}"
 end
 
 Then /^I should see all network interfaces$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should see all network interfaces"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should see all network interfaces\""
   @showall.should match /^lo/
   @showall.should match /^eth0/
   @showall.should match /^eth1/
 end
 
 Then /^I should be able to ping (?:a |the )reference machine from my static address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping a reference machine from my static address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping a reference machine from my static address\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF0}", "testuser"
   local.should == 0; remote.should == 0
@@ -96,7 +96,7 @@ Then /^I should be able to ping (?:a |the )reference machine from my static addr
 end
 
 Then /^I should not be able to ping (?:a |the )reference machine from my static address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not be able to ping a reference machine from my static address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not be able to ping a reference machine from my static address\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF0}", "testuser"
   local.should == 0; remote.should == 0
@@ -109,7 +109,7 @@ Then /^I should not be able to ping (?:a |the )reference machine from my static 
 end
 
 Then /^I should be able to ping (?:a |the )reference machine from my dynamic address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping a reference machine from my dynamic address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping a reference machine from my dynamic address\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{DHCP4_REF0}", "testuser"
   local.should == 0; remote.should == 0
@@ -124,7 +124,7 @@ Then /^I should be able to ping (?:a |the )reference machine from my dynamic add
 end
 
 Then /^I should not be able to ping (?:a |the )reference machine from my dynamic address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not be able to ping a reference machine from my dynamic address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not be able to ping a reference machine from my dynamic address\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{DHCP4_REF0}", "testuser"
   local.should == 0; remote.should == 0
@@ -139,7 +139,7 @@ Then /^I should not be able to ping (?:a |the )reference machine from my dynamic
 end
 
 Then /^I should be able to ping a host in the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping a host in the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping a host in the outside World\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_OUT}", "testuser"
   local.should == 0; remote.should == 0
@@ -158,7 +158,7 @@ Then /^I should be able to ping a host in the outside World$/ do
 end
 
 Then /^I should not be able to ping a host in the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not be able to ping a host in the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not be able to ping a host in the outside World\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_OUT}", "testuser"
   local.should == 0; remote.should == 0
@@ -177,7 +177,7 @@ Then /^I should not be able to ping a host in the outside World$/ do
 end
 
 Then /^([^ ]*) should use the static addresses$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should use the static addresses"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should use the static addresses\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -194,7 +194,7 @@ Then /^([^ ]*) should use the static addresses$/ do |interface|
 end
 
 Then /^([^ ]*) should not use the static addresses$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should not use the static addresses"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should not use the static addresses\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -211,7 +211,7 @@ Then /^([^ ]*) should not use the static addresses$/ do |interface|
 end
 
 Then /^([^ ]*) should use the dynamic addresses$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should use the dynamic addresses"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should use the dynamic addresses\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -221,7 +221,7 @@ Then /^([^ ]*) should use the dynamic addresses$/ do |interface|
 end
 
 Then /^([^ ]*) should not use the dynamic addresses$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should not use the dynamic addresses"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should not use the dynamic addresses\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -232,7 +232,7 @@ Then /^([^ ]*) should not use the dynamic addresses$/ do |interface|
 end
 
 Then /^([^ ]*) should not use any address$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should not use any address"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should not use any address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface} | grep -v fe80:", "testuser"
   local.should == 0; remote.should == 0
@@ -240,7 +240,7 @@ Then /^([^ ]*) should not use any address$/ do |interface|
 end
 
 Then /^I should have the correct MTU on eth0$/  do
-  SUT.test_and_drop_results "log.sh Step: Then I should have the correct MTU on eth0"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should have the correct MTU on eth0\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -248,7 +248,7 @@ Then /^I should have the correct MTU on eth0$/  do
 end
 
 Then /^I should have static routes to the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should have static routes to the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should have static routes to the outside World\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -4 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -261,7 +261,7 @@ Then /^I should have static routes to the outside World$/ do
 end
 
 Then /^I should not have static routes to the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not have static routes to the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not have static routes to the outside World\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -4 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -274,7 +274,7 @@ Then /^I should not have static routes to the outside World$/ do
 end
 
 Then /^I should have dynamic routes to the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should have dynamic routes to the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should have dynamic routes to the outside World\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -4 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -292,7 +292,7 @@ Then /^I should have dynamic routes to the outside World$/ do
 end
 
 Then /^I should not have dynamic routes to the outside World$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not have dynamic routes to the outside World"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not have dynamic routes to the outside World\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -4 route show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -309,14 +309,14 @@ Then /^eth0 should have a dynamic address after a while$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: eth0 should have a dynamic address after a while"
+  SUT.test_and_drop_results "log.sh \"Step: eth0 should have a dynamic address after a while\""
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev eth0 | grep #{DHCP4_SUT0}\"", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should follow the correct IPv4 route to a reference machine from eth1$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should follow the correct IPv4 route to a reference machine from eth1"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should follow the correct IPv4 route to a reference machine from eth1\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "tracepath -n #{STAT4_GAT}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -324,7 +324,7 @@ Then /^I should follow the correct IPv4 route to a reference machine from eth1$/
 end
 
 Then /^I should follow the correct IPv6 route to a reference machine from eth1$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should follow the correct IPv6 route to a reference machine from eth1"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should follow the correct IPv6 route to a reference machine from eth1\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "tracepath6 -l 64 -n #{STAT6_GAT}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -332,7 +332,7 @@ Then /^I should follow the correct IPv6 route to a reference machine from eth1$/
 end
 
 Then /^both machines should have a new ([^ ]*) card$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then both machines should have a new #{interface} card"
+  SUT.test_and_drop_results "log.sh \"Step: Then both machines should have a new #{interface} card\""
   out, local, remote, command = REF.test_and_store_results_together \
     "ip address show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -348,7 +348,7 @@ Then /^([^ ]*) should be enslaved$/ do |interface|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: Then #{interface} should be enslaved"
+  SUT.test_and_drop_results "log.sh \"Step: Then #{interface} should be enslaved\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -361,7 +361,7 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the aggregated link"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the aggregated link\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{BOND4_REF}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -371,7 +371,7 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
 end
 
 Then /^I should be able to ping the other side of the VLAN$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the VLAN"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the VLAN\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{V42_4_REF}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -381,7 +381,7 @@ Then /^I should be able to ping the other side of the VLAN$/ do
 end
 
 Then /^there should be a new ([^ ]*) card$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then there should be a new #{interface} card"
+  SUT.test_and_drop_results "log.sh \"Step: Then there should be a new #{interface} card\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -389,7 +389,7 @@ Then /^there should be a new ([^ ]*) card$/ do |interface|
 end
 
 Then /^there should not be the ([^ ]*) card anymore$/ do |interface|
-  SUT.test_and_drop_results "log.sh Step: Then there should not be the #{interface} card anymore"
+  SUT.test_and_drop_results "log.sh \"Step: Then there should not be the #{interface} card anymore\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -399,7 +399,7 @@ end
 Then /^the ([^ ]*) card should still be there$/ do |interface|
   # almost the same as "there should be a new ([^ ]*) card"
   # only the log message differs
-  SUT.test_and_drop_results "log.sh Step: Then the #{interface} card should still be there"
+  SUT.test_and_drop_results "log.sh \"Step: Then the #{interface} card should still be there\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -407,7 +407,7 @@ Then /^the ([^ ]*) card should still be there$/ do |interface|
 end
 
 Then /^the bridge should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the bridge should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then the bridge should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -416,7 +416,7 @@ Then /^the bridge should have the correct address$/ do
 end
 
 Then /^I should be able to ping through the bridge$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping through the bridge"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping through the bridge\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF1} -I br1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -426,7 +426,7 @@ Then /^I should be able to ping through the bridge$/ do
 end
 
 Then /^the macvtap interface should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the macvtap interface should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then the macvtap interface should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev macvtap1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -442,7 +442,7 @@ Then /^I should receive the answer of the ARP ping on \/dev\/tapX$/ do
 end
 
 Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the layer 3 tunnel"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the layer 3 tunnel\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{OVPN4_REF1} -I tun1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -452,7 +452,7 @@ Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
 end
 
 Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the layer 2 tunnel"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the layer 2 tunnel\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{OVPN4_REF1} -I tap1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -462,7 +462,7 @@ Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
 end
 
 Then /^I should be able to ping the other side of the GRE tunnel$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the GRE tunnel"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the GRE tunnel\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{GRE_4_REF1} -I gre1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -472,14 +472,14 @@ Then /^I should be able to ping the other side of the GRE tunnel$/ do
 end
 
 Then /^I should be able to ping the other side of the IPIP tunnel$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the IPIP tunnel"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the IPIP tunnel\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{IPIP4_REF1} -I tunl1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 Then /^I should be able to ping the other side of the SIT tunnel$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the SIT tunnel"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the SIT tunnel\""
   local, remote, command = SUT.test_and_drop_results \
     "ping6 -q -c1 -W1 #{SIT_6_REF1} -I sit1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -490,7 +490,7 @@ Then /^I should be able to ping the other side of the infiniband link$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the infiniband link"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the infiniband link\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{IBPA4_REF} -I ib0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -504,7 +504,7 @@ Then /^I should be able to ping the other side of the infiniband child link$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping the other side of the infiniband child link"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping the other side of the infiniband child link\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{IBCH4_REF} -I ib0.8001", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -514,7 +514,7 @@ Then /^I should be able to ping the other side of the infiniband child link$/ do
 end
 
 Then /^br0\.1 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br0.1 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br0.1 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br0.1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -523,7 +523,7 @@ Then /^br0\.1 should have the correct address$/ do
 end
 
 Then /^I should be able to ping eth0\.1 on the other side$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping eth0.1 on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping eth0.1 on the other side\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{VLAN4_REF0}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -533,7 +533,7 @@ Then /^I should be able to ping eth0\.1 on the other side$/ do
 end
 
 Then /^br0 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br0 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br0 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -542,7 +542,7 @@ Then /^br0 should have the correct address$/ do
 end
 
 Then /^I should be able to ping eth1 on the other side$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping eth1 on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping eth1 on the other side\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF1}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -551,7 +551,7 @@ Then /^I should be able to ping eth1 on the other side$/ do
 end
 
 Then /^I should be able to ping eth1\.1 on the other side$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping eth1.1 on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping eth1.1 on the other side\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{VLAN4_REF1}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -561,7 +561,7 @@ Then /^I should be able to ping eth1\.1 on the other side$/ do
 end
 
 Then /^bond1 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then bond1 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then bond1 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev bond1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -570,7 +570,7 @@ Then /^bond1 should have the correct address$/ do
 end
 
 Then /^I should be able to ping bond(\d) on the other side$/ do |x|
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping bond#{x} on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping bond#{x} on the other side\""
   # Almost the same as "I should be able to ping the other side of the aggregated link"
   # Only the log message changes
   local, remote, command = SUT.test_and_drop_results \
@@ -582,7 +582,7 @@ Then /^I should be able to ping bond(\d) on the other side$/ do |x|
 end
 
 Then /^br1 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br1 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br1 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -591,7 +591,7 @@ Then /^br1 should have the correct address$/ do
 end
 
 Then /^br1.42 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br1.42 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br1.42 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br1.42", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -600,7 +600,7 @@ Then /^br1.42 should have the correct address$/ do
 end
 
 Then /^I should be able to ping bond0.42 on the other side$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping bond0.42 on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping bond0.42 on the other side\""
   # Almost the same as "I should be able to ping the other side of the VLAN"
   # Only the log message changes
   local, remote, command = SUT.test_and_drop_results \
@@ -612,7 +612,7 @@ Then /^I should be able to ping bond0.42 on the other side$/ do
 end
 
 Then /^I should be able to ping bond0.73 on the other side$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should be able to ping bond0.73 on the other side"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should be able to ping bond0.73 on the other side\""
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{V73_4_REF}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -622,7 +622,7 @@ Then /^I should be able to ping bond0.73 on the other side$/ do
 end
 
 Then /^bond0.42 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then bond0.42 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then bond0.42 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev bond0.42", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -631,7 +631,7 @@ Then /^bond0.42 should have the correct address$/ do
 end
 
 Then /^bond0.73 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then bond0.73 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then bond0.73 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev bond0.73", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -640,7 +640,7 @@ Then /^bond0.73 should have the correct address$/ do
 end
 
 Then /^br42 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br42 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br42 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br42", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -649,7 +649,7 @@ Then /^br42 should have the correct address$/ do
 end
 
 Then /^br73 should have the correct address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then br73 should have the correct address"
+  SUT.test_and_drop_results "log.sh \"Step: Then br73 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev br73", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -658,7 +658,7 @@ Then /^br73 should have the correct address$/ do
 end
 
 Then /^I should have the statically declared DNS server$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should have the statically declared DNS server"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should have the statically declared DNS server\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -666,7 +666,7 @@ Then /^I should have the statically declared DNS server$/ do
 end
 
 Then /^I should obtain a DNS server by DHCPv4$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain a DNS server by DHCPv4"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain a DNS server by DHCPv4\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -674,7 +674,7 @@ Then /^I should obtain a DNS server by DHCPv4$/ do
 end
 
 Then /^I should not obtain a DNS server by DHCPv4$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain a DNS server by DHCPv4"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain a DNS server by DHCPv4\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -682,7 +682,7 @@ Then /^I should not obtain a DNS server by DHCPv4$/ do
 end
 
 Then /^the capture file should contain a DHCP release$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the capture file should contain a DHCP release"
+  SUT.test_and_drop_results "log.sh \"Step: Then the capture file should contain a DHCP release\""
   local, remote, command = REF.test_and_drop_results \
     "killproc /usr/sbin/tcpdump"
   local.should == 0; remote.should == 0; command.should == 0
@@ -693,7 +693,7 @@ Then /^the capture file should contain a DHCP release$/ do
 end
 
 Then /^the capture file should not contain a DHCP release$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the capture file should contain a DHCP release"
+  SUT.test_and_drop_results "log.sh \"Step: Then the capture file should contain a DHCP release\""
   local, remote, command = REF.test_and_drop_results \
     "killproc /usr/sbin/tcpdump"
   local.should == 0; remote.should == 0; command.should == 0
@@ -708,7 +708,7 @@ Then /^the speed of eth0 should be (\d*) Mbit\/s$/ do |speed|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh Step: Then the speed of eth0 should be #{speed} Mbit/s"
+  SUT.test_and_drop_results "log.sh \"Step: Then the speed of eth0 should be #{speed} Mbit/s\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ethtool eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -716,7 +716,7 @@ Then /^the speed of eth0 should be (\d*) Mbit\/s$/ do |speed|
 end
 
 Then /^I should obtain a link-local IPv4 address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain a link-local IPv4 address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain a link-local IPv4 address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -724,7 +724,7 @@ Then /^I should obtain a link-local IPv4 address$/ do
 end
 
 Then /^I should not obtain a link-local IPv4 address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain a link-local IPv4 address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain a link-local IPv4 address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -732,7 +732,7 @@ Then /^I should not obtain a link-local IPv4 address$/ do
 end
 
 Then /^I should obtain an autonomous IPv6 address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain an autonomous IPv6 address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain an autonomous IPv6 address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -740,7 +740,7 @@ Then /^I should obtain an autonomous IPv6 address$/ do
 end
 
 Then /^I should not obtain an autonomous IPv6 address$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain an autonomous IPv6 address"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain an autonomous IPv6 address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -748,7 +748,7 @@ Then /^I should not obtain an autonomous IPv6 address$/ do
 end
 
 Then /^I should obtain an address by DHCPv4$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain an address by DHCPv4"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain an address by DHCPv4\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -756,7 +756,7 @@ Then /^I should obtain an address by DHCPv4$/ do
 end
 
 Then /^I should not obtain an address by DHCPv4$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain an address by DHCPv4"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain an address by DHCPv4\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -764,7 +764,7 @@ Then /^I should not obtain an address by DHCPv4$/ do
 end
 
 Then /^I should obtain an address by DHCPv6$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain an address by DHCPv6"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain an address by DHCPv6\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -772,7 +772,7 @@ Then /^I should obtain an address by DHCPv6$/ do
 end
 
 Then /^I should not obtain an address by DHCPv6$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain an address by DHCPv6"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain an address by DHCPv6\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -780,7 +780,7 @@ Then /^I should not obtain an address by DHCPv6$/ do
 end
 
 Then /^no address should be tentative$/ do
-  SUT.test_and_drop_results "log.sh Step: No address should be tentative"
+  SUT.test_and_drop_results "log.sh \"Step: No address should be tentative\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -788,7 +788,7 @@ Then /^no address should be tentative$/ do
 end
 
 Then /^I should obtain a default IPv6 route$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain a default IPv6 route"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain a default IPv6 route\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 route show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -796,7 +796,7 @@ Then /^I should obtain a default IPv6 route$/ do
 end
 
 Then /^I should not obtain a default IPv6 route$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain a default IPv6 route"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain a default IPv6 route\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 route show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -804,7 +804,7 @@ Then /^I should not obtain a default IPv6 route$/ do
 end
 
 Then /^I should obtain a DNS server by RDNSS$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain a DNS server by RDNSS"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain a DNS server by RDNSS\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -812,7 +812,7 @@ Then /^I should obtain a DNS server by RDNSS$/ do
 end
 
 Then /^I should not obtain a DNS server by RDNSS$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain a DNS server by RDNSS"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain a DNS server by RDNSS\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -820,7 +820,7 @@ Then /^I should not obtain a DNS server by RDNSS$/ do
 end
 
 Then /^I should obtain a DNS server by DHCPv6$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should obtain a DNS server by DHCPv6"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should obtain a DNS server by DHCPv6\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -828,7 +828,7 @@ Then /^I should obtain a DNS server by DHCPv6$/ do
 end
 
 Then /^I should not obtain a DNS server by DHCPv6$/ do
-  SUT.test_and_drop_results "log.sh Step: Then I should not obtain a DNS server by DHCPv6"
+  SUT.test_and_drop_results "log.sh \"Step: Then I should not obtain a DNS server by DHCPv6\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -836,11 +836,11 @@ Then /^I should not obtain a DNS server by DHCPv6$/ do
 end
 
 Then /^the setup should be finished$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the setup should be finished"
+  SUT.test_and_drop_results "log.sh \"Step: Then the setup should be finished\""
   @setup_in_progress.should be false
 end
 
 Then /^the setup should still be in progress$/ do
-  SUT.test_and_drop_results "log.sh Step: Then the setup should still be in progress"
+  SUT.test_and_drop_results "log.sh \"Step: Then the setup should still be in progress\""
   @setup_in_progress.should be true
 end
