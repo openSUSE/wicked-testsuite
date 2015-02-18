@@ -1,0 +1,49 @@
+<html>
+  <title>How to run a test scenario for Wicked manually</title>
+  <body>
+    <h1>How to run a test scenario for Wicked manually</h1>
+    <p>
+      Sometimes, you'd like to run a test in isolation and with
+      more flexibility than the web interface. To do that:
+      <ol>
+        <li>ssh to the server: <br />
+          <tt>$ ssh jenkins@almond.arch.suse.de</tt></li>
+        <li>Make sure there is no test running at the moment:<br />
+          <tt>$ ps aux | grep cucumber</tt></li>
+        <li>If there are some tests already running,
+          either wait for them to finish, or stop the job in Jenkins.</br>
+          Sometimes, when you stop the job in Jenkins, the <tt>cucumber</tt>
+          process does <b>not</b> get stopped, and you have to kill it manually
+          as <tt>root</tt> user.</li>
+        <li>Once you are sure you are alone, go to the official test suites directory: <br />
+          <tt>$ cd cucumber</tt><br/>
+          Then run the scenario:<br />
+          <tt>$ cucumber -n "<i>complete name of the scenario</i>"</tt><br />
+          For example:<br />
+          <tt>$ cucumber -n "Set up a second card"</tt><br />
+          You can copy and paste that name from the Cucumber reports in
+          the web interface.</li>
+      </ol>
+      The test scenario should start. It will use the version of Wicked that
+      was last built and tested in the web interface.
+    </p>
+    <p>To debug potential problems, you can vnc to the virtual machines:
+      <ol>
+        <li>build: <tt>almond.arch.suse.de</tt> port <tt>5901</tt></li>
+        <li>reference: <tt>almond.arch.suse.de</tt> port <tt>5902</tt></li>
+        <li>sut: <tt>almond.arch.suse.de</tt> port <tt>5903</tt></li>
+      </ol>
+      Most of the time, you will probably want to vnc to sut.<br />
+      Once there, log in as <tt>root</tt> or as <tt>testuser</tt>.
+      If you logged in as <tt>root</tt>, you will be in a <tt>screen</tt> interface;
+      open a new virtual screen with Ctrl-A c.
+    </p>
+    <p>
+      If you reboot reference or sut, please restart the test server with:<br />
+      <tt># screen ./twopence-test-server</tt>
+    </p>
+    <p>
+      Happy debugging!
+    </p>
+  </body>
+</html>
