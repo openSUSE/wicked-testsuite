@@ -90,12 +90,12 @@ START_DATE=$(twopence_command $TARGET_SUT &quot;date +&apos;%Y-%m-%d %T&apos;&qu
 cd /var/lib/jenkins/@@SUBDIR@@
 cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
 
-twopence_command $TARGET_SUT &quot;journalctl -b -o short-precise --since=\&quot;$START_DATE\&quot; | grep -E \&quot;(wickedc|wickedd|wickedd-nanny|wickedd-auto4|wickedd-dhcp4|wickedd-dhcp6|wpa_supplicant|cucumber)\\[\&quot; | gzip &gt; /tmp/wicked_all.log.gz&quot;
+twopence_command $TARGET_SUT &quot;journalctl -b -o short-precise --since=\&quot;$START_DATE\&quot; | grep -E \&quot;(wickedc|wickedd|wickedd-nanny|wickedd-auto4|wickedd-dhcp4|wickedd-dhcp6|wpa_supplicant|kernel|cucumber)\\[\&quot; | gzip &gt; /tmp/wicked_all.log.gz&quot;
 cd $WORKSPACE
 twopence_extract $TARGET_SUT &quot;/tmp/wicked_all.log.gz&quot; &quot;wicked_all.log.gz&quot;
 gunzip -f wicked_all.log.gz
 grep -E &quot;(wickedc|cucumber)\[&quot; wicked_all.log &gt; wicked_client.log
-grep -E &quot;(wickedd|wickedd-nanny|cucumber)\[&quot; wicked_all.log &gt; wicked_server.log
+grep -E &quot;(wickedd|wickedd-nanny|kernel|cucumber)\[&quot; wicked_all.log &gt; wicked_server.log
 grep -E &quot;(wickedd-auto4|wickedd-dhcp4|wickedd-dhcp6|wpa_supplicant|cucumber)\[&quot; wicked_all.log &gt; wicked_supplicants.log
       </command>
     </hudson.tasks.Shell>
