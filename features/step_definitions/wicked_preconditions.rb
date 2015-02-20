@@ -2,7 +2,7 @@
 
 Given /^nanny is enabled$/ do
   out, * = SUT.test_and_store_results_together \
-    "grep '<use-nanny>.*</use-nanny>' /etc/wicked/common.xml"
+    "grep '<use-nanny>.*</use-nanny>' /etc/wicked/local.xml"
   if out.include? "false"
     @skip_when_no_hotplug = true
     puts "(false - will skip some steps)"
