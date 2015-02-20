@@ -54,7 +54,11 @@ module Cucumber
 
       def initialize(runtime, io, options)
         @io = ensure_io(io, "json")
-        super(Gherkin::Formatter::JSONFormatter.new(@io), false)
+        if Gem.loaded_specs['cucumber'].version >= Gem::Version.new('1.3.17')
+          super(Gherkin::Formatter::JSONFormatter.new(@io), false, options)
+        else
+          super(Gherkin::Formatter::JSONFormatter.new(@io), false)
+        end
       end
 
       def before_feature_element(feature_element)
