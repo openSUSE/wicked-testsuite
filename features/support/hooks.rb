@@ -11,7 +11,7 @@ Before do |scenario|
   #
   fn = scenario.feature.name.split(/\n/)[0]
   sn = scenario.name
-  SUT.test_and_drop_results "testuser", "log.sh \"Feature: #{fn} - Scenario: #{sn}\""
+  SUT.test_and_drop_results "log.sh \"Feature: #{fn} - Scenario: #{sn}\""
   STDOUT.puts "Feature: #{fn} - Scenario: #{sn}"
   #
   @skip_when_virtual_machine = false
