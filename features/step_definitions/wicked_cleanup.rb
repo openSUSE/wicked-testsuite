@@ -84,22 +84,24 @@ def prepareReference()
       "ip link delete dev tap1"
     local.should == 0; remote.should == 0; command.should == 0
   end
-  if out.include? "gre1@"
+  if out.include? "gre1:" or out.include? "gre1@"
     local, remote, command = REF.test_and_drop_results \
       "ip link delete dev gre1"
     local.should == 0; remote.should == 0; command.should == 0
   end
-  if out.include? "tunl1@"
+  if out.include? "tunl1:" or out.include? "tunl1@"
     local, remote, command = REF.test_and_drop_results \
       "ip link delete dev tunl1"
     local.should == 0; remote.should == 0; command.should == 0
   end
-  if out.include? "sit1:"
+  if out.include? "sit1:" or out.include? "sit1@"
     local, remote, command = REF.test_and_drop_results \
       "ip link delete dev sit1"
     local.should == 0; remote.should == 0; command.should == 0
   end
-  if out.include? "gre0:" or out.include? "tunl0:" or out.include? "sit0:"
+  if out.include? "gre0:" or out.include? "gre0@" \
+    or out.include? "tunl0:" or out.include? "tunl0@" \
+    or out.include? "sit0:" or out.include? "sit0@"
     local, remote, command = REF.test_and_drop_results \
       "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
@@ -233,7 +235,9 @@ def prepareSut()
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "gre0@" or out.include? "tunl0@" or out.include? "sit0:"
+  if out.include? "gre0:" or out.include? "gre0@" \
+    or out.include? "tunl0:" or out.include? "tunl0@" \
+    or out.include? "sit0:" or out.include? "sit0@"
     local, remote, command = SUT.test_and_drop_results \
       "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0

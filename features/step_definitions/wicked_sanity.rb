@@ -186,10 +186,10 @@ When /^there is no virtual interface left on any machine$/ do
   outsut.should_not include "tunl1@"
   #
   outref.should_not include "sit0:"
-  outsut.should_not include "sit0:"
+  outsut.should_not include "sit0@"
   #
   outref.should_not include "sit1:"
-  outsut.should_not include "sit1:"
+  outsut.should_not include "sit1@"
   #
   outref.should_not include "ib0.8001@"
   outsut.should_not include "ib1.8001@"
