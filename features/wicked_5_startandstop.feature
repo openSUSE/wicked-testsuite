@@ -208,6 +208,13 @@ Feature: Wicked 5 start and stop
     And the brief status of eth1 should be "enslaved"
     But the brief status of br1.42 should not be "up"
 
+  Scenario: SIT tunnel - ifdown
+    When I create a sit interface from legacy files
+    Then both machines should have a new sit1 card
+    #
+    When I bring down sit1
+    Then there should not be the sit1 card anymore
+
 #  Scenario: Create many bridges and remove them
 #    When I create 512 bridges
 #    Then all 512 bridges should be UP
