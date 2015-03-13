@@ -146,10 +146,9 @@ Then /^I should be able to ping a host in the outside World$/ do
   command.should == 0
   #
   # Ugly hack to make sure ping6 works from reference to the outside
-  loop do
-    local, remote, command = REF.test_and_drop_results "ping6 -q -c1 -W1 #{STAT6_OUT}", "testuser"
-    break if command == 0
-  end
+  local, remote, command = REF.test_and_drop_results "ping6 -q -c1 -w10 #{STAT6_OUT}", "testuser"
+  local.should == 0; remote.should == 0
+  command.should == 0
   #
   local, remote, command = SUT.test_and_drop_results \
     "ping6 -q -c1 -W1 #{STAT6_OUT}", "testuser"
@@ -165,10 +164,9 @@ Then /^I should not be able to ping a host in the outside World$/ do
   command.should_not == 0
   #
   # Ugly hack to make sure ping6 works from reference to the outside
-  loop do
-    local, remote, command = REF.test_and_drop_results "ping6 -q -c1 -W1 #{STAT6_OUT}", "testuser"
-    break if command == 0
-  end
+  local, remote, command = REF.test_and_drop_results "ping6 -q -c1 -w10 #{STAT6_OUT}", "testuser"
+  local.should == 0; remote.should == 0
+  command.should_not == 0
   #
   local, remote, command = SUT.test_and_drop_results \
     "ping6 -q -c1 -W1 #{STAT6_OUT}", "testuser"
