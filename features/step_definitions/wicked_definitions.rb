@@ -99,8 +99,8 @@ V73_6_REF  = "fd00:7373:7373::1"
 # Addresses for outside world
 STAT4_GAT = "10.161.0.1"                 # Real gateway to the outside
 STAT6_GAT = "2620:113:80c0:8080::1"
-STAT4_OUT = "8.8.8.8"                    # Google public DNS
-STAT6_OUT = "2001:4860:4860::8888"
+STAT4_OUT = "192.168.1.1"                # Some IP on your real network - adapt to your local setup!
+STAT6_OUT = "fc00:0a79:0817:1::1"
 
 # WORKAROUND
 # Prevents "systemctl stop wickedd.service" from getting stuck for 90 seconds
