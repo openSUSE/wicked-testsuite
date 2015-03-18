@@ -4,10 +4,10 @@ echo "Wicked client called on $(date) as $(whoami) ---------------" | systemd-ca
 echo "# wicked $@"                                                  | systemd-cat -t wickedc
 
 ulimit -c unlimited
-/usr/sbin/wicked --debug all --log-target syslog "$@" 2>&1          | systemd-cat -t wickedc
-RC=${PIPESTATUS[0]}
+/usr/sbin/wicked --debug all --log-target syslog "$@"
+RC=$?
 echo "# wicked $@ returned: $RC"                                    | systemd-cat -t wickedc
-echo
+echo                                                                | systemd-cat -t wickedc
 
 echo "# wicked ifstatus all"                                        | systemd-cat -t wickedc
 /usr/sbin/wicked ifstatus all 2>&1                                  | systemd-cat -t wickedc
