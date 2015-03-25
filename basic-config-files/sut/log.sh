@@ -83,6 +83,7 @@ function _step_end
                                 > $step/journalctl.log
   wicked ifstatus --verbose all > $step/wicked_ifstatus.log
   wicked show-config            > $step/wicked_config.log
+  wicked show-xml               > $step/wicked_xml.log
   ip addr show                  > $step/ip_addr.log
   ip route show table all       > $step/ip_route.log
   date +'%Y-%m-%d %T.%6N'       > $step/date_end
