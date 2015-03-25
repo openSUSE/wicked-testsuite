@@ -97,10 +97,10 @@ V73_4_REF  = "73.73.73.1"
 V73_6_REF  = "fd00:7373:7373::1"
 
 # Addresses for outside world
-STAT4_GAT = "10.161.0.1"                 # Real gateway to the outside
-STAT6_GAT = "2620:113:80c0:8080::1"
-STAT4_OUT = "192.168.1.1"                # Some IP on your real network - adapt to your local setup!
-STAT6_OUT = "fc00:0a79:0817:1::1"
+STAT4_GAT = "192.168.1.1"                # Real gateway to the outside - adapt to your local setup!
+STAT6_GAT = "fc00:a79:817:1::1"
+STAT4_OUT = "10.161.0.1"                 # Some IP on your real network - adapt to your local setup!
+STAT6_OUT = "2620:113:80c0:8000::1"
 
 # WORKAROUND
 # Prevents "systemctl stop wickedd.service" from getting stuck for 90 seconds
