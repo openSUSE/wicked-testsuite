@@ -24,4 +24,5 @@ end
 
 # Cleanup after each scenario
 After do
+  STDOUT.flush
 end
