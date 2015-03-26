@@ -212,7 +212,7 @@ def prepareReference()
   local.should == 0; remote.should == 0; command.should == 0
   if out.include? "tcpdump"
     local, remote, command = REF.test_and_drop_results \
-      "killproc /usr/sbin/tcpdump"
+      "tcpdump.sh stop"
     local.should == 0; remote.should == 0; command.should == 0
   end
 end

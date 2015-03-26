@@ -85,6 +85,7 @@ twopence_inject $ref "basic-config-files/reference/sysctl.conf" "/etc/sysctl.con
 
 echo "Install server-side  utilities"
 twopence_inject $ref "basic-config-files/reference/cleanup.sh" "/usr/local/bin/cleanup.sh"
+twopence_inject $ref "basic-config-files/reference/tcpdump.sh" "/usr/local/bin/tcpdump.sh"
 twopence_command $ref "chmod ugo+rx /usr/local/bin/*.sh"
 
 

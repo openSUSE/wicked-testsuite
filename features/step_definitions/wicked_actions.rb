@@ -1719,7 +1719,7 @@ end
 When /^I sniff DHCP on the reference machine$/ do
   SUT.test_and_drop_results "log.sh --step \"When I sniff DHCP on the reference machine\""
   local, remote, command = REF.test_and_drop_results \
-    "tcpdump -w /tmp/tests/tcpdump -w /tmp/tcpdump -n -i eth0 'port 67' &"
+    "tcpdump.sh start -U -w /tmp/tcpdump -n -i any 'port 67 or port 68'"
   local.should == 0; remote.should == 0; command.should == 0
 end
 

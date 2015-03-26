@@ -307,7 +307,7 @@ Then /^eth0 should have a dynamic address after a while$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"eth0 should have a dynamic address after a while\""
+  SUT.test_and_drop_results "log.sh --step \"Then eth0 should have a dynamic address after a while\""
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev eth0 | grep #{DHCP4_SUT0}\"", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -682,10 +682,10 @@ end
 Then /^the capture file should contain a DHCP release$/ do
   SUT.test_and_drop_results "log.sh --step \"Then the capture file should contain a DHCP release\""
   local, remote, command = REF.test_and_drop_results \
-    "killproc /usr/sbin/tcpdump"
+    "tcpdump.sh stop"
   local.should == 0; remote.should == 0; command.should == 0
   out, local, remote, command = REF.test_and_store_results_together \
-    "tcpdump -r /tmp/tcpdump -v"
+    "tcpdump.sh read -r /tmp/tcpdump -v"
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "DHCP-Message Option 53, length 1: Release"
 end
@@ -693,10 +693,10 @@ end
 Then /^the capture file should not contain a DHCP release$/ do
   SUT.test_and_drop_results "log.sh --step \"Then the capture file should contain a DHCP release\""
   local, remote, command = REF.test_and_drop_results \
-    "killproc /usr/sbin/tcpdump"
+    "tcpdump.sh stop"
   local.should == 0; remote.should == 0; command.should == 0
   out, local, remote, command = REF.test_and_store_results_together \
-    "tcpdump -r /tmp/tcpdump -v"
+    "tcpdump.sh read -r /tmp/tcpdump -v"
   local.should == 0; remote.should == 0; command.should == 0
   out.should_not include "DHCP-Message Option 53, length 1: Release"
 end
@@ -778,7 +778,7 @@ Then /^I should not obtain an address by DHCPv6$/ do
 end
 
 Then /^no address should be tentative$/ do
-  SUT.test_and_drop_results "log.sh --step \"No address should be tentative\""
+  SUT.test_and_drop_results "log.sh --step \"Then no address should be tentative\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip -6 address show dev eth0", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
