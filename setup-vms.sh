@@ -1,6 +1,6 @@
 #! /bin/bash
 
-for vm in build reference sut; do
+for vm in reference sut; do
   virsh -c qemu:///system destroy ${vm}
   virsh -c qemu:///system undefine ${vm}
   virsh -c qemu:///system define vm-files/${vm}.xml

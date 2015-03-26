@@ -5,13 +5,14 @@ This is the test suite used for Continuous Integration of development
 of the Wicked network interfaces broker.
 
 Tests are written in plain English and run with Cucumber test engine.
-Jenkins can be used as a test scheduler, but that's not mandatory.
+Jenkins can be used as a build and test scheduler,
+but that's not mandatory.
 
 The test suite relies on Twopence remote execution engine.
 
 The test model assumes there are four machines:
 o the machine from which you run the tests
-o "build", the machine on which you build the Wicked RPMs
+o the machine on which you build the Wicked RPMs
 o "sut", the system under test
 o "reference", the partner of "sut", answering pings,
   running DHCP and RADVD servers, etc.
@@ -19,11 +20,8 @@ o "reference", the partner of "sut", answering pings,
 These machines can be real or virtual. If you use Virtual Machines,
 configuration files for QEmu/KVM are provided.
 
-The test machines can be distinct or merged, with the following
-constraints:
-o "sut" and "reference" must be distinct
-o "sut" and "build" must either be one machine, or have exactly
-  the same Operating System version (that is, the same libraries).
+The test machines can be distinct or merged, with the constraint
+that "sut" and "reference" must be distinct.
 
 For more details about the installation, see README.setup.
 For more details about the tests themselves, see README.tests.

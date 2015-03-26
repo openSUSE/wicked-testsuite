@@ -1,12 +1,6 @@
 #! /bin/bash
 
 echo
-echo "### Setup the build host ###"
-build="build"
-scp "basic-config-files/build/remote_build.sh" "builduser@$build:."
-ssh "builduser@$build" "chmod +x remote_build.sh"
-
-echo
 echo "### Setup the reference server ###"
 ref="virtio:/var/run/twopence/reference.sock"
 

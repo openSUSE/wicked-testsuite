@@ -11,7 +11,48 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
     <artifactNumToKeep>-1</artifactNumToKeep>
   </logRotator>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DISTRIBUTION</name>
+          <description>&lt;font color=red&gt;For the time being, please choose &quot;sles 12 sp0 (x86_64)&quot;,&lt;br /&gt;
+as we need more virtual machines with the other distributions&lt;/font&gt;
+</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>sles 12 sp0 (x86_64)</string>
+              <string>opensuse 13.2 (x86_64)</string>
+              <string>opensuse 13.2 (i586)</string>
+              <string>opensuse factory (x86_64)</string>
+              <string>opensuse tumbleweed (x86_64)</string>
+              <string>physical</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>CONFIGURE_LOWERDEVS</name>
+          <description>if false, do not provide configuration files for lower devices</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>true</string>
+              <string>false</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>CONFIGURE_PRECISE</name>
+          <description>if false, use &quot;all&quot; instead of every device name</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>false</string>
+              <string>true</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
@@ -42,56 +83,10 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
   <builders>
     <hudson.tasks.Shell>
       <command>
-HOST_BUILD=@@BUILD_HOST@@
+export NANNY=&quot;@@NANNY@@&quot;
+export SUBDIR=&quot;@@SUBDIR@@&quot;
 
-ssh builduser@$HOST_BUILD &quot;rm -rf workspace/&quot;
-scp -q -r . builduser@$HOST_BUILD:workspace/
-
-ssh builduser@$HOST_BUILD &quot;./remote_build.sh&quot;
-
-rm -f *.rpm
-scp builduser@$HOST_BUILD:rpmbuild/RPMS/x86_64/*.rpm .
-      </command>
-    </hudson.tasks.Shell>
-    <hudson.tasks.Shell>
-      <command>
-TARGET_SUT=&quot;@@SUT_TARGET@@&quot;
-
-twopence_command $TARGET_SUT &quot;rm -f /root/*.rpm&quot;
-twopence_inject $TARGET_SUT wicked-0*.x86_64.rpm /root/wicked-$BUILD_NUMBER.x86_64.rpm
-twopence_inject $TARGET_SUT wicked-service-0*.x86_64.rpm /root/wicked-service-$BUILD_NUMBER.x86_64.rpm
-twopence_inject $TARGET_SUT libwicked-0*.x86_64.rpm /root/libwicked-$BUILD_NUMBER.x86_64.rpm
-
-twopence_command $TARGET_SUT &quot;service wicked stop&quot;
-twopence_command $TARGET_SUT &quot;service wickedd stop&quot;
-
-twopence_command $TARGET_SUT &quot;rpm -qc wicked &gt; /tmp/config-files&quot;
-twopence_command $TARGET_SUT &quot;rpm -e --nodeps \$(rpm -qa \&quot;*wicked*\&quot;)&quot;
-twopence_command $TARGET_SUT &quot;rm -f \$(cat /tmp/config-files)&quot;
-twopence_command $TARGET_SUT &quot;rpm -ih /root/wicked-$BUILD_NUMBER.x86_64.rpm /root/wicked-service-$BUILD_NUMBER.x86_64.rpm /root/libwicked-$BUILD_NUMBER.x86_64.rpm&quot;
-
-twopence_inject $TARGET_SUT /var/lib/jenkins/cucumber/jenkins-files/wicked-@@NANNY@@-nanny.xml /etc/wicked/local.xml
-twopence_command $TARGET_SUT &quot;chmod u=rw,go=r /etc/wicked/local.xml&quot;
-
-twopence_command $TARGET_SUT &quot;service wickedd start&quot;
-twopence_command $TARGET_SUT &quot;service wicked start&quot;
-      </command>
-    </hudson.tasks.Shell>
-    <hudson.tasks.Shell>
-      <command>
-export CONFIGURE_LOWERDEVS=&quot;@@LOWERDEVS@@&quot;
-export CONFIGURE_PRECISE=&quot;@@PRECISE@@&quot;
-export TARGET_SUT=&quot;@@SUT_TARGET@@&quot;
-export TARGET_REF=&quot;@@REF_TARGET@@&quot;
-
-twopence_command $TARGET_SUT &quot;rm -r /var/log/journal/*; systemctl restart systemd-journald&quot;
-cd /var/lib/jenkins/@@SUBDIR@@
-tar czf $WORKSPACE/test-suite.tgz features/ test-files/
-
-START_DATE=$(twopence_command $TARGET_SUT &quot;date +&apos;%Y-%m-%d %T&apos;&quot; | head -n 1)
-cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
-
-twopence_extract $TARGET_SUT &quot;/tmp/wicked_log.tgz&quot; &quot;$WORKSPACE/wicked_log.tgz&quot;
+/var/lib/jenkins/build-and-test-wicked.sh
       </command>
     </hudson.tasks.Shell>
   </builders>

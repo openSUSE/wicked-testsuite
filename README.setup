@@ -3,15 +3,15 @@ Testing topology
 
 The ideal topology for testing Wicked is as below:
 
-            +-------------+           +-------------+
-            |             |           |             |
-            | Test suite  |           |             |
-            |  (with      |    ssh    |   Build     |
-            |   Jenkins   +-----------+   host      |
-            |   as an     |           |             |
-            |   option)   |           |             |
-            |             |           |             |
-            +-+---------+-+           +-------------+
+            +-------------+
+            |             |
+            | Test suite  |
+            |  (with      |
+            |   Jenkins   |
+            |   as an     |
+            |   option)   |
+            |             |
+            +-+---------+-+
               |         |
               | serial, |
               | ssh,    +---------------+ serial, ssh,
@@ -32,8 +32,7 @@ With virtual machines
 =====================
 
 If you choose to use virtual machines, we recommend you use
-three KVM virtual machines:
-o build host
+two KVM virtual machines:
 o system under test
 o reference server
 
@@ -55,35 +54,26 @@ Installing the machines
 =======================
 
 Install an operating system: we suggest
-o openSUSE 13.1 on the reference machine
-o SLES 12 on both the build host
-  and on the system under tests.
+o openSUSE 13.1 on the reference machine,
+o SLES 12 on the system under tests.
 There's no need for a separate home partition.
-There's no need to install GNOME nor KDE.
+There's no need to install X-Window.
 
-Create ordinary users:
-o one user named "builduser" on the build host,
-o one user named "testuser" on the reference machine
-  and on the system under tests.
+Create an ordinary user named "testuser" on the reference
+machine and on the system under tests.
 
-Make sure the two first networking cards are named correctly:
-o build: "eth0"
+Make sure the networking cards are named correctly:
 o reference: "eth0", "eth1" and "eth2"
 o sut: "eth0" and "eth1"
 otherwise fix them with yast2.
 
-Also fix the hostname to be "build", "reference" or "sut"
-in yast2.
+Also fix the hostname to be "reference" or "sut" in yast2.
 
 Only if communicating with "reference" and "sut"
 through serial or virtio:
 o Install twopence_test_server in /root directory on
   those machines, as described in Twopence's README
   (install it for example with scp).
-
-On the build server only:
-o Install make, gcc, git, rpm-build, libgcrypt-devel,
-          libnl3-devel, dbus-1-devel, and libiw-devel
 
 On the reference server only:
 o Install radvd, dhcp-server, tcpdump, and openvpn
@@ -93,6 +83,26 @@ o Install openvpn and ndisc6
 
 Do the basic network and files configuration:
 o Run the script ./setup-basic-config.sh
-  (you might need to set up $build, $ref and $sut
+  (you might need to set up $ref and $sut
    variables in that script to accomodate your setup)
+
+
+Preparing the build machine
+===========================
+
+If you use Jenkins, you will build wicked
+on the same machine where Jenkins resides.
+
+On the machine where you build wicked, install:
+o git, osc, make, gcc
+o libgcrypt-devel, libnl3-devel, dbus-1-devel,
+  and libiw-devel
+
+Make sure that osc works by trying a
+first manual build.
+
+The exact procedure to build wicked is outside
+of the scope of this document, but configuration
+templates for Jenkins are provided. At the end,
+the built RPMs must be installed on sut.
 
