@@ -18,7 +18,7 @@ end
 if (ENV["TARGET_SUT"])
   TARGET_SUT = ENV["TARGET_SUT"]
 else
-  TARGET_SUT = "virtio:/var/run/twopence/sut.sock"
+  TARGET_SUT = "virtio:/var/run/twopence/suites-sut-SLES_12_SP0-86_64.sock"
 end
 puts "System under test is accessed through: " + TARGET_SUT
 SUT = Twopence::init(TARGET_SUT)
@@ -27,7 +27,7 @@ SUT = Twopence::init(TARGET_SUT)
 if (ENV["TARGET_REF"])
   TARGET_REF = ENV["TARGET_REF"]
 else
-  TARGET_REF = "virtio:/var/run/twopence/reference.sock"
+  TARGET_REF = "virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock"
 end
 puts "Reference server is accessed through: " + TARGET_REF
 REF = Twopence::init(TARGET_REF)

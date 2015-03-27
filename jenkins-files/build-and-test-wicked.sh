@@ -32,52 +32,47 @@ set -x -e
 ### Build wicked with OBS
 
 case "$DISTRIBUTION" in
-  "sles 12 sp0 (x86_64)")
+  "SLES 12 SP0 (x86_64)")
     bs_api=ibs
     bs_proj=SUSE:SLE-12:Update
     bs_repo=standard
     bs_arch=x86_64
-    # TODO: create more VMs for the various distributions
-    target_sut=virtio:/var/run/twopence/sut.sock
-    target_ref=virtio:/var/run/twopence/reference.sock
+    target_sut=virtio:/var/run/twopence/suites-sut-SLES_12_SP0-x86_64.sock
+    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
     ;;
-  "opensuse 13.2 (x86_64)")
+  "openSUSE 13.2 (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=x86_64
-    # TODO: create more VMs for the various distributions
-    target_sut=virtio:/var/run/twopence/sut.sock
-    target_ref=virtio:/var/run/twopence/reference.sock
+    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_13_2-x86_64.sock
+    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
     ;;
-  "opensuse 13.2 (i586)")
+  "openSUSE 13.2 (i586)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
-    bs_arch=x86_64
-    # TODO: create more VMs for the various distributions
-    target_sut=virtio:/var/run/twopence/sut.sock
-    target_ref=virtio:/var/run/twopence/reference.sock
+    bs_arch=i586
+    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_13_2-i586.sock
+    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
     ;;
-  "opensuse factory (x86_64)")
+  "openSUSE Factory (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Factory
     bs_repo=standard
     bs_arch=x86_64
-    # TODO: create more VMs for the various distributions
-    target_sut=virtio:/var/run/twopence/sut.sock
-    target_ref=virtio:/var/run/twopence/reference.sock
+    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_Factory-x86_64.sock
+    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
     ;;
-  "opensuse tumbleweed (x86_64)")
+  "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Tumbleweed
     bs_repo=standard
     bs_arch=x86_64
-    # TODO: create more VMs for the various distributions
-    target_sut=virtio:/var/run/twopence/sut.sock
-    target_ref=virtio:/var/run/twopence/reference.sock
+    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_Tumbleweed-x86_64.sock
+    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
     ;;
-  "physical")
+  "Physical")
     bs_api=ibs
     bs_proj=SUSE:SLE-12:Update
     bs_repo=standard
@@ -133,17 +128,26 @@ twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 twopence_command $target_sut "service wickedd start"
 twopence_command $target_sut "service wicked start"
 
-# twopence_command $target_sut "rm -rf /core*"
+# twopence_command $TARGET_SUT "rm -rf /core* /root/coredumps/*.tgz /root/coredumps/*.txt"
 twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
 
 pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
 
-TARGET_SUT=$target_sut
-TARGET_REF=$target_ref
+export TARGET_SUT=$target_sut
+export TARGET_REF=$target_ref
 cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
 
 twopence_extract $target_sut "/tmp/wicked_log.tgz" "$WORKSPACE/wicked_log.tgz"
+
+# coredumps=$(twopence_command $TARGET_SUT "/root/bin/get-core-dump-ls.sh" | awk -- '/^[/]root[/]coredumps/ { print $0; }')
+# if test "X$coredumps" != X ; then
+#   for c in $coredumps ; do
+#     b=$(basename -- "$c")
+#     twopence_extract $TARGET_SUT "$c" "$b"
+#     twopence_command $TARGET_SUT "rm -f -- $c"
+#   done
+# fi
 popd
 
 ls -lh test-suite.tgz wicked_log.tgz

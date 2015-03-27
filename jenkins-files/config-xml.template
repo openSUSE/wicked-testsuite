@@ -16,17 +16,17 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
           <name>DISTRIBUTION</name>
-          <description>&lt;font color=red&gt;For the time being, please choose &quot;sles 12 sp0 (x86_64)&quot;,&lt;br /&gt;
+          <description>&lt;font color=red&gt;For the time being, please choose &quot;SLES 12 SP0 (x86_64)&quot;,&lt;br /&gt;
 as we need more virtual machines with the other distributions&lt;/font&gt;
 </description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>sles 12 sp0 (x86_64)</string>
-              <string>opensuse 13.2 (x86_64)</string>
-              <string>opensuse 13.2 (i586)</string>
-              <string>opensuse factory (x86_64)</string>
-              <string>opensuse tumbleweed (x86_64)</string>
-              <string>physical</string>
+              <string>SLES 12 SP0 (x86_64)</string>
+              <string>openSUSE 13.2 (x86_64)</string>
+              <string>openSUSE 13.2 (i586)</string>
+              <string>openSUSE Factory (x86_64)</string>
+              <string>openSUSE Tumbleweed (x86_64)</string>
+              <string>Physical</string>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>
@@ -93,6 +93,7 @@ export SUBDIR=&quot;@@SUBDIR@@&quot;
   <publishers>
     <hudson.tasks.ArtifactArchiver>
       <artifacts>test-suite.tgz, wicked_log.tgz</artifacts>
+ <!-- <artifacts>core*.txt, core*.tgz</artifacts> -->
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>

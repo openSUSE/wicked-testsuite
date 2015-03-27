@@ -2,7 +2,7 @@
 
 echo
 echo "### Setup the reference server ###"
-ref="virtio:/var/run/twopence/reference.sock"
+ref="virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock"
 
 echo "Configure the DHCP client"
 twopence_command $ref "sed -i 's/^DHCLIENT_BIN=.*$/DHCLIENT_BIN=\"dhclient\"/' /etc/sysconfig/network/dhcp"
@@ -85,7 +85,7 @@ twopence_command $ref "chmod ugo+rx /usr/local/bin/*.sh"
 
 echo
 echo "### Setup the system under test ###"
-sut="virtio:/var/run/twopence/sut.sock"
+sut="virtio:/var/run/twopence/suites-sut-SLES_12_SP0-x86_64.sock"
 
 echo "Configure core dumps and logs"
 twopence_inject $sut "basic-config-files/sut/sysctl.conf" "/etc/sysctl.conf"

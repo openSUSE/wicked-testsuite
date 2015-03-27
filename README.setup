@@ -67,7 +67,7 @@ o reference: "eth0", "eth1" and "eth2"
 o sut: "eth0" and "eth1"
 otherwise fix them with yast2.
 
-Also fix the hostname to be "reference" or "sut" in yast2.
+Also fix the hostname to something useful in yast2.
 
 Only if communicating with "reference" and "sut"
 through serial or virtio:
