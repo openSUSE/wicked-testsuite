@@ -660,7 +660,7 @@ Then /^I should have the statically declared DNS server$/ do
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /etc/resolv.conf", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-  out.should include "nameserver #{STAT4_OUT}"
+  out.should include "nameserver #{STAT4_GAT}"
 end
 
 Then /^I should obtain a DNS server by DHCPv4$/ do
