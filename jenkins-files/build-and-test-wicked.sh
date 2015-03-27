@@ -128,7 +128,7 @@ twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 twopence_command $target_sut "service wickedd start"
 twopence_command $target_sut "service wicked start"
 
-# twopence_command $TARGET_SUT "rm -rf /core* /root/coredumps/*.tgz /root/coredumps/*.txt"
+twopence_command $TARGET_SUT "rm -f /core*"
 twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
 
 pushd /var/lib/jenkins/$SUBDIR
@@ -138,16 +138,7 @@ export TARGET_SUT=$target_sut
 export TARGET_REF=$target_ref
 cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
 
-twopence_extract $target_sut "/tmp/wicked_log.tgz" "$WORKSPACE/wicked_log.tgz"
-
-# coredumps=$(twopence_command $TARGET_SUT "/root/bin/get-core-dump-ls.sh" | awk -- '/^[/]root[/]coredumps/ { print $0; }')
-# if test "X$coredumps" != X ; then
-#   for c in $coredumps ; do
-#     b=$(basename -- "$c")
-#     twopence_extract $TARGET_SUT "$c" "$b"
-#     twopence_command $TARGET_SUT "rm -f -- $c"
-#   done
-# fi
+twopence_extract $target_sut "/tmp/wicked-log.tgz" "$WORKSPACE/wicked-log.tgz"
 popd
 
-ls -lh test-suite.tgz wicked_log.tgz
+ls -lh test-suite.tgz wicked-log.tgz

@@ -92,8 +92,7 @@ export SUBDIR=&quot;@@SUBDIR@@&quot;
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>test-suite.tgz, wicked_log.tgz</artifacts>
- <!-- <artifacts>core*.txt, core*.tgz</artifacts> -->
+      <artifacts>test-suite.tgz, wicked-log.tgz</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
