@@ -128,7 +128,7 @@ twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 twopence_command $target_sut "service wickedd start"
 twopence_command $target_sut "service wicked start"
 
-twopence_command $TARGET_SUT "rm -f /core*"
+twopence_command $target_sut "rm -f /core*"
 twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
 
 pushd /var/lib/jenkins/$SUBDIR
