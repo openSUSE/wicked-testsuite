@@ -107,7 +107,7 @@ rm /tmp/a.out
 twopence_command $sut "chmod ugo+rx /usr/local/bin/check_macvtap"
 
 echo "Configure the addresses and routes"
-twopence_inject $sut "basic-config-files/sut/global-config" "/etc/sysconfig/network/config"
+twopence_inject $sut "basic-config-files/sut/config" "/etc/sysconfig/network/config"
 twopence_inject $sut "basic-config-files/sut/dhcp-keep-leases" "/etc/sysconfig/network/dhcp-keep-leases"
 twopence_inject $sut "basic-config-files/sut/dhcp-release-leases" "/etc/sysconfig/network/dhcp-release-leases"
 twopence_command $sut "ln -sf /etc/sysconfig/network/dhcp-keep-leases /etc/sysconfig/network/dhcp"

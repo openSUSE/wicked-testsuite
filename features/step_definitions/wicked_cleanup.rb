@@ -285,11 +285,15 @@ def prepareSut()
     "mkdir /tmp/tests", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote = SUT.inject_file \
-    "test-files/global-config", "/tmp/tests/config", \
+    "test-files/config", "/tmp/tests/config", \
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote = SUT.inject_file \
-    "test-files/loopback.ifcfg", "/tmp/tests/ifcfg-lo", \
+    "test-files/dhcp", "/tmp/tests/dhcp", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/ifcfg-lo", "/tmp/tests/ifcfg-lo", \
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
