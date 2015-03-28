@@ -1,5 +1,8 @@
 #! /bin/bash
 
+set -e
+
+
 echo
 echo "### Setup the reference server ###"
 ref="virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock"
@@ -91,11 +94,11 @@ echo "Configure core dumps and logs"
 twopence_inject $sut "basic-config-files/sut/sysctl.conf" "/etc/sysctl.conf"
 twopence_command $sut "rm -f /core*"
 twopence_inject $sut "basic-config-files/sut/journald.conf" "/etc/systemd/journald.conf"
-twopence_command $sut "rm -r /var/log/journal/*"
+twopence_command $sut "rm -rf /var/log/journal/*"
 
 echo "Other cleanup"
 twopence_command $sut "rm -f /root/*wicked*.rpm"
-twopence_command $sut "rm -f /tmp/test
+twopence_command $sut "rm -f /tmp/test"
 twopence_command $sut "rm -f /tmp/wicked-log.tgz"
 twopence_command $sut "rm -rf /var/log/testsuite"
 
