@@ -87,22 +87,63 @@ o Run the script ./setup-basic-config.sh
    variables in that script to accomodate your setup)
 
 
-Preparing the build machine
-===========================
+Running the tests
+=================
 
-If you use Jenkins, you will build wicked
-on the same machine where Jenkins resides.
+You must first install the version of wicked
+you want to test on sut.
 
-On the machine where you build wicked, install:
+You must then define four variables:
+
+   TARGET_SUT
+     Describes the way to communicate with sut,
+     for example "virtio:/var/run/twopence/sut.sock"
+     or "serial:/dev/ttyS0".
+
+   TARGET_REFERENCE
+     Describes the way to communicate with reference.
+     For more information on twopence targets, please
+     refer to twopence documentation.
+
+   CONFIGURE_LOWERDEVS
+     If "false", do not provide configuration files for lower devices
+     used for example in a bond.
+
+   CONFIGURE_PRECISE
+     If "false", use for example "wicked ifup all" instead of
+     "wicked ifup" for every device name.
+
+If you are using virtio or serial, start twopence-test-server
+on both virtual machines.
+
+Then you simply type:
+
+   cucumber
+
+to start the tests.
+
+
+Using jenkins
+=============
+
+If you use Jenkins, the script
+
+   build-and-run-wicked.sh
+
+will take care of building a new version of
+wicked and of running the tests.
+
+Building requires to install:
 o git, osc, make, gcc
 o libgcrypt-devel, libnl3-devel, dbus-1-devel,
   and libiw-devel
+on the machine where Jenkins run.
 
-Make sure that osc works by trying a
-first manual build.
+The script above assumes that every virtual machine uses
+a disk in qcow2 format with a snapshot of a sane situation.
+In this sane situation, there is no core dump,
+twopence-test-server is running, etc. This snapshot needs
+to be named "sane".
 
-The exact procedure to build wicked is outside
-of the scope of this document, but configuration
-templates for Jenkins are provided. At the end,
-the built RPMs must be installed on sut.
-
+You have templates for Jenkins jobs. To generate the jobs,
+use script config-xml.sh.

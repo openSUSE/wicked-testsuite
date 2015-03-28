@@ -116,7 +116,7 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
-  virsh snapshot-revert $sut sane
+  sudo virsh snapshot-revert $sut sane
 fi
 
 for pkg in $(ls RPMs); do
