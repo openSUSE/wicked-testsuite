@@ -89,7 +89,15 @@ sut="virtio:/var/run/twopence/suites-sut-SLES_12_SP0-x86_64.sock"
 
 echo "Configure core dumps and logs"
 twopence_inject $sut "basic-config-files/sut/sysctl.conf" "/etc/sysctl.conf"
+twopence_command $sut "rm -f /core*"
 twopence_inject $sut "basic-config-files/sut/journald.conf" "/etc/systemd/journald.conf"
+twopence_command $sut "rm -r /var/log/journal/*"
+
+echo "Other cleanup"
+twopence_command $sut "rm -f /root/*wicked*.rpm"
+twopence_command $sut "rm -f /tmp/test
+twopence_command $sut "rm -f /tmp/wicked-log.tgz"
+twopence_command $sut "rm -rf /var/log/testsuite"
 
 echo "Install client-side utilities"
 twopence_inject $sut "basic-config-files/sut/wic.sh" "/usr/local/bin/wic.sh"
@@ -116,5 +124,5 @@ twopence_inject $sut "basic-config-files/sut/ifcfg-eth1" "/etc/sysconfig/network
 twopence_inject $sut "basic-config-files/sut/ifroute-eth1" "/etc/sysconfig/network/ifroute-eth1"
 
 echo
-echo "### Please reboot the virtual machines ###"
+echo "### Please reboot the machines ###"
 echo "It is needed to activate the new configurations."

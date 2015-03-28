@@ -37,40 +37,40 @@ case "$DISTRIBUTION" in
     bs_proj=SUSE:SLE-12:Update
     bs_repo=standard
     bs_arch=x86_64
-    target_sut=virtio:/var/run/twopence/suites-sut-SLES_12_SP0-x86_64.sock
-    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
+    sut=suites-sut-SLES_12_SP0-x86_64
+    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=x86_64
-    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_13_2-x86_64.sock
-    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
+    sut=suites-sut-openSUSE_13_2-x86_64
+    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=i586
-    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_13_2-i586.sock
-    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
+    sut=suites-sut-openSUSE_13_2-i586
+    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE Factory (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Factory
     bs_repo=standard
     bs_arch=x86_64
-    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_Factory-x86_64.sock
-    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
+    sut=suites-sut-openSUSE_Factory-x86_64
+    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Tumbleweed
     bs_repo=standard
     bs_arch=x86_64
-    target_sut=virtio:/var/run/twopence/suites-sut-openSUSE_Tumbleweed-x86_64.sock
-    target_ref=virtio:/var/run/twopence/suites-ref-openSUSE_13_1-x86_64.sock
+    sut=suites-sut-openSUSE_Tumbleweed-x86_64
+    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "Physical")
     bs_api=ibs
@@ -84,6 +84,8 @@ case "$DISTRIBUTION" in
     false
     ;;
 esac
+[ "$sut" = "" ] || target_sut="virtio:/var/run/twopence/${sut}.sock"
+[ "$ref" = "" ] || target_ref="virtio:/var/run/twopence/${ref}.sock"
 
 cd $WORKSPACE
 rm -rf SRCs RPMs
@@ -109,7 +111,14 @@ ls -lh RPMs
 
 ### Run the tests
 
-twopence_command $target_sut "rm -f /root/*.rpm"
+if [ "$sut" = "" ]; then
+  twopence_command $target_sut "rm -f /core*"
+  twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
+  twopence_command $target_sut "rm -f /root/*wicked*.rpm"
+else
+  virsh snapshot-revert $sut sane
+fi
+
 for pkg in $(ls RPMs); do
   twopence_inject $target_sut RPMs/$pkg /root/$pkg
 done
@@ -127,9 +136,6 @@ twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 
 twopence_command $target_sut "service wickedd start"
 twopence_command $target_sut "service wicked start"
-
-twopence_command $target_sut "rm -f /core*"
-twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
 
 pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
