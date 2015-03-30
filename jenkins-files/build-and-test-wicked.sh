@@ -109,7 +109,13 @@ rpms_out=/var/tmp/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
 cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
 ls -lh RPMs
 
-### Run the tests
+### Cleanup
+
+if [ "$ref" = "" ]; then
+  twopence_command $target_ref "ip neigh flush all"
+else
+  sudo virsh snapshot-revert $ref sane
+fi
 
 if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -f /core*"
@@ -118,6 +124,8 @@ if [ "$sut" = "" ]; then
 else
   sudo virsh snapshot-revert $sut sane
 fi
+
+### Run the tests
 
 for pkg in $(ls RPMs); do
   twopence_inject $target_sut RPMs/$pkg /root/$pkg
