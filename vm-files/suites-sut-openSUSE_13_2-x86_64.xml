@@ -72,7 +72,7 @@
     </channel>
     <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='vnc' port='5906' autoport='no' listen='0.0.0.0' keymap='fr'>
+    <graphics type='vnc' port='5906' autoport='no' listen='0.0.0.0' keymap='en'>
       <listen type='address' address='0.0.0.0'/>
     </graphics>
     <sound model='ac97'>
