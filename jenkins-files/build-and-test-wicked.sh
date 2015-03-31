@@ -114,6 +114,10 @@ ls -lh RPMs
 if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
+  for vm in $(sudo virsh list --name | grep -- "-ref-"); do
+    echo "Destroying $vm..."
+    sudo virsh destroy $vm
+  done
   sudo virsh snapshot-revert $ref sane
 fi
 
@@ -122,6 +126,10 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
+  for vm in $(sudo virsh list --name | grep -- "-sut-"); do
+    echo "Destroying $vm..."
+    sudo virsh destroy $vm
+  done
   sudo virsh snapshot-revert $sut sane
 fi
 

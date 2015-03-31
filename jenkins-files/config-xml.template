@@ -16,8 +16,9 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
           <name>DISTRIBUTION</name>
-          <description>&lt;font color=red&gt;For the time being, please choose &quot;SLES 12 SP0 (x86_64)&quot;,&lt;br /&gt;
-as we need more virtual machines with the other distributions&lt;/font&gt;
+          <description>for the time being, please pick
+&lt;font color=red&gt;one of the first two choices&lt;/font&gt;
+as we don't have yet more virtual machines with the other distributions
 </description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
