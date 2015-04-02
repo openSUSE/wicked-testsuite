@@ -89,6 +89,7 @@ twopence_command $ref "chmod ugo+rx /usr/local/bin/*.sh"
 echo
 echo "### Setup the system under test ###"
 sut="virtio:/var/run/twopence/suites-sut-SLES_12_SP0-x86_64.sock"
+cflags="-m64"
 
 echo "Configure core dumps and logs"
 twopence_inject $sut "basic-config-files/sut/sysctl.conf" "/etc/sysctl.conf"
@@ -112,7 +113,7 @@ twopence_inject $sut "basic-config-files/sut/create_many_bridges.sh" "/usr/local
 twopence_inject $sut "basic-config-files/sut/delete_many_bridges.sh" "/usr/local/bin/delete_many_bridges.sh"
 twopence_inject $sut "basic-config-files/sut/check_many_bridges.sh" "/usr/local/bin/check_many_bridges.sh"
 twopence_command $sut "chmod ugo+rx /usr/local/bin/*.sh"
-gcc basic-config-files/sut/check_macvtap.c -o /tmp/a.out
+gcc $cflags basic-config-files/sut/check_macvtap.c -o /tmp/a.out
 twopence_inject $sut "/tmp/a.out" "/usr/local/bin/check_macvtap"
 rm /tmp/a.out
 twopence_command $sut "chmod ugo+rx /usr/local/bin/check_macvtap"

@@ -1,35 +1,35 @@
 # # # Actions # # #
 
 When /^I stop the wicked client service$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I stop the wicked client service\""
+  SUT.test_and_drop_results "log.sh step \"When I stop the wicked client service\""
   local, remote, command = SUT.test_and_drop_results \
     "systemctl stop wicked.service"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I start the wicked client service$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I start the wicked client service\""
+  SUT.test_and_drop_results "log.sh step \"When I start the wicked client service\""
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wicked.service"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I stop the wicked server service$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I stop the wicked server service\""
+  SUT.test_and_drop_results "log.sh step \"When I stop the wicked server service\""
   local, remote, command = SUT.test_and_drop_results \
     "systemctl stop wickedd.service"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I start the wicked server service$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I start the wicked server service\""
+  SUT.test_and_drop_results "log.sh step \"When I start the wicked server service\""
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I ask to see all network interfaces$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I ask to see all network interfaces\""
+  SUT.test_and_drop_results "log.sh step \"When I ask to see all network interfaces\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "wic.sh show all", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -42,28 +42,28 @@ When /^I bring up ([^ ]*)$/ do |interface|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I bring up #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I bring up ([^ ]*) from config file$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I bring up #{interface} from config file\""
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from config file\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup --ifconfig compat:/tmp/tests #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I bring down ([^ ]*)$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I bring down #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I bring down #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifdown #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I show a brief status of ([^ ]*)$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I show a brief status of #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I show a brief status of #{interface}\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "wic.sh ifstatus --brief #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
@@ -71,7 +71,7 @@ When /^I show a brief status of ([^ ]*)$/ do |interface|
 end
 
 When /^I set up static IP addresses for ([^ ]*) from legacy files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up static IP addresses for #{interface} from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up static IP addresses for #{interface} from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/static-addresses/ifcfg-#{interface}", "/tmp/tests/ifcfg-#{interface}", \
     "testuser", false
@@ -89,7 +89,7 @@ When /^I set up static IP addresses for ([^ ]*) from legacy files$/ do |interfac
 end
 
 When /^I set up static IP addresses for ([^ ]*) from XML files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up static IP addresses for #{interface} from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up static IP addresses for #{interface} from XML files\""
   local, remote = SUT.inject_file \
     "test-files/static-addresses/static-addresses.xml", "/tmp/tests/#{interface}.xml", \
     "testuser", false
@@ -107,7 +107,7 @@ When /^I set up static IP addresses for ([^ ]*) from XML files$/ do |interface|
 end
 
 When /^I ask the reference machine to advertise a default route$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I ask the reference machine to advertise a default route\""
+  SUT.test_and_drop_results "log.sh step \"When I ask the reference machine to advertise a default route\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/dhcpd-route.conf /etc/dhcpd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -118,7 +118,7 @@ When /^I ask the reference machine to advertise a default route$/ do
 end
 
 When /^I set up dynamic IP addresses for ([^ ]*) from legacy files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up dynamic IP addresses for #{interface} from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up dynamic IP addresses for #{interface} from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/dynamic-addresses/ifcfg-#{interface}", "/tmp/tests/ifcfg-#{interface}", \
     "testuser", false
@@ -136,7 +136,7 @@ When /^I set up dynamic IP addresses for ([^ ]*) from legacy files$/ do |interfa
 end
 
 When /^I set up dynamic IP addresses for ([^ ]*) from XML files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up dynamic IP addresses for #{interface} from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up dynamic IP addresses for #{interface} from XML files\""
   local, remote = SUT.inject_file \
     "test-files/dynamic-addresses/dynamic-addresses.xml", "/tmp/tests/#{interface}.xml", \
     "testuser", false
@@ -158,7 +158,7 @@ When /^I deconnect violently ([^ ]*)$/ do |interface|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I deconnect violently #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I deconnect violently #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "ifbind.sh unbind #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
@@ -169,7 +169,7 @@ When /^I reconnect ([^ ]*)$/ do |interface|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I reconnect #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I reconnect #{interface}\""
   local, remote, command = SUT.test_and_drop_results \
     "ifbind.sh bind #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
@@ -179,7 +179,7 @@ When /^I reconnect ([^ ]*)$/ do |interface|
 end
 
 When /^I set up static addresses and routes for ([^ ]*) from legacy files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up static routes for #{interface} from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up static routes for #{interface} from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/static-addresses-and-routes/ifcfg-#{interface}", "/tmp/tests/ifcfg-#{interface}", \
     "testuser", false
@@ -201,7 +201,7 @@ When /^I set up static addresses and routes for ([^ ]*) from legacy files$/ do |
 end
 
 When /^I set up static addresses and routes for ([^ ]*) from XML files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I set up static routes for #{interface} from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I set up static routes for #{interface} from XML files\""
   local, remote = SUT.inject_file \
     "test-files/static-addresses-and-routes/static-addresses-and-routes.xml", "/tmp/tests/#{interface}.xml", \
     "testuser", false
@@ -219,7 +219,7 @@ When /^I set up static addresses and routes for ([^ ]*) from XML files$/ do |int
 end
 
 When /^I bring down all cards at once$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I bring down all cards at once\""
+  SUT.test_and_drop_results "log.sh step \"When I bring down all cards at once\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifdown all"
   local.should == 0; remote.should == 0; command.should == 0
@@ -230,7 +230,7 @@ When /^I aggregate eth0 and eth1 from legacy files$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I aggregate eth0 and eth1 from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from legacy files\""
 # TODO: useless precaution?
 #       if yes, remove
 #       if not, apply each time we bond eth0 and eth1
@@ -276,7 +276,7 @@ When /^I aggregate eth0 and eth1 from legacy files$/ do
 end
 
 When /^I aggregate eth0 and eth1 from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I aggregate eth0 and eth1 from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from XML files\""
 # TODO: useless precaution?
 #       if yes, remove
 #       if not, apply each time we bond eth0 and eth1
@@ -313,7 +313,7 @@ When /^I aggregate eth0 and eth1 from XML files$/ do
 end
 
 When /^I create a VLAN on interface ([^ ]*) from legacy files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I create a VLAN on interface #{interface} from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a VLAN on interface #{interface} from legacy files\""
   vlan = interface + ".42"
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-#{vlan} /etc/sysconfig/network/"
@@ -344,7 +344,7 @@ When /^I create a VLAN on interface ([^ ]*) from legacy files$/ do |interface|
 end
 
 When /^I create a VLAN on interface ([^ ]*) from XML files$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I create a VLAN on interface #{interface} from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a VLAN on interface #{interface} from XML files\""
   vlan = interface + ".42"
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-#{vlan} /etc/sysconfig/network/"
@@ -369,7 +369,7 @@ When /^I create a VLAN on interface ([^ ]*) from XML files$/ do |interface|
 end
 
 When /^I create a bridge on interface eth1 from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a bridge on interface eth1 from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a bridge on interface eth1 from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/bridge/ifcfg-br1", "/tmp/tests/ifcfg-br1", \
     "testuser", false
@@ -396,7 +396,7 @@ When /^I create a bridge on interface eth1 from legacy files$/ do
 end
 
 When /^I create a bridge on interface eth1 from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a bridge on interface eth1 from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a bridge on interface eth1 from XML files\""
   local, remote = SUT.inject_file \
     "test-files/bridge/bridge.xml", "/tmp/tests/bridge.xml", \
     "testuser", false
@@ -413,7 +413,7 @@ When /^I create a bridge on interface eth1 from XML files$/ do
 end
 
 When /^I create a macvtap interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a macvtap interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a macvtap interface from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/macvtap/ifcfg-macvtap1", "/tmp/tests/ifcfg-macvtap1", \
     "testuser", false
@@ -436,7 +436,7 @@ When /^I create a macvtap interface from legacy files$/ do
 end
 
 When /^I create a macvtap interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a macvtap interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a macvtap interface from XML files\""
   local, remote = SUT.inject_file \
     "test-files/macvtap/macvtap.xml", "/tmp/tests/macvtap.xml", \
     "testuser", false
@@ -453,7 +453,7 @@ When /^I create a macvtap interface from XML files$/ do
 end
 
 When /^I send an ARP ping to the reference machine$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I send an ARP ping to the reference machine\""
+  SUT.test_and_drop_results "log.sh step \"When I send an ARP ping to the reference machine\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "check_macvtap > /tmp/tests/macvtap_results.txt &"
   local.should == 0; remote.should == 0; command.should == 0
@@ -468,7 +468,7 @@ When /^I send an ARP ping to the reference machine$/ do
 end
 
 When /^I create a tun interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tun interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tun interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -496,7 +496,7 @@ When /^I create a tun interface from legacy files$/ do
 end
 
 When /^I create a tun interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tun interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tun interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -520,7 +520,7 @@ When /^I create a tun interface from XML files$/ do
 end
 
 When /^I start openvpn in tun mode on both machines$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I start openvpn in tun mode on both machines\""
+  SUT.test_and_drop_results "log.sh step \"When I start openvpn in tun mode on both machines\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -549,7 +549,7 @@ local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I create a tap interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tap interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tap interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -577,7 +577,7 @@ When /^I create a tap interface from legacy files$/ do
 end
 
 When /^I create a tap interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tap interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tap interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -601,7 +601,7 @@ When /^I create a tap interface from XML files$/ do
 end
 
 When /^I start openvpn in tap mode on both machines$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I start openvpn in tap mode on both machines\""
+  SUT.test_and_drop_results "log.sh step \"When I start openvpn in tap mode on both machines\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/openvpn/server-tap.conf /etc/openvpn/server.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -630,7 +630,7 @@ local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I create a gre interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a gre interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a gre interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-gre1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -662,7 +662,7 @@ When /^I create a gre interface from legacy files$/ do
 end
 
 When /^I create a gre interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a gre interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a gre interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-gre1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -685,12 +685,14 @@ When /^I create a gre interface from XML files$/ do
   else
     local, remote, command = SUT.test_and_drop_results \
       "wic.sh ifup --ifconfig /tmp/tests/gre.xml all"
-    local.should == 0; remote.should == 0; command.should == 0
+    local.should == 0;
+remote.should == 0;
+command.should == 0
   end
 end
 
 When /^I establish routes for the GRE tunnel$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I establish routes for the GRE tunnel\""
+  SUT.test_and_drop_results "log.sh step \"When I establish routes for the GRE tunnel\""
   local, remote, command = REF.test_and_drop_results \
     "ip -4 route add #{GRE_4_SUT1} dev gre1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -707,7 +709,7 @@ When /^I establish routes for the GRE tunnel$/ do
 end
 
 When /^I create a tunl interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tunl interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tunl interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tunl1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -739,7 +741,7 @@ When /^I create a tunl interface from legacy files$/ do
 end
 
 When /^I create a tunl interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a tunl interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a tunl interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tunl1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -767,7 +769,7 @@ When /^I create a tunl interface from XML files$/ do
 end
 
 When /^I establish routes for the IPIP tunnel$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I establish routes for the IPIP tunnel\""
+  SUT.test_and_drop_results "log.sh step \"When I establish routes for the IPIP tunnel\""
   local, remote, command = REF.test_and_drop_results \
     "ip -4 route add #{IPIP4_SUT1} dev tunl1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -778,7 +780,7 @@ When /^I establish routes for the IPIP tunnel$/ do
 end
 
 When /^I create a sit interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a sit interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a sit interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-sit1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -810,7 +812,7 @@ When /^I create a sit interface from legacy files$/ do
 end
 
 When /^I create a sit interface from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a sit interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create a sit interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-sit1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -838,7 +840,7 @@ When /^I create a sit interface from XML files$/ do
 end
 
 When /^I establish routes for the SIT tunnel$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I establish routes for the SIT tunnel\""
+  SUT.test_and_drop_results "log.sh step \"When I establish routes for the SIT tunnel\""
   local, remote, command = REF.test_and_drop_results \
     "ip -6 route add #{SIT_6_SUT1} dev sit1"
   local.should == 0; remote.should == 0; command.should == 0
@@ -853,7 +855,7 @@ When /^the reference machine is set up in infiniband ([^ ]*) mode$/ do |mode|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When the reference machine is set up in infiniband #{mode} mode\""
+  SUT.test_and_drop_results "log.sh step \"When the reference machine is set up in infiniband #{mode} mode\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf pool/ifcfg-ib0-#{mode} /etc/sysconfig/network/ifcfg-ib0"
   local.should == 0; remote.should == 0; command.should == 0
@@ -867,7 +869,7 @@ When /^the reference machine has an infiniband child channel$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When the reference machine has an infiniband child channel\""
+  SUT.test_and_drop_results "log.sh step \"When the reference machine has an infiniband child channel\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-ib0.8001 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -881,7 +883,7 @@ When /^the reference machine provides dynamic addresses over the infiniband link
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When the reference machine provides dynamic addresses over the infiniband links\""
+  SUT.test_and_drop_results "log.sh step \"When the reference machine provides dynamic addresses over the infiniband links\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-infiniband.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -909,7 +911,7 @@ When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I create an infiniband interface in #{mode} mode from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create an infiniband interface in #{mode} mode from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/infiniband/ifcfg-ib0-#{mode}", "/tmp/tests/ifcfg-ib0", \
     "testuser", false
@@ -930,7 +932,7 @@ When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mod
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I create an infiniband interface in #{mode} mode from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create an infiniband interface in #{mode} mode from XML files\""
   local, remote = SUT.inject_file \
     "test-files/infiniband/infiniband-#{mode}.xml", "/tmp/tests/infiniband.xml", \
     "testuser", false
@@ -951,7 +953,7 @@ When /^I create an infiniband child interface from legacy files$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I create an infiniband child interface from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create an infiniband child interface from legacy files\""
   local, remote = SUT.inject_file \
     "test-files/infiniband/ifcfg-ib0.8001", "/tmp/tests/ifcfg-ib0.8001", \
     "testuser", false
@@ -972,7 +974,7 @@ When /^I create an infiniband child interface from XML files$/ do
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I create an infiniband child interface from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create an infiniband child interface from XML files\""
   local, remote = SUT.inject_file \
     "test-files/infiniband/infiniband-child.xml", "/tmp/tests/infiniband-child.xml", \
     "testuser", false
@@ -989,7 +991,7 @@ When /^I create an infiniband child interface from XML files$/ do
 end
 
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0.1(br0(eth0, dummy0), 1) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0.1(br0(eth0, dummy0), 1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1027,7 +1029,7 @@ When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from legacy files$/ do
 end
 
 When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0.1(br0(eth0, dummy0), 1) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0.1(br0(eth0, dummy0), 1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1051,7 +1053,7 @@ When /^I create br0\.1\(br0\(eth0, dummy0\), 1\) from XML files$/ do
 end
 
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0(eth0.1(eth0, 1), eth1) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0(eth0.1(eth0, 1), eth1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1089,7 +1091,7 @@ When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from legacy files$/ do
 end
 
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0(eth0.1(eth0, 1), eth1) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0(eth0.1(eth0, 1), eth1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1113,7 +1115,7 @@ When /^I create br0\(eth0\.1\(eth0, 1\), eth1\) from XML files$/ do
 end
 
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1161,7 +1163,7 @@ When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy files$
 end
 
 When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br0(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1191,7 +1193,7 @@ When /^I create br0\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/ d
 end
 
 When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1245,7 +1247,7 @@ When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from legacy file
 end
 
 When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create bond1(eth0.1(eth0, 1), eth1.1(eth1, 1)) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1281,7 +1283,7 @@ When /^I create bond1\(eth0\.1\(eth0, 1\), eth1\.1\(eth1, 1\)\) from XML files$/
 end
 
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br1(bond0(eth0, eth1), dummy1) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br1(bond0(eth0, eth1), dummy1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1323,7 +1325,7 @@ When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from legacy files$/ do
 end
 
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br1(bond0(eth0, eth1), dummy1) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br1(bond0(eth0, eth1), dummy1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1347,7 +1349,7 @@ When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from XML files$/ do
 end
 
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1399,7 +1401,7 @@ When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from legacy fil
 end
 
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1429,7 +1431,7 @@ When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from XML files$
 end
 
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1483,7 +1485,7 @@ When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) fr
 end
 
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1519,7 +1521,7 @@ When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) fr
 end
 
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from legacy files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from legacy files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1589,7 +1591,7 @@ When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bo
 end
 
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from XML files$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from XML files\""
+  SUT.test_and_drop_results "log.sh step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1625,14 +1627,14 @@ When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bo
 end
 
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I bring up #{interface} by ifreload\""
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} by ifreload\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifreload --ifconfig compat:/tmp/tests #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I create a bridge on interface eth1 from legacy files by ifreload$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I create a bridge on interface eth1 from legacy files by ifreload\""
+  SUT.test_and_drop_results "log.sh step \"When I create a bridge on interface eth1 from legacy files by ifreload\""
   local, remote = SUT.inject_file \
     "test-files/bridge/ifcfg-br1", "/tmp/tests/ifcfg-br1", \
     "testuser", false
@@ -1659,7 +1661,7 @@ When /^I create a bridge on interface eth1 from legacy files by ifreload$/ do
 end
 
 When /^I delete the config file for ([^ ]*)$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I delete the config file for #{interface}\""
+  SUT.test_and_drop_results "log.sh step \"When I delete the config file for #{interface}\""
   if not(CONFIGURE_LOWERDEVS)
     next if interface =~ /^eth\d/
   end
@@ -1669,7 +1671,7 @@ When /^I delete the config file for ([^ ]*)$/ do |interface|
 end
 
 When /^I change VLAN config and ifreload$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I change VLAN config and ifreload\""
+  SUT.test_and_drop_results "log.sh step \"When I change VLAN config and ifreload\""
   local, remote, command = SUT.test_and_drop_results \
     "sed -i -e 's_#{V42_4_SUT}_#{V42_4_SUT1}_; s_#{V42_6_SUT}_#{V42_6_SUT1}_' /tmp/tests/ifcfg-eth1.42", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1685,21 +1687,21 @@ When /^I change VLAN config and ifreload$/ do
 end
 
 When /^I create ([0-9]*) bridges$/ do |number|
-  SUT.test_and_drop_results "log.sh --step \"When I create #{number} bridges\""
+  SUT.test_and_drop_results "log.sh step \"When I create #{number} bridges\""
   local, remote, command = SUT.test_and_drop_results \
     "/usr/local/bin/create_many_bridges.sh #{number}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I delete ([0-9]*) bridges$/ do |number|
-  SUT.test_and_drop_results "log.sh --step \"When I create #{number} bridges\""
+  SUT.test_and_drop_results "log.sh step \"When I create #{number} bridges\""
   local, remote, command = SUT.test_and_drop_results \
     "/usr/local/bin/delete_many_bridges.sh #{number}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I set up the MTU on the reference server$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I set up the MTU on the reference server\""
+  SUT.test_and_drop_results "log.sh step \"When I set up the MTU on the reference server\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/dhcpd-mtu.conf /etc/dhcpd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1710,14 +1712,14 @@ When /^I set up the MTU on the reference server$/ do
 end
 
 When /^the DHCP client has to ([^ ]*) the leases at the end$/ do |action|
-  SUT.test_and_drop_results "log.sh --step \"When the DHCP client has to #{action} the leases at the end\""
+  SUT.test_and_drop_results "log.sh step \"When the DHCP client has to #{action} the leases at the end\""
   local, remote, command = SUT.test_and_drop_results \
     "ln -sf /etc/sysconfig/network/dhcp-#{action}-leases /etc/sysconfig/network/dhcp"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I sniff DHCP on the reference machine$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I sniff DHCP on the reference machine\""
+  SUT.test_and_drop_results "log.sh step \"When I sniff DHCP on the reference machine\""
   local, remote, command = REF.test_and_drop_results \
     "tcpdump.sh start -U -w /tmp/tcpdump -n -i any 'port 67 or port 68'"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1728,7 +1730,7 @@ When /^I set up the speed of eth0 to (\d*) Mbit\/s$/ do |speed|
     puts "(skipped)"
     next
   end
-  SUT.test_and_drop_results "log.sh --step \"When I set up the speed of eth0 to #{speed} Mbit/s\""
+  SUT.test_and_drop_results "log.sh step \"When I set up the speed of eth0 to #{speed} Mbit/s\""
   local, remote = SUT.inject_file \
     "test-files/ethtool-options/ifcfg-eth0-#{speed}mbps", "/tmp/tests/ifcfg-eth0", \
     "testuser", false
@@ -1746,7 +1748,7 @@ When /^I set up the speed of eth0 to (\d*) Mbit\/s$/ do |speed|
 end
 
 When /^I set up eth0 with ([^ ]*) option$/ do |option|
-  SUT.test_and_drop_results "log.sh --step \"When I set up eth0 with #{option} option\""
+  SUT.test_and_drop_results "log.sh step \"When I set up eth0 with #{option} option\""
   local, remote = SUT.inject_file \
     "test-files/autoip-options/ifcfg-eth0-#{option}", "/tmp/tests/ifcfg-eth0", \
     "testuser", false
@@ -1764,14 +1766,14 @@ When /^I set up eth0 with ([^ ]*) option$/ do |option|
 end
 
 When /I let ([^ ]*) wait for a router announcement$/ do |interface|
-  SUT.test_and_drop_results "log.sh --step \"When I let #{interface} wait for a router announcement\""
+  SUT.test_and_drop_results "log.sh step \"When I let #{interface} wait for a router announcement\""
   local, remote, command = SUT.test_and_drop_results \
     "rdisc6 #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^radvd is set to managed off, other off, prefix length != 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other off, prefix length != 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other off, prefix length != 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-1.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1782,7 +1784,7 @@ When /^radvd is set to managed off, other off, prefix length != 64$/ do
 end
 
 When /^radvd is set to managed off, other off, prefix length != 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other off, prefix length != 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other off, prefix length != 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-2.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1793,7 +1795,7 @@ When /^radvd is set to managed off, other off, prefix length != 64, RDNSS$/ do
 end
 
 When /^radvd is set to managed off, other off, prefix length == 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other off, prefix length == 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other off, prefix length == 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-3.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1804,7 +1806,7 @@ When /^radvd is set to managed off, other off, prefix length == 64$/ do
 end
 
 When /^radvd is set to managed off, other off, prefix length == 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other off, prefix length == 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other off, prefix length == 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-4.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1815,7 +1817,7 @@ When /^radvd is set to managed off, other off, prefix length == 64, RDNSS$/ do
 end
 
 When /^radvd is set to managed off, other on, prefix length != 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other on, prefix length != 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other on, prefix length != 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-5.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1826,7 +1828,7 @@ When /^radvd is set to managed off, other on, prefix length != 64$/ do
 end
 
 When /^radvd is set to managed off, other on, prefix length != 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other on, prefix length != 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other on, prefix length != 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-6.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1837,7 +1839,7 @@ When /^radvd is set to managed off, other on, prefix length != 64, RDNSS$/ do
 end
 
 When /^radvd is set to managed off, other on, prefix length == 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other on, prefix length == 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other on, prefix length == 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-7.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1848,7 +1850,7 @@ When /^radvd is set to managed off, other on, prefix length == 64$/ do
 end
 
 When /^radvd is set to managed off, other on, prefix length == 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed off, other on, prefix length == 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed off, other on, prefix length == 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-8.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1859,7 +1861,7 @@ When /^radvd is set to managed off, other on, prefix length == 64, RDNSS$/ do
 end
 
 When /^radvd is set to managed on, prefix length != 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed on, prefix length != 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed on, prefix length != 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-9.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1870,7 +1872,7 @@ When /^radvd is set to managed on, prefix length != 64$/ do
 end
 
 When /^radvd is set to managed on, prefix length != 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed on, prefix length != 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed on, prefix length != 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-10.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1881,7 +1883,7 @@ When /^radvd is set to managed on, prefix length != 64, RDNSS$/ do
 end
 
 When /^radvd is set to managed on, prefix length == 64$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed on, prefix length == 64\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed on, prefix length == 64\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-11.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1892,7 +1894,7 @@ When /^radvd is set to managed on, prefix length == 64$/ do
 end
 
 When /^radvd is set to managed on, prefix length == 64, RDNSS$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is set to managed on, prefix length == 64, RDNSS\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is set to managed on, prefix length == 64, RDNSS\""
   local, remote, command = REF.test_and_drop_results \
     "ln -sf /etc/radvd-12.conf /etc/radvd.conf"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1903,28 +1905,28 @@ When /^radvd is set to managed on, prefix length == 64, RDNSS$/ do
 end
 
 When /^radvd is switched off$/ do
-  SUT.test_and_drop_results "log.sh --step \"When radvd is switched off\""
+  SUT.test_and_drop_results "log.sh step \"When radvd is switched off\""
   local, remote, command = REF.test_and_drop_results \
     "systemctl stop radvd"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^dhcpd is switched off$/ do
-  SUT.test_and_drop_results "log.sh --step \"When dhcpd is switched off\""
+  SUT.test_and_drop_results "log.sh step \"When dhcpd is switched off\""
   local, remote, command = REF.test_and_drop_results \
     "systemctl stop dhcpd"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^dhcpd6 is switched off$/ do
-  SUT.test_and_drop_results "log.sh --step \"When dhcpd6 is switched off\""
+  SUT.test_and_drop_results "log.sh step \"When dhcpd6 is switched off\""
   local, remote, command = REF.test_and_drop_results \
     "systemctl stop dhcpd6"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I retrigger DHCP requests$/ do
-  SUT.test_and_drop_results "log.sh --step \"When I retrigger DHCP requests\""
+  SUT.test_and_drop_results "log.sh step \"When I retrigger DHCP requests\""
   # We do it by power cycling eth0
   # Restart is done from legacy config files
   local, remote, command = SUT.test_and_drop_results \
@@ -1945,7 +1947,7 @@ When /^I retrigger DHCP requests$/ do
 end
 
 When /^I bring up eth0 with BOOTPROTO="([^"]*)"$/ do |mode|
-  SUT.test_and_drop_results "log.sh --step \"When I bring up eth0 with BOOTPROTO=#{mode}\""
+  SUT.test_and_drop_results "log.sh step \"When I bring up eth0 with BOOTPROTO=#{mode}\""
   local, remote = SUT.inject_file \
     "test-files/bootproto/ifcfg-eth0-#{mode}", "/tmp/tests/ifcfg-eth0", \
     "testuser", false

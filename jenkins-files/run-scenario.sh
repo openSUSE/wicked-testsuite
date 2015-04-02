@@ -1,6 +1,6 @@
 #! /bin/bash
 
-sut=suites-sut-SLES_12_SP0-x86_64
+sut=suites-sut-openSUSE_13_2-i586
 ref=suites-ref-openSUSE_13_1-x86_64
 
 if [ "$1" = "--restart" ]; then

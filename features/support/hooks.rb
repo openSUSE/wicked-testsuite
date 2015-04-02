@@ -2,15 +2,15 @@ require_relative "../step_definitions/wicked_cleanup.rb"
 
 # Initial preparation
 AfterConfiguration do
-  SUT.test_and_drop_results "log.sh --reset"
+  SUT.test_and_drop_results "log.sh reset"
 end
 
 # Preparation before each scenario
 Before do |scenario|
   fn = scenario.feature.name.split(/\n/)[0]
   sn = scenario.name
-  SUT.test_and_drop_results "log.sh --scenario \"Feature: #{fn} - Scenario: #{sn}\""
-  SUT.test_and_drop_results "log.sh --step \"Cleanup (#{sn})\""
+  SUT.test_and_drop_results "log.sh scenario \"Feature: #{fn} - Scenario: #{sn}\""
+  SUT.test_and_drop_results "log.sh step \"Cleanup (#{sn})\""
   #
   prepareReference()
   #

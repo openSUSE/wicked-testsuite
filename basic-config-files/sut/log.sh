@@ -9,8 +9,8 @@ step=$scenario/step
 
 function _usage
 {
-  echo "Usage: log.sh --reset|--results" >&2
-  echo "              --scenario|--results <text>" >&2
+  echo "Usage: log.sh reset|results" >&2
+  echo "              scenario|results <text>" >&2
   exit 1
 }
 
@@ -109,9 +109,9 @@ function _step_end
 
 echo "$0 $@" >> $logs/history
 case "$action" in
-  "--reset")    _reset ;;
-  "--scenario") _step_end; _scenario_end; _scenario_begin ;;
-  "--step")     _step_end; _step_begin ;;
-  "--results")  _step_end; _scenario_end; _results ;;
-  *)            _usage ;;
+  "reset")    _reset ;;
+  "scenario") _step_end; _scenario_end; _scenario_begin ;;
+  "step")     _step_end; _step_begin ;;
+  "results")  _step_end; _scenario_end; _results ;;
+  *)          _usage ;;
 esac

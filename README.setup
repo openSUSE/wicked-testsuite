@@ -79,7 +79,7 @@ On the reference server only:
 o Install radvd, dhcp-server, tcpdump, and openvpn
 
 On the system under tests only:
-o Install openvpn and ndisc6
+o Install gdb, openvpn, and ndisc6
 
 Do the basic network and files configuration:
 o Run the script ./setup-basic-config.sh
