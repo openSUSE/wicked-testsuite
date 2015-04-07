@@ -23,7 +23,6 @@ to use for the system under tests</description>
               <string>SLES 12 SP0 (x86_64)</string>
               <string>openSUSE 13.2 (x86_64)</string>
               <string>openSUSE 13.2 (i586)</string>
-              <string>openSUSE Factory (x86_64)</string>
               <string>openSUSE Tumbleweed (x86_64)</string>
               <string>Physical</string>
             </a>
@@ -31,7 +30,7 @@ to use for the system under tests</description>
         </hudson.model.ChoiceParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
           <name>CONFIGURE_LOWERDEVS</name>
-          <description>if false, do not provide configuration files for lower devices</description>
+          <description>If false, do not provide configuration files for lower devices</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
               <string>true</string>
@@ -41,7 +40,7 @@ to use for the system under tests</description>
         </hudson.model.ChoiceParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
           <name>CONFIGURE_PRECISE</name>
-          <description>if false, use &quot;all&quot; instead of every device name</description>
+          <description>If false, use &quot;all&quot; instead of every device name</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
               <string>false</string>

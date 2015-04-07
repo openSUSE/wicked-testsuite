@@ -11,7 +11,6 @@
 #     sles 12 sp0 (x86_64)
 #     opensuse 13.2 (x86_64)
 #     opensuse 13.2 (i586)
-#     opensuse factory (x86_64)
 #     opensuse tumbleweed (x86_64)
 #     physical
 #   $CONFIGURE_LOWERDEVS
@@ -29,7 +28,7 @@
 
 set -x -e
 
-### Build wicked with OBS
+### Build wicked with Open Build Service
 
 case "$DISTRIBUTION" in
   "SLES 12 SP0 (x86_64)")
@@ -54,14 +53,6 @@ case "$DISTRIBUTION" in
     bs_repo=standard
     bs_arch=i586
     sut=suites-sut-openSUSE_13_2-i586
-    ref=suites-ref-openSUSE_13_1-x86_64
-    ;;
-  "openSUSE Factory (x86_64)")
-    bs_api=obs
-    bs_proj=openSUSE:Factory
-    bs_repo=standard
-    bs_arch=x86_64
-    sut=suites-sut-openSUSE_Factory-x86_64
     ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE Tumbleweed (x86_64)")
