@@ -1,7 +1,7 @@
 <domain type='kvm'>
   <name>suites-sut-SLES_12_SP0-x86_64</name>
   <uuid>fbcbf876-75a0-46f4-80fa-6ff21f1f84b2</uuid>
-  <memory unit='KiB'>542288</memory>
+  <memory unit='KiB'>542720</memory>
   <currentMemory unit='KiB'>542288</currentMemory>
   <vcpu placement='static'>1</vcpu>
   <resource>
@@ -24,7 +24,7 @@
   <on_crash>destroy</on_crash>
   <devices>
     <emulator>/usr/bin/qemu-kvm</emulator>
-    <disk type='block' device='cdrom'>
+    <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
       <!-- source file='SLE-12-Server-DVD-x86_64-RC1-DVD1.iso'/ -->
       <target dev='hdc' bus='ide'/>
@@ -37,16 +37,16 @@
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
     </disk>
-    <controller type='usb' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
-    </controller>
-    <controller type='pci' index='0' model='pci-root'/>
     <controller type='ide' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
     </controller>
     <controller type='virtio-serial' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
     </controller>
+    <controller type='usb' index='0'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
+    </controller>
+    <controller type='pci' index='0' model='pci-root'/>
     <interface type='network'>
       <mac address='52:54:00:42:13:f8'/>
       <source network='private1'/>

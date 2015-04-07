@@ -1,7 +1,7 @@
 <domain type='kvm'>
   <name>suites-ref-openSUSE_13_1-x86_64</name>
-  <uuid>0ee3f806-12db-530b-f2bf-1a8ae2315416</uuid>
-  <memory unit='KiB'>542288</memory>
+  <uuid>0ee3f806-12db-530b-f2b0-1a8ae2f15416</uuid>
+  <memory unit='KiB'>542720</memory>
   <currentMemory unit='KiB'>542288</currentMemory>
   <vcpu placement='static'>1</vcpu>
   <resource>
@@ -32,38 +32,38 @@
       <address type='drive' controller='0' bus='1' target='0' unit='0'/>
     </disk>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='raw'/>
-      <source file='suites-ref/openSUSE_13_1-x86_64.raw'/>
-      <target dev='sda' bus='ide'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+      <driver name='qemu' type='qcow2'/>
+      <source file='suites-ref/openSUSE_13_1-x86_64.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
     </disk>
-    <controller type='usb' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
-    </controller>
-    <controller type='pci' index='0' model='pci-root'/>
     <controller type='ide' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
     </controller>
     <controller type='virtio-serial' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
     </controller>
+    <controller type='usb' index='0'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
+    </controller>
+    <controller type='pci' index='0' model='pci-root'/>
     <interface type='bridge'>
-      <mac address='52:54:00:eb:78:b4'/>
+      <mac address='52:54:00:98:f8:b4'/>
       <source bridge='br1'/>
       <model type='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </interface>
     <interface type='network'>
-      <mac address='52:54:00:55:3b:2f'/>
+      <mac address='52:54:00:d5:9b:1f'/>
       <source network='private1'/>
       <model type='e1000'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
     </interface>
     <interface type='network'>
-      <mac address='52:54:00:69:3b:a2'/>
+      <mac address='52:54:00:f6:9f:c2'/>
       <source network='private2'/>
       <model type='rtl8139'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
     </interface>
     <serial type='pty'>
       <target port='0'/>
@@ -82,14 +82,14 @@
       <listen type='address' address='0.0.0.0'/>
     </graphics>
     <sound model='ac97'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
     </sound>
     <video>
       <model type='cirrus' vram='9216' heads='1'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
     </video>
     <memballoon model='virtio'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
     </memballoon>
   </devices>
   <seclabel type='none'/>

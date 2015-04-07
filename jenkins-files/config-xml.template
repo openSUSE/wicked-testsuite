@@ -16,10 +16,8 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
           <name>DISTRIBUTION</name>
-          <description>for the time being, please pick
-&lt;font color=red&gt;one of the first two choices&lt;/font&gt;
-as we don't have yet more virtual machines with the other distributions
-</description>
+          <description>The operating system, architecture, and connection type
+to use for the system under tests</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
               <string>SLES 12 SP0 (x86_64)</string>
