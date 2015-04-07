@@ -6,19 +6,25 @@
 #   $WORKSPACE
 #   $BUILD_NUMBER
 #
-# Parameters from test suite:
-#   $DISTRIBUTION
-#     sles 12 sp0 (x86_64)
-#     opensuse 13.2 (x86_64)
-#     opensuse 13.2 (i586)
-#     opensuse tumbleweed (x86_64)
-#     physical
+# Parameters from test suite, chosen by user:
+#   $DISTRIBUTION_REF
+#     SLES 11 SP3 (x86_64)
+#     openSUSE 13.1 (x86_64)
+#     Physical
+#   $DISTRIBUTION_SUT
+#     SLES 12 SP0 (x86_64)
+#     openSUSE 13.2 (x86_64)
+#     openSUSE 13.2 (i586)
+#     openSUSE Tumbleweed (x86_64)
+#     Physical
 #   $CONFIGURE_LOWERDEVS
 #     true
 #     false
 #   $CONFIGURE_PRECISE
 #     true
 #     false
+#
+# Parameters from test suite, fixed:
 #   $NANNY
 #     with
 #     without
@@ -28,16 +34,31 @@
 
 set -x -e
 
-### Build wicked with Open Build Service
+### Determine build options and target test system
 
-case "$DISTRIBUTION" in
+case "$DISTRIBUTION_REF" in
+  "SLES 11 SP3 (x86_64")
+    ref=suites-ref-SLES11_SP3-x86_64
+    ;;
+  "openSUSE 13.1 (x86_64")
+    ref=suites-ref-openSUSE_13_1-x86_64
+    ;;
+  "Physical")
+    target_ref="ssh:10.161.8.239"
+    ;;
+  *)
+    false
+    ;;
+esac
+[ "$ref" = "" ] || target_ref="virtio:/var/run/twopence/${ref}.sock"
+
+case "$DISTRIBUTION_SUT" in
   "SLES 12 SP0 (x86_64)")
     bs_api=ibs
     bs_proj=SUSE:SLE-12:Update
     bs_repo=standard
     bs_arch=x86_64
     sut=suites-sut-SLES_12_SP0-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
@@ -45,7 +66,6 @@ case "$DISTRIBUTION" in
     bs_repo=standard
     bs_arch=x86_64
     sut=suites-sut-openSUSE_13_2-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
@@ -53,7 +73,6 @@ case "$DISTRIBUTION" in
     bs_repo=standard
     bs_arch=i586
     sut=suites-sut-openSUSE_13_2-i586
-    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
@@ -61,7 +80,6 @@ case "$DISTRIBUTION" in
     bs_repo=standard
     bs_arch=x86_64
     sut=suites-sut-openSUSE_Tumbleweed-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "Physical")
     bs_api=ibs
@@ -69,14 +87,14 @@ case "$DISTRIBUTION" in
     bs_repo=standard
     bs_arch=x86_64
     target_sut="ssh:10.161.8.133"
-    target_ref="ssh:10.161.8.239"
     ;;
   *)
     false
     ;;
 esac
 [ "$sut" = "" ] || target_sut="virtio:/var/run/twopence/${sut}.sock"
-[ "$ref" = "" ] || target_ref="virtio:/var/run/twopence/${ref}.sock"
+
+### Build wicked with Open Build Service
 
 cd $WORKSPACE
 rm -rf SRCs RPMs
