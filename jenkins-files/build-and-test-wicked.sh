@@ -37,10 +37,10 @@ set -x -e
 ### Determine build options and target test system
 
 case "$DISTRIBUTION_REF" in
-  "SLES 11 SP3 (x86_64")
-    ref=suites-ref-SLES11_SP3-x86_64
+  "SLES 11 SP3 (x86_64)")
+    ref=suites-ref-SLES_11_SP3-x86_64
     ;;
-  "openSUSE 13.1 (x86_64")
+  "openSUSE 13.1 (x86_64)")
     ref=suites-ref-openSUSE_13_1-x86_64
     ;;
   "Physical")
