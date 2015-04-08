@@ -35,6 +35,8 @@ If you choose to use virtual machines, we recommend you use
 two KVM virtual machines:
 o system under test
 o reference server
+It is recommended to use QCow2 hard disk images, because
+it enables snapshotting.
 
 Create the virtual networks and the virtual machines:
 o Create a bridge br1 containing your real networking card
@@ -53,7 +55,9 @@ o Connect to it with VNC.
 Installing the machines
 =======================
 
-Install an operating system: we suggest
+Install an operating system. You need at least a 3.7 kernel
+on the reference machine (because of IPv6 NAT).
+We suggest using:
 o openSUSE 13.1 on the reference machine,
 o SLES 12 on the system under tests.
 There's no need for a separate home partition.
