@@ -15,21 +15,9 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
-          <name>DISTRIBUTION_REF</name>
+          <name>DISTRIBUTION</name>
           <description>The operating system, architecture, and connection type
-to use for the reference partner</description>
-          <choices class="java.util.Arrays$ArrayList">
-            <a class="string-array">
-              <string>SLES 11 SP3 (x86_64)</string>
-              <string>openSUSE 13.1 (x86_64)</string>
-              <string>Physical</string>
-            </a>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.ChoiceParameterDefinition>
-          <name>DISTRIBUTION_SUT</name>
-          <description>The operating system, architecture, and connection type
-to use for the system under tests</description>
+to use for the system under tests and the reference partnet</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
               <string>SLES 12 SP0 (x86_64)</string>
