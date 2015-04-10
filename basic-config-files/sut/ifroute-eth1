@@ -1,4 +1,9 @@
+# Static routes when exiting from eth1
+#
+# We give a 256 metric for last route,
+# so that it is preferred to a RA-generated route on eth0
+
      192.168.1.0/24         172.16.0.1  -  eth1
             default         172.16.0.1  -  eth1
 fc00:a79:817:1::/64  fd00:c0de:ba5e::1  -  eth1
-            default  fd00:c0de:ba5e::1  -  eth1
+            default  fd00:c0de:ba5e::1  -  eth1 preference 256
