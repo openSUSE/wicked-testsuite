@@ -181,13 +181,17 @@ popd
 if [ "$failed" = "no" ]; then
   if [ "$ref" != "" ]; then
     sudo virsh destroy ref-$JOB_NAME
+    sudo virsh undefine ref-$JOB_NAME
     rm $WORKSPACE/ref.qcow2
   fi
 
   if [ "$sut" != "" ]; then
     sudo virsh destroy sut-$JOB_NAME
+    sudo virsh undefine sut-$JOB_NAME
     rm $WORKSPACE/sut.qcow2
-    sudo virsh net-delete $JOB_NAME-0
-    sudo virsh net-delete $JOB_NAME-1
+    sudo virsh net-destroy $JOB_NAME-0
+    sudo virsh net-undefine $JOB_NAME-0
+    sudo virsh net-destroy $JOB_NAME-1
+    sudo virsh net-undefine $JOB_NAME-1
   fi
 fi
