@@ -87,6 +87,7 @@ if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
   sudo virsh destroy ref-$JOB_NAME || true
+  rm -f $WORKSPACE/ref.qcow2
   cp /var/lib/libvirt/images/ref/$ref $WORKSPACE/ref.qcow2
   sudo virsh net-start $JOB_NAME-0 || true
   sudo virsh net-start $JOB_NAME-1 || true
@@ -99,6 +100,7 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
   sudo virsh destroy sut-$JOB_NAME || true
+  rm -f $WORKSPACE/sut.qcow2
   cp /var/lib/libvirt/images/sut/$sut $WORKSPACE/sut.qcow2
   sudo virsh start sut-$JOB_NAME
 fi
