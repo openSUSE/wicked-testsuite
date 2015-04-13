@@ -9,7 +9,7 @@ function configure()
        s!@@GIT_REPO@@!$GIT_REPO!g;
        s!@@BRANCH_NAME@@!$BRANCH_NAME!g;
        s!@@NANNY@@!$NANNY!g" \
-      config-xml.template > /var/lib/jenkins/jobs/$NAME/config.xml
+      config-job.template > /var/lib/jenkins/jobs/$NAME/config.xml
 }
 
 BRANCH_NAME="master"

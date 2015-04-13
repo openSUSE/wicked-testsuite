@@ -31,7 +31,50 @@
 
 set -x -e
 
+scripts=$(dirname $(readlink -m $0))
+
 ### Determine build options and target test system
+
+# TEMPORARY: id should be given by the test suite
+# or computed as a two-digits hash
+case "$JOB_NAME" in
+  "wicked-master")
+    id=1
+    ;;
+  "wicked-master-nanny")
+    id=2
+    ;;
+  "wicked-sle12")
+    id=3
+    ;;
+  "wicked-sle12-nanny")
+    id=4
+    ;;
+  "wicked-testing")
+    id=5
+    ;;
+  "wicked-testing-nanny")
+    id=6
+    ;;
+  "playground-master")
+    id=7
+    ;;
+  "playground-master-nanny")
+    id=8
+    ;;
+  "playground-sle12")
+    id=9
+    ;;
+  "playground-sle12-nanny")
+    id=10
+    ;;
+  "playground-testing")
+    id=11
+    ;;
+  "playground-testing-nanny")
+    id=12
+    ;;
+esac
 
 case "$DISTRIBUTION" in
   "SLES 12 SP0 (x86_64)")
@@ -86,12 +129,11 @@ esac
 if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
-  sudo virsh destroy ref-$JOB_NAME || true
+  $scripts/config-net.sh $JOB_NAME $id 0
+  $scripts/config-net.sh $JOB_NAME $(($id+50)) 1
   rm -f $WORKSPACE/ref.qcow2
   cp /var/lib/libvirt/images/ref/$ref $WORKSPACE/ref.qcow2
-  sudo virsh net-start $JOB_NAME-0 || true
-  sudo virsh net-start $JOB_NAME-1 || true
-  sudo virsh start ref-$JOB_NAME
+  $scripts/config-ref.sh $JOB_NAME $id x86_64
 fi
 
 if [ "$sut" = "" ]; then
@@ -99,10 +141,9 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
-  sudo virsh destroy sut-$JOB_NAME || true
   rm -f $WORKSPACE/sut.qcow2
   cp /var/lib/libvirt/images/sut/$sut $WORKSPACE/sut.qcow2
-  sudo virsh start sut-$JOB_NAME
+  $scripts/config-sut.sh $JOB_NAME $id $bs_arch
 fi
 
 ### Build wicked with Open Build Service
@@ -129,15 +170,17 @@ rpms_out=/var/tmp/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
 cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
 ls -lh RPMs
 
-## Wait until we can communicate with the test hosts
+## Wait until we can communicate with the test machines
 while true; do
   who=$(twopence_command -b $target_ref "whoami")
   [ "$who" = "root" ] && break
+  sleep 1
 done
 
 while true; do
   who=$(twopence_command -b $target_sut "whoami")
   [ "$who" = "root" ] && break
+  sleep 1
 done
 
 ### Run the tests

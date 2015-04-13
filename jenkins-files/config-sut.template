@@ -1,6 +1,6 @@
 <domain type='kvm'>
-  <name>sut-playground-master-nanny</name>
-  <uuid>fbcbf876-75a0-46f4-80fb-6fe21f1f8408</uuid>
+  <name>sut-@@NAME@@</name>
+  <uuid>fbcbf876-75a0-46f4-80fb-6fe21f1f84@@ID@@</uuid>
   <memory unit='KiB'>542720</memory>
   <currentMemory unit='KiB'>542288</currentMemory>
   <vcpu placement='static'>1</vcpu>
@@ -8,7 +8,7 @@
     <partition>/machine</partition>
   </resource>
   <os>
-    <type arch='x86_64' machine='pc-i440fx-1.6'>hvm</type>
+    <type arch='@@ARCH@@' machine='pc-i440fx-1.6'>hvm</type>
     <boot dev='hd'/>
     <boot dev='cdrom'/>
     <bootmenu enable='no'/>
@@ -26,7 +26,7 @@
     <emulator>/usr/bin/qemu-kvm</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/var/lib/jenkins/jobs/playground-master-nanny/workspace/sut.qcow2'/>
+      <source file='/var/lib/jenkins/jobs/@@NAME@@/workspace/sut.qcow2'/>
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </disk>
@@ -45,14 +45,14 @@
     <controller type='usb' index='0'/>
     <controller type='pci' index='0' model='pci-root'/>
     <interface type='network'>
-      <mac address='52:54:00:73:a9:08'/>
-      <source network='playground-master-nanny-1'/>
+      <mac address='52:54:00:73:a9:@@ID@@'/>
+      <source network='@@NAME@@-1'/>
       <model type='e1000'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
     </interface>
     <interface type='network'>
-      <mac address='52:54:00:21:24:08'/>
-      <source network='playground-master-nanny-0'/>
+      <mac address='52:54:00:21:24:@@ID@@'/>
+      <source network='@@NAME@@-0'/>
       <model type='rtl8139'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
     </interface>
@@ -63,13 +63,13 @@
       <target type='serial' port='0'/>
     </console>
     <channel type='unix'>
-      <source mode='bind' path='/var/run/twopence/sut-playground-master-nanny.sock'/>
+      <source mode='bind' path='/var/run/twopence/sut-@@NAME@@.sock'/>
       <target type='virtio' name='org.opensuse.twopence.0'/>
       <address type='virtio-serial' controller='0' bus='0' port='1'/>
     </channel>
     <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='vnc' port='6008' autoport='no' listen='0.0.0.0'>
+    <graphics type='vnc' port='60@@ID@@' autoport='no' listen='0.0.0.0'>
       <listen type='address' address='0.0.0.0'/>
     </graphics>
     <sound model='ac97'>
