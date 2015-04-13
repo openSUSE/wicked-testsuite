@@ -1,4 +1,0 @@
-<network ipv6='yes'>
-  <name>private2</name>
-  <bridge name='virbr2' stp='on' delay='0' />
-</network>

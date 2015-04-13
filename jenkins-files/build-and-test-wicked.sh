@@ -4,6 +4,7 @@
 #
 # Parameters from Jenkins:
 #   $WORKSPACE
+#   $JOB_NAME
 #   $BUILD_NUMBER
 #
 # Parameters from test suite, chosen by user:
@@ -38,32 +39,32 @@ case "$DISTRIBUTION" in
     bs_proj=SUSE:SLE-12:Update
     bs_repo=standard
     bs_arch=x86_64
-    sut=suites-sut-SLES_12_SP0-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
+    sut=SLES_12_SP0-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
     ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=x86_64
-    sut=suites-sut-openSUSE_13_2-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
+    sut=openSUSE_13_2-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=i586
-    sut=suites-sut-openSUSE_13_2-i586
-    ref=suites-ref-openSUSE_13_1-x86_64
+    sut=openSUSE_13_2-i586.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
     ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Tumbleweed
     bs_repo=standard
     bs_arch=x86_64
-    sut=suites-sut-openSUSE_Tumbleweed-x86_64
-    ref=suites-ref-openSUSE_13_1-x86_64
+    sut=openSUSE_Tumbleweed-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
     ;;
   "Physical")
     bs_api=ibs
@@ -77,8 +78,30 @@ case "$DISTRIBUTION" in
     false
     ;;
 esac
-[ "$sut" = "" ] || target_sut="virtio:/var/run/twopence/${sut}.sock"
-[ "$ref" = "" ] || target_ref="virtio:/var/run/twopence/${ref}.sock"
+[ "$sut" = "" ] || target_sut="virtio:/var/run/twopence/sut-${JOB_NAME}.sock"
+[ "$ref" = "" ] || target_ref="virtio:/var/run/twopence/ref-${JOB_NAME}.sock"
+
+### Prepare VMs or physical machines
+
+if [ "$ref" = "" ]; then
+  twopence_command $target_ref "ip neigh flush all"
+else
+  sudo virsh destroy ref-$JOB_NAME || true
+  cp /var/lib/libvirt/images/ref/$ref $WORKSPACE/ref.qcow2
+  sudo virsh net-start $JOB_NAME-0 || true
+  sudo virsh net-start $JOB_NAME-1 || true
+  sudo virsh start ref-$JOB_NAME
+fi
+
+if [ "$sut" = "" ]; then
+  twopence_command $target_sut "rm -f /core*"
+  twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
+  twopence_command $target_sut "rm -f /root/*wicked*.rpm"
+else
+  sudo virsh destroy sut-$JOB_NAME || true
+  cp /var/lib/libvirt/images/sut/$sut $WORKSPACE/sut.qcow2
+  sudo virsh start sut-$JOB_NAME
+fi
 
 ### Build wicked with Open Build Service
 
@@ -104,29 +127,16 @@ rpms_out=/var/tmp/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
 cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
 ls -lh RPMs
 
-### Cleanup
+## Wait until we can communicate with the test hosts
+while true; do
+  who=$(twopence_command -b $target_ref "whoami")
+  [ "$who" = "root" ] && break
+done
 
-if [ "$ref" = "" ]; then
-  twopence_command $target_ref "ip neigh flush all"
-else
-  for vm in $(sudo virsh list --name | grep -- "-ref-"); do
-    echo "Destroying $vm..."
-    sudo virsh destroy $vm
-  done
-  sudo virsh snapshot-revert $ref sane
-fi
-
-if [ "$sut" = "" ]; then
-  twopence_command $target_sut "rm -f /core*"
-  twopence_command $target_sut "rm -r /var/log/journal/*; systemctl restart systemd-journald"
-  twopence_command $target_sut "rm -f /root/*wicked*.rpm"
-else
-  for vm in $(sudo virsh list --name | grep -- "-sut-"); do
-    echo "Destroying $vm..."
-    sudo virsh destroy $vm
-  done
-  sudo virsh snapshot-revert $sut sane
-fi
+while true; do
+  who=$(twopence_command -b $target_sut "whoami")
+  [ "$who" = "root" ] && break
+done
 
 ### Run the tests
 
@@ -151,11 +161,26 @@ twopence_command $target_sut "service wicked start"
 pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
 
+failed="no"
 export TARGET_SUT=$target_sut
 export TARGET_REF=$target_ref
-cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || true
+cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || failed="yes"
 
 twopence_extract $target_sut "/tmp/wicked-log.tgz" "$WORKSPACE/wicked-log.tgz"
 popd
 
-ls -lh test-suite.tgz wicked-log.tgz
+### Remove VMs, but only if the tests did not fail
+
+if [ "$failed" = "no" ]; then
+  if [ "$ref" != "" ]; then
+    sudo virsh destroy ref-$JOB_NAME
+    rm $WORKSPACE/ref.qcow2
+  fi
+
+  if [ "$sut" != "" ]; then
+    sudo virsh destroy sut-$JOB_NAME
+    rm $WORKSPACE/sut.qcow2
+    sudo virsh net-delete $JOB_NAME-0
+    sudo virsh net-delete $JOB_NAME-1
+  fi
+fi
