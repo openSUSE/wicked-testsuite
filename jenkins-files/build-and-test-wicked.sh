@@ -28,53 +28,14 @@
 #   $SUBDIR
 #     cucumber
 #     playground-cucumber
+#   $ID
+#     a unique numerical identifier
 
 set -x -e
 
 scripts=$(dirname $(readlink -m $0))
 
 ### Determine build options and target test system
-
-# TEMPORARY: id should be given by the test suite
-# or computed as a two-digits hash
-case "$JOB_NAME" in
-  "wicked-master")
-    id=1
-    ;;
-  "wicked-master-nanny")
-    id=2
-    ;;
-  "wicked-sle12")
-    id=3
-    ;;
-  "wicked-sle12-nanny")
-    id=4
-    ;;
-  "wicked-testing")
-    id=5
-    ;;
-  "wicked-testing-nanny")
-    id=6
-    ;;
-  "playground-master")
-    id=7
-    ;;
-  "playground-master-nanny")
-    id=8
-    ;;
-  "playground-sle12")
-    id=9
-    ;;
-  "playground-sle12-nanny")
-    id=10
-    ;;
-  "playground-testing")
-    id=11
-    ;;
-  "playground-testing-nanny")
-    id=12
-    ;;
-esac
 
 case "$DISTRIBUTION" in
   "SLES 12 SP0 (x86_64)")
@@ -129,11 +90,11 @@ esac
 if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
-  $scripts/config-net.sh $JOB_NAME $id 0
-  $scripts/config-net.sh $JOB_NAME $(($id+50)) 1
+  $scripts/config-net.sh $JOB_NAME $ID 0
+  $scripts/config-net.sh $JOB_NAME $(($ID+50)) 1
   rm -f $WORKSPACE/ref.qcow2
   cp /var/lib/libvirt/images/ref/$ref $WORKSPACE/ref.qcow2
-  $scripts/config-ref.sh $JOB_NAME $id x86_64
+  $scripts/config-ref.sh $JOB_NAME $ID x86_64
 fi
 
 if [ "$sut" = "" ]; then
@@ -143,7 +104,7 @@ if [ "$sut" = "" ]; then
 else
   rm -f $WORKSPACE/sut.qcow2
   cp /var/lib/libvirt/images/sut/$sut $WORKSPACE/sut.qcow2
-  $scripts/config-sut.sh $JOB_NAME $id $bs_arch
+  $scripts/config-sut.sh $JOB_NAME $ID $bs_arch
 fi
 
 ### Build wicked with Open Build Service
@@ -163,10 +124,11 @@ osc -A $bs_api build \
   --clean --local-package --debuginfo \
   --release=$release \
   --alternative-project $bs_proj \
+  --root $WORKSPACE/build-root/$bs_repo-$bs_arch \
   $bs_repo $bs_arch wicked.spec
 popd
 
-rpms_out=/var/tmp/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
+rpms_out=$WORKSPACE/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
 cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
 ls -lh RPMs
 
