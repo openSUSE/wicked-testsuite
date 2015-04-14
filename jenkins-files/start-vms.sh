@@ -12,7 +12,7 @@ id=$2
 ref=openSUSE_13_1-x86_64.qcow2
 ref_arch=x86_64
 
-sut=openSUSE_Tumbleweed-x86_64.qcow2
+sut=SLES_12_SP0-x86_64.qcow2
 sut_arch=x86_64
 
 nanny=with
