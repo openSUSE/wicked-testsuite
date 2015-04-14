@@ -36,7 +36,7 @@ two KVM virtual machines:
 o system under test
 o reference server
 It is recommended to use QCow2 hard disk images, because
-it enables snapshotting.
+they have a smaller size.
 
 Create the virtual networks and the virtual machines:
 o Create a bridge br1 containing your real networking card
@@ -45,11 +45,12 @@ o Create a bridge br1 containing your real networking card
   and configure those interfaces in
     /etc/sysconfig/network-br1
     /etc/sysconfig/eth0
-o Run the script ./setup-networks.sh
-o Run the script ./setup-vms.sh
+o Create two private networks, one will be used
+  for eth0 and the other one for eth1
+o Create the two virtual machines.
 
-For each virtual machine:
-o Connect to it with VNC.
+For the last two steps, you can use the templates
+provided in jenkins-files/ directory.
 
 
 Installing the machines
@@ -57,9 +58,11 @@ Installing the machines
 
 Install an operating system. You need at least a 3.7 kernel
 on the reference machine (because of IPv6 NAT).
+
 We suggest using:
 o openSUSE 13.1 on the reference machine,
 o SLES 12 on the system under tests.
+
 There's no need for a separate home partition.
 There's no need to install X-Window.
 
@@ -144,10 +147,9 @@ o libgcrypt-devel, libnl3-devel, dbus-1-devel,
 on the machine where Jenkins run.
 
 The script above assumes that every virtual machine uses
-a disk in qcow2 format with a snapshot of a sane situation.
+a disk in qcow2 format with a sane situation.
 In this sane situation, there is no core dump,
-twopence-test-server is running, etc. This snapshot needs
-to be named "sane".
+twopence-test-server is running, etc.
 
 You have templates for Jenkins jobs. To generate the jobs,
-use script config-xml.sh.
+use script config-job.sh.

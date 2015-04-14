@@ -5,8 +5,9 @@ This is the test suite used for Continuous Integration of development
 of the Wicked network interfaces broker.
 
 Tests are written in plain English and run with Cucumber test engine.
+
 Jenkins can be used as a build and test scheduler,
-but that's not mandatory.
+but it is not mandatory.
 
 The test suite relies on Twopence remote execution engine.
 
