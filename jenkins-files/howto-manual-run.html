@@ -4,35 +4,59 @@
     <h1>How to run a test scenario for Wicked manually</h1>
     <p>
       Sometimes, you'd like to run a test in isolation and with
-      more flexibility than the web interface. To do that:
+      more flexibility than the web interface.
       <ol>
         <li>ssh to the server: <br />
           <tt>$ ssh jenkins@jung.arch.suse.de</tt></li>
-        <li>Make sure there is no test running at the moment:<br />
-          <tt>$ ps aux | grep cucumber</tt></li>
         <li>If there are some tests already running,
-          either wait for them to finish, or stop the job in Jenkins.</br>
+          either wait for them to finish, or stop the job in Jenkins.<br />
           Sometimes, when you stop the job in Jenkins, the <tt>cucumber</tt>
           process does <b>not</b> get stopped, and you have to kill it manually
           as <tt>root</tt> user.</li>
         <li>Once you are sure you are alone, go to the official test suites directory: <br />
-          <tt>$ cd cucumber</tt><br/>
-          Then run the scenario:<br />
-          <tt>$ cucumber -n "<i>complete name of the scenario</i>"</tt><br />
-          For example:<br />
-          <tt>$ cucumber -n "Set up a second card"</tt><br />
-          You can copy and paste that name from the Cucumber reports in
-          the web interface.</li>
+          <tt>cd cucumber</tt></li>
       </ol>
-      The test scenario should start. It will use the version of Wicked that
+    </p>
+    <p>
+      Assuming that Wicked has already been built for some test suite,
+      but that we virtual machines are stopped, for example after a successful
+      test, you can start them with a dedicated helper script:</br />
+      <tt>$ jenkins-files/start-vms.sh wicked-master 1</tt><br />
+      The first argument is the name of the test suite, and the second argument
+      its numeric identificator.<br />
+      The virtual machines and networks are created out of default images,
+      and latest wicked built in that project is copied into the virtual machines.
+      If you don't want to use default images, copy and modify the script.
+    </p>
+    <p>
+      Once the virtual machines are started (they always are after failed tests),
+      you can run a test scenario in isolation:.
+      <ol>
+        <li>Define the needed environment variables:<br/>
+          <tt>$ export TARGET_SUT=virtio:/var/run/twopence/sut-wicked-master</tt><br />
+          <tt>$ export TARGET_REF=virtio:/var/run/twopence/ref-wicked-master</tt></li>
+          Then run the scenario, for example:<br />
+          <tt>$ cucumber -n "Set up a second card"</tt></li>
+      </ol>
+      It will use the same version of Wicked that
       was last built and tested in the web interface.
     </p>
-    <p>To debug potential problems, you can vnc to the virtual machines:
+    <p>
+      To debug potential problems, you can vnc to the virtual machines:
       <ol>
-        <li>reference: <tt>jung.arch.suse.de</tt> port <tt>5901</tt></li>
-        <li>sut: <tt>jung.arch.suse.de</tt> port <tt>5902</tt></li>
-        <li>playground reference: <tt>jung.arch.suse.de</tt> port <tt>5903</tt></li>
-        <li>playground sut: <tt>jung.arch.suse.de</tt> port <tt>5904</tt></li>
+        <li>reference: <tt>jung.arch.suse.de</tt> port <tt>5900</tt> + test suite identificator</li>
+        <li>sut: <tt>jung.arch.suse.de</tt> port <tt>6000</tt> + test suite identificator</li>
+        <li>identificators:
+          <ul>
+            <li><tt>1</tt> = wicked-master</li>
+            <li><tt>2</tt> = wicked-master-nanny</li>
+            <li><tt>3</tt> = wicked-testing</li>
+            <li><tt>4</tt> = wicked-testing-nanny</li>
+            <li><tt>5</tt> = wicked-sle12</li>
+            <li><tt>6</tt> = wicked-sle12-nanny</li>
+            <li>playground: add 6</li>
+          </ul>
+        </li>
       </ol>
       Most of the time, you will probably want to vnc to sut.<br />
       Once there, log in as <tt>root</tt> or as <tt>testuser</tt>.
@@ -40,8 +64,7 @@
       open a new virtual screen with Ctrl-A c.
     </p>
     <p>
-      If you reboot reference or sut, please restart the test server with:<br />
-      <tt># screen ./twopence-test-server</tt>
+      Instead of using vnc, you can use virt-manager, or virsh console.
     </p>
     <p>
       Happy debugging!
