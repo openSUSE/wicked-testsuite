@@ -7,6 +7,12 @@
 name=$1
 id=$2
 
+if [ "$name" = "" -o "$id" = "" ]; then
+  echo "Usage: $0 <suite name> <suite id>"
+  echo "Example: $0 wicked-master 1"
+  exit 1
+fi
+
 # Parameters
 
 ref=openSUSE_13_1-x86_64.qcow2
