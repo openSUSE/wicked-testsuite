@@ -2,35 +2,54 @@
 #
 # Start the VMs for manual testing
 #
-# Assumes that wicked has already been build for that project
+# This script assumes that wicked has already been build for that project
 
-name=$1
-id=$2
-
-if [ "$name" = "" -o "$id" = "" ]; then
-  echo "Usage: $0 <suite name> <suite id>"
-  echo "Example: $0 wicked-master 1"
+function invalid_param
+{
+  echo "Invalid value" >&2
   exit 1
-fi
-
-# Parameters
-
-ref=openSUSE_13_1-x86_64.qcow2
-ref_arch=x86_64
-
-sut=SLES_12_SP0-x86_64.qcow2
-sut_arch=x86_64
-
-nanny=with
-
-# Start the VMs and networks
+}
 
 scripts=$(dirname $0)
 
 images=/var/lib/libvirt/images
 jenkins=/var/lib/jenkins
+subdir=cucumber
 
-export WORKSPACE=$jenkins/jobs/$name/workspace
+# Read parameters
+
+echo -n "                Test suite name: "
+read -e -i "wicked-master" name
+[ "$subdir" = "cucumber" ] && jobname="$name" || jobname="playground-$name"
+[ -d $jenkins/jobs/$jobname ] || invalid_param
+
+echo -n "                  Test suite ID: "
+read -e -i "1" id
+[[ "$id" =~ ^[0-9]+$ ]] || invalid_param
+
+echo -n "   Reference machine disk image: "
+read -e -i "openSUSE_13_1-x86_64.qcow2" ref
+[ -f $images/ref/$ref ] || invalid_param
+
+echo -n " Reference machine architecture: "
+read -e -i "x86_64" ref_arch
+[ "$ref_arch" = "x86_64" -o "$ref_arch" = "i586" ] || invalid_param
+
+echo -n "  System under tests disk image: "
+read -e -i "SLES_12_SP0-x86_64.qcow2" sut
+[ -f $images/sut/$sut ] || invalid_param
+
+echo -n "System under tests architecture: "
+read -e -i "x86_64" sut_arch
+[ "$sut_arch" = "x86_64" -o "$sut_arch" = "i586" ] || invalid_param
+
+echo -n "              With/without nanny "
+read -e -i "with" nanny
+[ "$nanny" = "with" -o "$nanny" = "without" ] || invalid_param
+
+# Start the VMs and networks
+
+export WORKSPACE=$jenkins/jobs/$jobname/workspace
 
 rm -f $WORKSPACE/*.qcow2
 cp $images/ref/$ref $WORKSPACE/ref.qcow2
@@ -72,7 +91,7 @@ twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\")"
 twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
 twopence_command $target_sut "rpm -ih /root/*wicked*.$sut_arch.rpm"
 
-twopence_inject $target_sut $jenkins/cucumber/jenkins-files/wicked-$nanny-nanny.xml /etc/wicked/local.xml
+twopence_inject $target_sut $jenkins/$subdir/jenkins-files/wicked-$nanny-nanny.xml /etc/wicked/local.xml
 twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 
 twopence_command $target_sut "service wickedd start"
