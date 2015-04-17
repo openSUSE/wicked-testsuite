@@ -43,7 +43,7 @@ echo -n "System under tests architecture: "
 read -e -i "x86_64" sut_arch
 [ "$sut_arch" = "x86_64" -o "$sut_arch" = "i586" ] || invalid_param
 
-echo -n "              With/without nanny "
+echo -n "             With/without nanny: "
 read -e -i "with" nanny
 [ "$nanny" = "with" -o "$nanny" = "without" ] || invalid_param
 
@@ -91,7 +91,7 @@ twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\")"
 twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
 twopence_command $target_sut "rpm -ih /root/*wicked*.$sut_arch.rpm"
 
-twopence_inject $target_sut $jenkins/$subdir/jenkins-files/wicked-$nanny-nanny.xml /etc/wicked/local.xml
+twopence_inject $target_sut $scripts/wicked-$nanny-nanny.xml /etc/wicked/local.xml
 twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
 
 twopence_command $target_sut "service wickedd start"
