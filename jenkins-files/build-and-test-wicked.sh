@@ -45,6 +45,7 @@ case "$DISTRIBUTION" in
     bs_arch=x86_64
     sut=SLES_12_SP0-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
     ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
@@ -53,14 +54,16 @@ case "$DISTRIBUTION" in
     bs_arch=x86_64
     sut=openSUSE_13_2-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
     bs_repo=standard
     bs_arch=i586
-    sut=openSUSE_13_2-i586.qcow2
+    sut=openSUSE_13_2-i686.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=i686
     ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
@@ -69,6 +72,7 @@ case "$DISTRIBUTION" in
     bs_arch=x86_64
     sut=openSUSE_Tumbleweed-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
     ;;
   "Physical")
     bs_api=ibs
@@ -104,7 +108,7 @@ if [ "$sut" = "" ]; then
 else
   rm -f $WORKSPACE/sut.qcow2
   cp /var/lib/libvirt/images/sut-$sut $WORKSPACE/sut.qcow2
-  $scripts/config-sut.sh $JOB_NAME $ID $bs_arch
+  $scripts/config-sut.sh $JOB_NAME $ID $vm_arch
 fi
 
 ### Build wicked with Open Build Service

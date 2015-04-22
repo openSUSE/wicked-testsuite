@@ -2,14 +2,7 @@
 
 name="$1"
 id="$2"
-case "$3" in
-  "x86_64")
-     arch="x86_64"
-     ;;
-  "i586")
-     arch="i686"
-     ;;
-esac
+arch="$3"
 
 scripts=$(dirname $0)
 
