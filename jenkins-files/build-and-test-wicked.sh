@@ -93,7 +93,7 @@ else
   $scripts/config-net.sh $JOB_NAME $ID 0
   $scripts/config-net.sh $JOB_NAME $(($ID+50)) 1
   rm -f $WORKSPACE/ref.qcow2
-  cp /var/lib/libvirt/images/ref/$ref $WORKSPACE/ref.qcow2
+  cp /var/lib/libvirt/images/ref-$ref $WORKSPACE/ref.qcow2
   $scripts/config-ref.sh $JOB_NAME $ID x86_64
 fi
 
@@ -103,7 +103,7 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
   rm -f $WORKSPACE/sut.qcow2
-  cp /var/lib/libvirt/images/sut/$sut $WORKSPACE/sut.qcow2
+  cp /var/lib/libvirt/images/sut-$sut $WORKSPACE/sut.qcow2
   $scripts/config-sut.sh $JOB_NAME $ID $bs_arch
 fi
 
