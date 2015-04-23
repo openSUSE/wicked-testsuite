@@ -89,9 +89,10 @@ On the system under tests only:
 o Install gdb, openvpn, and ndisc6
 
 Do the basic network and files configuration:
-o Run the script ./setup-basic-config.sh
-  (you might need to set up $ref and $sut
-   variables in that script to accomodate your setup)
+o Run the scripts basic-config/setup-sut.sh
+  and basic-config/setup-ref.sh
+  (you might need to change $ref and $sut variables
+   in those scripts to accomodate your setup)
 
 
 Running the tests
