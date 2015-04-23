@@ -14,7 +14,7 @@ for ((i=0; i<${#paths[@]}; i++)); do
   IFS=" " fields=(${paths[i]})
   src=${fields[0]}
   dst=${fields[1]}
-  twopence_inject $ref $src $dst
+  twopence_inject $ref files-ref/$src $dst
 done
 
 twopence_command $ref "chmod ug+x /etc/init.d/iptables"

@@ -21,7 +21,7 @@ for ((i=0; i<${#paths[@]}; i++)); do
   IFS=" " fields=(${paths[i]})
   src=${fields[0]}
   dst=${fields[1]}
-  twopence_inject $sut $src $dst
+  twopence_inject $sut files-sut/$src $dst
 done
 
 gcc $cflags files-sut/check_macvtap.c -o /tmp/a.out
