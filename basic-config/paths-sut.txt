@@ -1,0 +1,16 @@
+sysctl.conf             /etc/sysctl.conf
+journald.conf           /etc/systemd/journald.conf
+wic.sh                  /usr/local/bin/wic.sh
+ifbind.sh               /usr/local/bin/ifbind.sh
+log.sh                  /usr/local/bin/log.sh
+wait_for_cmd_success.sh /usr/local/bin/wait_for_cmd_success.sh
+wait_for_cmd_failure.sh /usr/local/bin/wait_for_cmd_failure.sh
+create_many_bridges.sh  /usr/local/bin/create_many_bridges.sh
+delete_many_bridges.sh  /usr/local/bin/delete_many_bridges.sh
+check_many_bridges.sh   /usr/local/bin/check_many_bridges.sh
+config                  /etc/sysconfig/network/config
+dhcp-keep-leases        /etc/sysconfig/network/dhcp-keep-leases
+dhcp-release-leases     /etc/sysconfig/network/dhcp-release-leases
+ifcfg-eth0              /etc/sysconfig/network/ifcfg-eth0
+ifcfg-eth1              /etc/sysconfig/network/ifcfg-eth1
+ifroute-eth1            /etc/sysconfig/network/ifroute-eth1
