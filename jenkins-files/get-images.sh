@@ -13,7 +13,7 @@ other_images=
 direct=
 
 print_help() {
-    echo "$0 [--list] [-i|--image] [-d|--destination]"
+    echo "$0 [-l|--list] [-i|--image] [-d|--destination]"
 }
 
 images=`wget -qO - ${baseurl} | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | \
@@ -41,7 +41,7 @@ do
         fi
         direct="$2"
         ;;
-    --list)
+    -l | --list)
         echo "System Under Test (sut) images:"
         echo
         for sut in $sut_images; do
@@ -71,7 +71,7 @@ do
         fi
         destination="$2"
         if [ ! -d "$destination" ]; then
-            echo "Creating directory '${destination}'..."
+            echo "create directory '${destination}'..."
             mkdir -p "$destination"
         fi
         ;;
@@ -81,18 +81,12 @@ do
 done
 
 if [ ! "$direct" == "" ]; then
-    wget -q -P "${destination}" "${baseurl}/${direct}"
-    if [ "$?" -eq 0 ]; then
-        size=`du -m "${destination}/${direct}" | cut -f1`
-        echo "found ${direct} (${size}M)"
-        exit 0
-    else
-        echo "no image found"
-        exit 1
-    fi
+    all_images="$direct"
+else
+    all_images="$sut_images $ref_images"
 fi
 
-for image in $sut_images $ref_images; do
+for image in $all_images; do
     url="${baseurl}/${image}"
     filename="$(echo $image | grep -oE "^((\bref\b)|(\bsut\b))*(.*)((\bx86_64\b)|(\bi686\b)|(\bi586\b))")"
     filename="$(echo $filename | sed 's#\.#-#').qcow2"
