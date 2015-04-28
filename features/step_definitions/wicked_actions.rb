@@ -40,6 +40,7 @@ end
 When /^I bring up ([^ ]*)$/ do |interface|
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I bring up #{interface}\""
@@ -156,6 +157,7 @@ end
 When /^I deconnect violently ([^ ]*)$/ do |interface|
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I deconnect violently #{interface}\""
@@ -167,6 +169,7 @@ end
 When /^I reconnect ([^ ]*)$/ do |interface|
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I reconnect #{interface}\""
@@ -228,6 +231,7 @@ end
 When /^I aggregate eth0 and eth1 from legacy files$/ do
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from legacy files\""
@@ -455,7 +459,7 @@ end
 When /^I send an ARP ping to the reference machine$/ do
   SUT.test_and_drop_results "log.sh step \"When I send an ARP ping to the reference machine\""
   out, local, remote, command = SUT.test_and_store_results_together \
-    "check_macvtap > /tmp/tests/macvtap_results.txt &"
+    "check_macvtap > /tmp/tests/macvtap_results.txt 2>&1 &"
   local.should == 0; remote.should == 0; command.should == 0
   #
   out, local, remote, command = SUT.test_and_store_results_together \
@@ -485,7 +489,7 @@ When /^I create a tun interface from legacy files$/ do
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) &"
+    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
@@ -509,7 +513,7 @@ When /^I create a tun interface from XML files$/ do
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig /tmp/tests/tun.xml all; echo $? >> /tmp/tests/w_done) &"
+    "(wic.sh ifup --ifconfig /tmp/tests/tun.xml all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
@@ -566,7 +570,7 @@ When /^I create a tap interface from legacy files$/ do
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) &"
+    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
@@ -590,7 +594,7 @@ When /^I create a tap interface from XML files$/ do
     "testuser", false
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig /tmp/tests/tap.xml all; echo $? >> /tmp/tests/w_done) &"
+    "(wic.sh ifup --ifconfig /tmp/tests/tap.xml all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show eth1 | grep #{STAT4_SUT1}\"", "testuser"
@@ -853,6 +857,7 @@ end
 When /^the reference machine is set up in infiniband ([^ ]*) mode$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When the reference machine is set up in infiniband #{mode} mode\""
@@ -867,6 +872,7 @@ end
 When /^the reference machine has an infiniband child channel$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When the reference machine has an infiniband child channel\""
@@ -881,6 +887,7 @@ end
 When /^the reference machine provides dynamic addresses over the infiniband links$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When the reference machine provides dynamic addresses over the infiniband links\""
@@ -909,6 +916,7 @@ end
 When /^I create an infiniband interface in ([^ ]*) mode from legacy files$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I create an infiniband interface in #{mode} mode from legacy files\""
@@ -930,6 +938,7 @@ end
 When /^I create an infiniband interface in ([^ ]*) mode from XML files$/ do |mode|
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I create an infiniband interface in #{mode} mode from XML files\""
@@ -951,6 +960,7 @@ end
 When /^I create an infiniband child interface from legacy files$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I create an infiniband child interface from legacy files\""
@@ -972,6 +982,7 @@ end
 When /^I create an infiniband child interface from XML files$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I create an infiniband child interface from XML files\""
@@ -1728,6 +1739,7 @@ end
 When /^I set up the speed of eth0 to (\d*) Mbit\/s$/ do |speed|
   if @skip_when_virtual_machine
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I set up the speed of eth0 to #{speed} Mbit/s\""

@@ -305,6 +305,7 @@ end
 Then /^eth0 should have a dynamic address after a while$/ do
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then eth0 should have a dynamic address after a while\""
@@ -344,6 +345,7 @@ end
 Then /^([^ ]*) should be enslaved$/ do |interface|
   if @skip_when_no_hotplug
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then #{interface} should be enslaved\""
@@ -357,6 +359,7 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
   # WORKAROUND (the @skip_when_virtual_machine part)
   if @skip_when_no_hotplug or @skip_when_virtual_machine
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the aggregated link\""
@@ -486,6 +489,7 @@ end
 Then /^I should be able to ping the other side of the infiniband link$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the infiniband link\""
@@ -500,6 +504,7 @@ end
 Then /^I should be able to ping the other side of the infiniband child link$/ do
   if @skip_when_no_infiniband
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the infiniband child link\""
@@ -704,6 +709,7 @@ end
 Then /^the speed of eth0 should be (\d*) Mbit\/s$/ do |speed|
   if @skip_when_virtual_machine
     puts "(skipped)"
+    sleep 1
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then the speed of eth0 should be #{speed} Mbit/s\""
