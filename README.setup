@@ -39,12 +39,10 @@ It is recommended to use QCow2 hard disk images, because
 they have a smaller size.
 
 Create the virtual networks and the virtual machines:
-o Create a bridge br1 containing your real networking card
-    # brctl addbr br1
-    # brctl addif eth0 (for example)
-  and configure those interfaces in
-    /etc/sysconfig/network-br1
-    /etc/sysconfig/eth0
+o Create a bridge br0 containing your real networking card
+  by configuring those interfaces in
+    /etc/sysconfig/network/ifcfg-br0
+    /etc/sysconfig/network/ifcfg-eth0
 o Create two private networks, one will be used
   for eth0 and the other one for eth1
 o Create the two virtual machines.
