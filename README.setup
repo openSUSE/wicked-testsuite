@@ -39,10 +39,12 @@ It is recommended to use QCow2 hard disk images, because
 they have a smaller size.
 
 Create the virtual networks and the virtual machines:
-o Create a bridge wickedbr0 containing your real networking card
+o Create a bridge wickedbr0 containing a dummy interface
   by configuring those interfaces in
     /etc/sysconfig/network/ifcfg-wickedbr0
-    /etc/sysconfig/network/ifcfg-eth0
+    /etc/sysconfig/network/ifcfg-dummy1
+o Make sure you route between wickedbr0 and eth0
+  and masquerade before getting out of eth0
 o Create two private networks, one will be used
   for eth0 and the other one for eth1
 o Create the two virtual machines.
