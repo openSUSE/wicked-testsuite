@@ -140,7 +140,7 @@ will take care of building a new version of
 wicked and of running the tests.
 
 Building requires to install:
-o git, osc, make, gcc
+o git, osc, autoconf, make, gcc
 o libgcrypt-devel, libnl3-devel, dbus-1-devel,
   and libiw-devel
 on the machine where Jenkins run.
