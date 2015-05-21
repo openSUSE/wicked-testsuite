@@ -107,7 +107,7 @@ if [ "$sut" = "" ]; then
   twopence_command $target_sut "rm -f /root/*wicked*.rpm"
 else
   rm -f $WORKSPACE/sut.qcow2
-  cp /var/lib/libvirt/jenkinssut-$sut $WORKSPACE/sut.qcow2
+  cp /var/lib/jenkins/images/sut-$sut $WORKSPACE/sut.qcow2
   $scripts/config-sut.sh $JOB_NAME $ID $vm_arch
 fi
 
