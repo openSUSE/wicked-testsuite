@@ -46,7 +46,7 @@
     <controller type='pci' index='0' model='pci-root'/>
     <interface type='bridge'>
       <mac address='52:54:00:98:f8:@@ID@@'/>
-      <source bridge='br0'/>
+      <source bridge='wickedbr0'/>
       <model type='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </interface>
