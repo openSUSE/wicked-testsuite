@@ -141,7 +141,7 @@ wicked and of running the tests.
 
 Building requires to install:
 o git, osc,
-  automake, autoconf, make, and gcc
+  automake, autoconf, libtool, make, and gcc
 o libgcrypt-devel, libnl3-devel, dbus-1-devel,
   and libiw-devel
 on the machine where Jenkins run.
