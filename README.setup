@@ -43,8 +43,11 @@ o Create a bridge wickedbr0 containing a dummy interface
   by configuring those interfaces in
     /etc/sysconfig/network/ifcfg-wickedbr0
     /etc/sysconfig/network/ifcfg-dummy1
+  This bridge will be used by eth2 on the reference
+  machine to get out.
 o Make sure you route between wickedbr0 and eth0
   and masquerade before getting out of eth0
+o Start a DHCP server like DNSmasq on wickedbr0.
 o Create two private networks, one will be used
   for eth0 and the other one for eth1
 o Create the two virtual machines.
