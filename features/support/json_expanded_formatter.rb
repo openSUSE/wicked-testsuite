@@ -63,7 +63,7 @@ module Cucumber
 
       def before_feature_element(feature_element)
         @outline_table = nil
-        if feature_element.is_a?(Ast::ScenarioOutline)
+        if feature_element.is_a?(Core::Ast::ScenarioOutline)
           @outline = true
           @feature_element = feature_element
         else
