@@ -87,7 +87,7 @@ twopence_command $target_sut "service wicked stop"
 twopence_command $target_sut "service wickedd stop"
 
 twopence_command $target_sut "rpm -qc wicked > /tmp/config-files"
-twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\")"
+twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\" | grep -v \"wicked-testsuite*\")"
 twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
 twopence_command $target_sut "rpm -ih /root/*wicked*.$sut_arch.rpm"
 
