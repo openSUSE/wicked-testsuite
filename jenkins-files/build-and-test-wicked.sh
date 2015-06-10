@@ -178,6 +178,7 @@ export TARGET_REF=$target_ref
 cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || failed="yes"
 
 twopence_extract $target_sut "/tmp/wicked-log.tgz" "$WORKSPACE/wicked-log.tgz"
+awk -i inplace -f $scripts/add-numbers.awk $WORKSPACE/wicked.json
 popd
 
 ### Remove VMs, but only if the tests did not fail
