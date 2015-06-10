@@ -1,5 +1,5 @@
 BEGIN {
-  # 0 = feature, 1 = background, 2 = scenario, 3 = step
+  # 0 = feature, 1 = background, 2 = scenario
   state=0
   scenario=0
   step=1
@@ -30,9 +30,11 @@ BEGIN {
     case "Then":
     case "But":
     case "And":
-      state=3
       step++
-      print "            \"keyword\": \"[" scenario "/" step "] " line "\","
+      if (state == 2)
+        print "            \"keyword\": \"[" scenario "/" step "] " line "\","
+      else
+        print $0
       break 
     default:
       print "Unknown keyword"
