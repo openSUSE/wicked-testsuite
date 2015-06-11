@@ -103,8 +103,22 @@ esac
 if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
-  $scripts/config-net.sh $JOB_NAME $ID 0
-  $scripts/config-net.sh $JOB_NAME $(($ID+50)) 1
+  # bridge names ('JOBNAME-brID' may be too long!) 
+  private1="test-br${ID}"
+  private2="test-br$((ID+50))"
+
+  # private 1
+  sudo brctl delbr $private1 || true
+  sudo ip link add name $private1 type bridge
+  sudo ip link set $private1 address "52:54:00:f3:25:${ID}"
+  sudo brctl stp $private1 on
+
+  # private 2
+  sudo brctl delbr $private2 || true
+  sudo ip link add name $private2 type bridge
+  sudo ip link set $private2 address "52:54:00:f3:25:$((ID+50))"
+  sudo brctl stp $private2 on
+
   rm -f $WORKSPACE/ref.qcow2
   cp /var/lib/jenkins/images/ref-$ref $WORKSPACE/ref.qcow2
   $scripts/config-ref.sh $JOB_NAME $ID x86_64

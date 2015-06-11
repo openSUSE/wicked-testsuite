@@ -1,6 +1,0 @@
-<network ipv6='yes'>
-  <name>@@NAME@@-@@ETHN@@</name>
-  <uuid>7018e388-1606-4518-831e-98454380a1@@ID@@</uuid>
-  <bridge name='virbr@@ID@@' stp='on' delay='0'/>
-  <mac address='52:54:00:f3:25:@@ID@@'/>
-</network>
