@@ -55,22 +55,8 @@ rm -f $WORKSPACE/*.qcow2
 cp $images/ref/$ref $WORKSPACE/ref.qcow2
 cp $images/sut/$sut $WORKSPACE/sut.qcow2
 
-# bridge names ('JOBNAME-brID' may be too long!) 
-private1="test-br${id}"
-private2="test-br$((id+50))"
-
-# private 1
-sudo brctl delbr $private1 || true
-sudo ip link add name $private1 type bridge
-sudo ip link set $private1 address "52:54:00:f3:25:${id}"
-sudo brctl stp $private1 on
-
-# private 2
-sudo brctl delbr $private2 || true
-sudo ip link add name $private2 type bridge
-sudo ip link set $private2 address "52:54:00:f3:25:$((id+50))"
-sudo brctl stp $private2 on
-
+$scripts/config-net.sh $name $id 0
+$scripts/config-net.sh $name $(($id+50)) 1
 $scripts/config-ref.sh $name $id $ref_arch
 $scripts/config-sut.sh $name $id $sut_arch
 
