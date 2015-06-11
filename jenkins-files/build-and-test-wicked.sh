@@ -47,6 +47,15 @@ case "$DISTRIBUTION" in
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     ;;
+  "SLES 12 SP1 (x86_64)")
+    bs_api=ibs
+    bs_proj=SUSE:SLE-12-SP1:GA
+    bs_repo=standard
+    bs_arch=x86_64
+    sut=SLES_12_SP1-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
+    ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:13.2:Update
