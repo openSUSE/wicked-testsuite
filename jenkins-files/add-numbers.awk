@@ -23,7 +23,7 @@ BEGIN {
       state=2
       scenario++
       step=1
-      print "        \"keyword\": \"[" scenario "] " line "\","
+      printf("        \"keyword\": \"[%03d] %s\",\n", scenario, line)
       break 
     case "Given":
     case "When":
@@ -32,12 +32,12 @@ BEGIN {
     case "And":
       step++
       if (state == 2)
-        print "            \"keyword\": \"[" scenario "/" step "] " line "\","
+        printf("            \"keyword\": \"[%03d/%03d] %s \",\n", scenario, step, line)
       else
         print $0
       break 
     default:
-      print "Unknown keyword"
+      print "Unknown keyword \"" line "\""
       exit 1
   }
 }
