@@ -552,7 +552,7 @@ When /^I start openvpn in tun mode on both machines$/ do
 # We test for both wicked and openvpn to be finished
 # This will go away when wicked can run scripts
   local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\"", "testuser"
+    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\""
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
@@ -648,7 +648,7 @@ When /^I start openvpn in tap mode on both machines$/ do
 # We test for both wicked and openvpn to be finished
 # This will go away when wicked can run scripts
   local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\"", "testuser"
+    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\""
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
