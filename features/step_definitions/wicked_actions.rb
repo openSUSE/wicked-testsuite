@@ -536,8 +536,23 @@ When /^I start openvpn in tun mode on both machines$/ do
     "test-files/tun/openvpn.conf", "/etc/openvpn/client.conf", \
     "root", false
   local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/tun/write-done.sh", "/run/openvpn/write-done.sh", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /run/openvpn/write-done.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "rm -f /run/openvpn/done"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start openvpn@client"
+  local.should == 0; remote.should == 0; command.should == 0
+# We test for both wicked and openvpn to be finished
+# This will go away when wicked can run scripts
+  local, remote, command = SUT.test_and_drop_results \
+    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\"", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
@@ -617,8 +632,23 @@ When /^I start openvpn in tap mode on both machines$/ do
     "test-files/tap/openvpn.conf", "/etc/openvpn/client.conf", \
     "root", false
   local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/tap/write-done.sh", "/run/openvpn/write-done.sh", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /run/openvpn/write-done.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "rm -f /run/openvpn/done"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start openvpn@client"
+  local.should == 0; remote.should == 0; command.should == 0
+# We test for both wicked and openvpn to be finished
+# This will go away when wicked can run scripts
+  local, remote, command = SUT.test_and_drop_results \
+    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\"", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
