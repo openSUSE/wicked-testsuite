@@ -719,9 +719,7 @@ When /^I create a gre interface from XML files$/ do
   else
     local, remote, command = SUT.test_and_drop_results \
       "wic.sh ifup --ifconfig /tmp/tests/gre.xml all"
-    local.should == 0;
-remote.should == 0;
-command.should == 0
+    local.should == 0; remote.should == 0; command.should == 0
   end
 end
 

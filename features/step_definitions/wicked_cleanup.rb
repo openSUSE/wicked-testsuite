@@ -231,18 +231,6 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # stop tunnels if any
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "ip link show", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "gre0:" or out.include? "gre0@" \
-    or out.include? "tunl0:" or out.include? "tunl0@" \
-    or out.include? "sit0:" or out.include? "sit0@"
-    local, remote, command = SUT.test_and_drop_results \
-      "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"
@@ -250,12 +238,6 @@ def prepareSut()
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wicked.service"
   local.should == 0; remote.should == 0; command.should == 0
-
-  # delete bridges if any
-  # not even sure it's needed
-  # local, remote, command = SUT.test_and_drop_results \
-  #   "for bridge in \$(brctl show | sed '1d; s/\\t.*//; /^$/d'); do wicked ifdown --delete \$bridge; done"
-  # local.should == 0; remote.should == 0; command.should == 0
 
   # ensure complete amnesia for wicked server
   local, remote, command = SUT.test_and_drop_results \
@@ -276,6 +258,18 @@ def prepareSut()
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd-nanny.service"
   local.should == 0; remote.should == 0; command.should == 0
+
+  # stop tunnels if any
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip link show", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "gre0:" or out.include? "gre0@" \
+    or out.include? "tunl0:" or out.include? "tunl0@" \
+    or out.include? "sit0:" or out.include? "sit0@"
+    local, remote, command = SUT.test_and_drop_results \
+      "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 
   # prepare tests directory and restart loopback interface
   local, remote, command = SUT.test_and_drop_results \
