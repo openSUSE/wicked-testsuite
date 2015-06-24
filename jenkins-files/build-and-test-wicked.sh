@@ -112,6 +112,7 @@ esac
 if [ "$ref" = "" ]; then
   twopence_command $target_ref "ip neigh flush all"
 else
+  export LIBVIRT_DEFAULT_URI=qemu:///system
   $scripts/config-net.sh $JOB_NAME $ID 0
   $scripts/config-net.sh $JOB_NAME $(($ID+50)) 1
   rm -f $WORKSPACE/ref.qcow2
