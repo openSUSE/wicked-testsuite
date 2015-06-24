@@ -22,6 +22,8 @@
 #     false
 #
 # Parameters from test suite, fixed:
+#   $BUILD_ROOT_PREFIX
+#     a valid path
 #   $NANNY
 #     with
 #     without
@@ -34,6 +36,13 @@
 set -x -e
 
 scripts=$(dirname $(readlink -m $0))
+
+### Default fixed test suite values
+
+[ -z "$BUILD_ROOT_PREFIX" ] && export BUILD_ROOT_PREFIX="/var/lib/jenkins/builds"
+[ -z "$NANNY" ] && export NANNY="without"
+[ -z "$SUBDIR" ] && export SUBDIR="cucumber"
+[ -z "$ID" ] && export ID="0"
 
 ### Determine build options and target test system
 
@@ -137,11 +146,11 @@ osc -A $bs_api build \
   --clean --local-package --debuginfo \
   --release=$release \
   --alternative-project $bs_proj \
-  --root $WORKSPACE/build-root/$bs_repo-$bs_arch \
+  --root $BUILD_ROOT_PREFIX/$JOB_NAME/$bs_repo-$bs_arch \
   $bs_repo $bs_arch wicked.spec
 popd
 
-rpms_out=$WORKSPACE/build-root/$bs_repo-$bs_arch/home/abuild/rpmbuild
+rpms_out=$BUILD_ROOT_PREFIX/$JOB_NAME/$bs_repo-$bs_arch/home/abuild/rpmbuild
 cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
 ls -lh RPMs
 
