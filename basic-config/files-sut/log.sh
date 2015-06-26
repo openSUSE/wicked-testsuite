@@ -14,6 +14,20 @@ function _usage
   exit 1
 }
 
+function _get_config
+{
+  echo "wicked show-config"
+  echo "------------------"
+  echo
+  wicked show-config
+
+  echo
+  echo "wicked show-config compat:/tmp/tests"
+  echo "------------------------------------"
+  echo
+  wicked show-config compat:/tmp/tests
+}
+
 function _reset
 {
   rm -rf   $logs
@@ -67,8 +81,9 @@ function _step_begin
   num=$(readlink $step | sed 's/^step_//')
   mkdir $scenario/step_$num
 
-  date +'%Y-%m-%d %T.%6N' > $step/date_begin
-  echo "$text"            > $step/name
+  date +'%Y-%m-%d %T.%6N'       > $step/date_begin
+  echo "$text"                  > $step/name
+  _get_config                   > $step/wicked_config_begin.log
 }
 
 function _step_end
@@ -82,7 +97,7 @@ function _step_end
   journalctl -b -o short-precise --since="$beginning" | tail -n +2 \
                                 > $step/journalctl.log
   wicked ifstatus --verbose all > $step/wicked_ifstatus.log
-  wicked show-config            > $step/wicked_config.log
+  _get_config                   > $step/wicked_config_end.log
   wicked show-xml               > $step/wicked_xml.log
   ip addr show                  > $step/ip_addr.log
   ip route show table all       > $step/ip_route.log
