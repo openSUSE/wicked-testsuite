@@ -1,0 +1,71 @@
+<interface>
+  <name>br2</name>
+
+  <bridge>
+    <stp>true</stp>
+    <forward-delay>15</forward-delay>
+    <ports>
+      <port>
+        <device>eth0</device>
+      </port>
+    </ports>
+  </bridge>
+
+  <ipv4:static>
+    <address>
+      <local>10.11.12.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:cafe:babe::123/64</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0.1</name>
+
+  <vlan>
+    <device>eth0</device>
+    <tag>1</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>172.16.1.123/16</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:c0de:ba5e:1::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0.42</name>
+
+  <vlan>
+    <device>eth0</device>
+    <tag>42</tag>
+  </vlan>
+
+  <ipv4:static>
+    <address>
+      <local>42.42.42.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:4242:4242::123/48</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>

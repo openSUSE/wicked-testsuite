@@ -525,6 +525,15 @@ Then /^br0\.1 should have the correct address$/ do
   out.should include "inet6 #{VLAN6_SUT0}"
 end
 
+Then /^eth0\.1 should have the correct address$/ do
+  SUT.test_and_drop_results "log.sh step \"Then eth0.1 should have the correct address\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev eth0.1", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet #{VLAN4_SUT0}"
+  out.should include "inet6 #{VLAN6_SUT0}"
+end
+
 Then /^I should be able to ping eth0\.1 on the other side$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping eth0.1 on the other side\""
   local, remote, command = SUT.test_and_drop_results \
@@ -535,6 +544,25 @@ Then /^I should be able to ping eth0\.1 on the other side$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+Then /^eth0\.42 should have the correct address$/ do
+  SUT.test_and_drop_results "log.sh step \"Then eth0.42 should have the correct address\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev eth0.42", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet #{V42_4_SUT}"
+  out.should include "inet6 #{V42_6_SUT}"
+end
+
+Then /^I should be able to ping eth0\.42 on the other side$/ do
+  SUT.test_and_drop_results "log.sh step \"Then I should be able to ping eth0.42 on the other side\""
+  local, remote, command = SUT.test_and_drop_results \
+    "ping -q -c1 -W1 #{V42_4_REF}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "ping6 -q -c1 -W1 #{V42_6_REF}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 Then /^br0 should have the correct address$/ do
   SUT.test_and_drop_results "log.sh step \"Then br0 should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
@@ -542,6 +570,24 @@ Then /^br0 should have the correct address$/ do
   local.should == 0; remote.should == 0; command.should == 0
   out.should include "inet #{VLAN4_SUT0}"
   out.should include "inet6 #{VLAN6_SUT0}"
+end
+
+Then /^br2 should have the correct address$/ do
+  SUT.test_and_drop_results "log.sh step \"Then br2 should have the correct address\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev br2", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet #{STAT4_SUT0}"
+  out.should include "inet6 #{STAT6_SUT0}"
+end
+
+Then /^I should be able to ping br2 on the other side$/ do
+  SUT.test_and_drop_results "log.sh step \"Then I should be able to ping br2 on the other side\""
+  local, remote, command = SUT.test_and_drop_results \
+    "ping -q -c1 -W1 #{STAT4_REF0}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "ping6 -q -c1 -W1 #{STAT6_REF0}", "testuser"
 end
 
 Then /^I should be able to ping eth1 on the other side$/ do

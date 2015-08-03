@@ -1665,6 +1665,78 @@ When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bo
   end
 end
 
+When /^I create eth0\.1\(eth0, 1\) and br2\(eth0\) and eth0\.42\(eth0, 42\) from legacy files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create eth0.1(eth0, 1) and br2(eth0) and eth0.42(eth0, 42) from legacy files\""
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup eth0.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-eth0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup eth0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "test-files/mix9/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/mix9/ifcfg-eth0.1", "/tmp/tests/ifcfg-eth0.1", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/mix9/ifcfg-br2", "/tmp/tests/ifcfg-br2", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/mix9/ifcfg-eth0.42", "/tmp/tests/ifcfg-eth0.42", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests eth0 eth0.1 br2 eth0.42"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create eth0.1\(eth0, 1\) and br2\(eth0\) and eth0.42\(eth0, 42\) from XML files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create eth0.1(eth0, 1) and br2(eth0) and eth0.42(eth0, 42) from XML files\""
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup eth0.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-eth0.42 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup eth0.42"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "test-files/mix9/mix9.xml", "/tmp/tests/mix9.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/mix9.xml eth0 eth0.1 br2 eth0.42"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/mix9.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} by ifreload\""
   local, remote, command = SUT.test_and_drop_results \

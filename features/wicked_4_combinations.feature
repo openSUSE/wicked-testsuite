@@ -105,3 +105,21 @@ Feature: Wicked 4 combinations
     And I should be able to ping bond0.42 on the other side
     And I should be able to ping bond0.73 on the other side
 
+  Scenario: vlan{Ethernet}, bridge{same nic}, vlan{same nic} from legacy ifcfg files
+    When I create eth0.1(eth0, 1) and br2(eth0) and eth0.42(eth0, 42) from legacy files
+    Then eth0.1 should have the correct address
+    And br2 should have the correct address
+    And eth0.42 should have the correct address
+    And I should be able to ping eth0.1 on the other side
+    And I should be able to ping br2 on the other side
+    And I should be able to ping eth0.42 on the other side
+
+  Scenario: vlan{Ethernet}, bridge{same nic}, vlan{same nic} from wicked XML files
+    When I create eth0.1(eth0, 1) and br2(eth0) and eth0.42(eth0, 42) from XML files
+    Then eth0.1 should have the correct address
+    And br2 should have the correct address
+    And eth0.42 should have the correct address
+    And I should be able to ping eth0.1 on the other side
+    And I should be able to ping br2 on the other side
+    And I should be able to ping eth0.42 on the other side
+
