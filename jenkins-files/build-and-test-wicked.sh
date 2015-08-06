@@ -127,7 +127,7 @@ if [ "$sut" = "" ]; then
 else
   rm -f $WORKSPACE/sut.qcow2
   cp /var/lib/jenkins/images/sut-$sut $WORKSPACE/sut.qcow2
-  $scripts/config-sut.sh $JOB_NAME $ID $vm_arch
+  $scripts/config-sut.sh $JOB_NAME $(($ID+50)) $vm_arch
 fi
 
 ### Build wicked with Open Build Service

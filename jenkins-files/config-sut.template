@@ -1,6 +1,6 @@
 <domain type='kvm'>
   <name>sut-@@NAME@@</name>
-  <uuid>fbcbf876-75a0-46f4-80fb-6fe21f1f84@@ID@@</uuid>
+  <uuid>0ee3f806-12db-530b-f2b0-1a8ae2f154@@ID@@</uuid>
   <memory unit='KiB'>542720</memory>
   <currentMemory unit='KiB'>542288</currentMemory>
   <vcpu placement='static'>1</vcpu>
@@ -45,13 +45,13 @@
     <controller type='usb' index='0'/>
     <controller type='pci' index='0' model='pci-root'/>
     <interface type='network'>
-      <mac address='52:54:00:73:a9:@@ID@@'/>
+      <mac address='52:54:00:d5:9b:@@ID@@'/>
       <source network='@@NAME@@-1'/>
       <model type='e1000'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
     </interface>
     <interface type='network'>
-      <mac address='52:54:00:21:24:@@ID@@'/>
+      <mac address='52:54:00:f6:9f:@@ID@@'/>
       <source network='@@NAME@@-0'/>
       <model type='rtl8139'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
@@ -69,7 +69,7 @@
     </channel>
     <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='vnc' port='60@@ID@@' autoport='no' listen='0.0.0.0'>
+    <graphics type='vnc' port='59@@ID@@' autoport='no' listen='0.0.0.0'>
       <listen type='address' address='0.0.0.0'/>
     </graphics>
     <sound model='ac97'>
