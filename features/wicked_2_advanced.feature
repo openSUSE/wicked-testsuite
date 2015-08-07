@@ -77,13 +77,11 @@ Feature: Wicked 2 advanced
 
   Scenario: Create a tun interface from legacy ifcfg files
     When I create a tun interface from legacy files
-    And I start openvpn in tun mode on both machines
     Then both machines should have a new tun1 card
     And I should be able to ping the other side of the layer 3 tunnel
 
   Scenario: Create a tun interface from wicked XML files
     When I create a tun interface from XML files
-    And I start openvpn in tun mode on both machines
     Then both machines should have a new tun1 card
     And I should be able to ping the other side of the layer 3 tunnel
 
@@ -91,17 +89,15 @@ Feature: Wicked 2 advanced
 
   Scenario: Create a tap interface from legacy ifcfg files
     When I create a tap interface from legacy files
-    And I start openvpn in tap mode on both machines
     Then both machines should have a new tap1 card
     And I should be able to ping the other side of the layer 2 tunnel
 
   Scenario: Create a tap interface from wicked XML files
     When I create a tap interface from XML files
-    And I start openvpn in tap mode on both machines
     Then both machines should have a new tap1 card
     And I should be able to ping the other side of the layer 2 tunnel
 
-#TODO: test for tun owner and group (boo#899985)
+#TODO: test for tap owner and group (boo#899985)
 
   Scenario: Create a gre interface from legacy ifcfg files
     When I create a gre interface from legacy files

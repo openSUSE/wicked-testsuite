@@ -3,6 +3,10 @@ TUNNEL='tap'
 STARTMODE='auto'
 BOOTPROTO='static'
 
+LINK_REQUIRED='no'
+PRE_UP_SCRIPT='systemd:openvpn@client.service'
+PRE_DOWN_SCRIPT='systemd:openvpn@client.service'
+
 IPADDR='10.5.55.123/32'
 REMOTE_IPADDR='10.5.55.1'
 IPADDR6='fd00:555:2368::123/128'

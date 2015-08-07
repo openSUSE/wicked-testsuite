@@ -474,12 +474,22 @@ end
 When /^I create a tun interface from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create a tun interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
+    "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "systemctl start openvpn@server"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup tun1"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote = SUT.inject_file \
+    "test-files/tun/openvpn.conf", "/etc/openvpn/client.conf", \
+    "root", false
+  local.should == 0; remote.should == 0
   local, remote = SUT.inject_file \
     "test-files/tun/ifcfg-tun1", "/tmp/tests/ifcfg-tun1", \
     "testuser", false
@@ -502,12 +512,22 @@ end
 When /^I create a tun interface from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create a tun interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
+    "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "systemctl start openvpn@server"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tun1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup tun1"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote = SUT.inject_file \
+    "test-files/tun/openvpn.conf", "/etc/openvpn/client.conf", \
+    "root", false
+  local.should == 0; remote.should == 0
   local, remote = SUT.inject_file \
     "test-files/tun/tun.xml", "/tmp/tests/tun.xml", \
     "testuser", false
@@ -523,52 +543,14 @@ When /^I create a tun interface from XML files$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I start openvpn in tun mode on both machines$/ do
-  SUT.test_and_drop_results "log.sh step \"When I start openvpn in tun mode on both machines\""
+When /^I create a tap interface from legacy files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create a tap interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -sf /etc/openvpn/server-tun.conf /etc/openvpn/server.conf"
+    "ln -sf /etc/openvpn/server-tap.conf /etc/openvpn/server.conf"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "systemctl start openvpn@server"
   local.should == 0; remote.should == 0; command.should == 0
-  #
-  local, remote = SUT.inject_file \
-    "test-files/tun/openvpn.conf", "/etc/openvpn/client.conf", \
-    "root", false
-  local.should == 0; remote.should == 0
-  local, remote = SUT.inject_file \
-    "test-files/tun/write-done.sh", "/run/openvpn/write-done.sh", \
-    "root", false
-  local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "chmod +x /run/openvpn/write-done.sh"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "rm -f /run/openvpn/done"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start openvpn@client"
-  local.should == 0; remote.should == 0; command.should == 0
-# We test for both wicked and openvpn to be finished
-# This will go away when wicked can run scripts
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\""
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "cat /tmp/tests/w_done", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out.should == "0\n"
-# WORKAROUND: wicked client does not currently wait for address to stop being tentative
-#             TO BE REMOVED AFTER GA-12
-local, remote, command = SUT.test_and_drop_results "wait_for_cmd_failure.sh \"ip address show tun1 | grep tentative\"", "testuser"
-local.should == 0; remote.should == 0; command.should == 0
-end
-
-When /^I create a tap interface from legacy files$/ do
-  SUT.test_and_drop_results "log.sh step \"When I create a tap interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -576,6 +558,10 @@ When /^I create a tap interface from legacy files$/ do
     "ifup tap1"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote = SUT.inject_file \
+    "test-files/tap/openvpn.conf", "/etc/openvpn/client.conf", \
+    "root", false
+  local.should == 0; remote.should == 0
   local, remote = SUT.inject_file \
     "test-files/tap/ifcfg-tap1", "/tmp/tests/ifcfg-tap1", \
     "testuser", false
@@ -598,12 +584,22 @@ end
 When /^I create a tap interface from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create a tap interface from XML files\""
   local, remote, command = REF.test_and_drop_results \
+    "ln -sf /etc/openvpn/server-tap.conf /etc/openvpn/server.conf"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "systemctl start openvpn@server"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-tap1 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup tap1"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  local, remote = SUT.inject_file \
+    "test-files/tap/openvpn.conf", "/etc/openvpn/client.conf", \
+    "root", false
+  local.should == 0; remote.should == 0
   local, remote = SUT.inject_file \
     "test-files/tap/tap.xml", "/tmp/tests/tap.xml", \
     "testuser", false
@@ -617,50 +613,6 @@ When /^I create a tap interface from XML files$/ do
   local, remote, command = SUT.test_and_drop_results \
     "wait_for_cmd_success.sh \"ip address show dev tap1\"", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-end
-
-When /^I start openvpn in tap mode on both machines$/ do
-  SUT.test_and_drop_results "log.sh step \"When I start openvpn in tap mode on both machines\""
-  local, remote, command = REF.test_and_drop_results \
-    "ln -sf /etc/openvpn/server-tap.conf /etc/openvpn/server.conf"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = REF.test_and_drop_results \
-    "systemctl start openvpn@server"
-  local.should == 0; remote.should == 0; command.should == 0
-  #
-  local, remote = SUT.inject_file \
-    "test-files/tap/openvpn.conf", "/etc/openvpn/client.conf", \
-    "root", false
-  local.should == 0; remote.should == 0
-  local, remote = SUT.inject_file \
-    "test-files/tap/write-done.sh", "/run/openvpn/write-done.sh", \
-    "root", false
-  local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "chmod +x /run/openvpn/write-done.sh"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "rm -f /run/openvpn/done"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start openvpn@client"
-  local.should == 0; remote.should == 0; command.should == 0
-# We test for both wicked and openvpn to be finished
-# This will go away when wicked can run scripts
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /run/openvpn/done\""
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test -f /tmp/tests/w_done\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "cat /tmp/tests/w_done", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out.should == "0\n"
-# WORKAROUND: wicked client does not currently wait for address to stop being tentative
-#             TO BE REMOVED AFTER GA-12
-local, remote, command = SUT.test_and_drop_results "wait_for_cmd_failure.sh \"ip address show tap1 | grep tentative\"", "testuser"
-local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I create a gre interface from legacy files$/ do

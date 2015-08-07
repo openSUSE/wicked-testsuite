@@ -3,6 +3,15 @@
 
   <tap />
 
+  <scripts>
+    <pre-up>
+      <script>systemd:openvpn@client.service</script>
+    </pre-up>
+    <post-up>
+      <script>systemd:openvpn@client.service</script>
+    </post-up>
+  </scripts>
+
   <ipv4:static>
     <address>
       <local>10.5.55.123/32</local>
