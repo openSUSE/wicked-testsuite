@@ -1849,6 +1849,26 @@ When /^I set up compat scripts for eth0 from XML file$/ do
     "chmod +x /tmp/tests/*.sh"
   local.should == 0; remote.should == 0; command.should == 0
 end
+
+When /^I set up scripts for eth0 with BOOTPROTO="([^"]*)"$/ do |mode|
+  SUT.test_and_drop_results "log.sh step \"When I set up scripts for eth0 with BOOTPROTO=#{mode}\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-bootproto/ifcfg-eth0-#{mode}", "/tmp/tests/ifcfg-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-bootproto/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-bootproto/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} by ifreload\""
   local, remote, command = SUT.test_and_drop_results \
@@ -2160,6 +2180,27 @@ When /^I retrigger DHCP requests$/ do
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup --ifconfig compat:/tmp/tests eth0"
   local.should == 0; remote.should == 0
+  case command
+  when 0
+    @setup_in_progress = false
+  when 162
+    @setup_in_progress = true
+  else
+    raise "Unexpected error code."
+  end
+end
+
+When /^I try to bring up eth0$/ do
+  SUT.test_and_drop_results "log.sh step \"When I try to bring up eth0\""
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifreload --ifconfig compat:/tmp/tests eth0"
+    local.should == 0; remote.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifreload --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0
+  end
   case command
   when 0
     @setup_in_progress = false

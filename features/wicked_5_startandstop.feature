@@ -13,49 +13,6 @@ Feature: Wicked 5 start and stop
     And the routing table is empty
     And there is no virtual interface left on any machine
 
-  Scenario: Ethernet - legacy file calling systemd scripts
-    When I set up systemd scripts for eth0 from legacy file
-    And I bring up eth0 from legacy file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  Scenario: Ethernet - XML file calling systemd scripts
-    When I set up systemd scripts for eth0 from XML file
-    And I bring up eth0 from XML file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  Scenario: Ethernet - legacy file calling wicked scripts
-    When I set up wicked scripts for eth0 from legacy file
-    And I bring up eth0 from legacy file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  Scenario: Ethernet - XML file calling wicked scripts
-    When I set up wicked scripts for eth0 from XML file
-    And I bring up eth0 from XML file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  Scenario: Ethernet - legacy file calling compat scripts
-    When I set up compat scripts for eth0 from legacy file
-    And I bring up eth0 from legacy file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  Scenario: Ethernet - XML file calling compat scripts
-    When I set up compat scripts for eth0 from XML file
-    And I bring up eth0 from XML file
-    And I bring down eth0
-    Then the scripts output should be as expected
-
-  # bsc#940239
-  Scenario: Ethernet - scripts in case of timeouts
-    When I set up compat scripts for eth0 from legacy file
-    And dhcpd is switched off
-    And I bring up eth0 from legacy file
-    Then post-up script should not be called
-
   Scenario: Bridge - ifreload
     When I create a bridge on interface eth1 from legacy files by ifreload
     Then there should be a new br1 card
