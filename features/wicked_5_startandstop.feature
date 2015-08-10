@@ -49,6 +49,13 @@ Feature: Wicked 5 start and stop
     And I bring down eth0
     Then the scripts output should be as expected
 
+  # bsc#940239
+  Scenario: Ethernet - scripts in case of timeouts
+    When I set up compat scripts for eth0 from legacy file
+    And dhcpd is switched off
+    And I bring up eth0 from legacy file
+    Then post-up script should not be called
+
   Scenario: Bridge - ifreload
     When I create a bridge on interface eth1 from legacy files by ifreload
     Then there should be a new br1 card

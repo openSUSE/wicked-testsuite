@@ -394,6 +394,14 @@ pre-down eth0
 post-down eth0$/
 end
 
+Then /^post-up script should not be called$/ do
+  SUT.test_and_drop_results "log.sh step \"Then the post-up script should not be called\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "cat /tmp/tests/results", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should_not include "post-up"
+end
+
 Then /^there should be a new ([^ ]*) card$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"Then there should be a new #{interface} card\""
   out, local, remote, command = SUT.test_and_store_results_together \
