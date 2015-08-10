@@ -1,6 +1,6 @@
+NAME='Mix9 bridge on eth0'
 STARTMODE='auto'
 BOOTPROTO='static'
-NAME='Bridge on eth0'
 
 BRIDGE='yes'
 BRIDGE_STP='on'

@@ -3,7 +3,6 @@ TUNNEL='tap'
 STARTMODE='auto'
 BOOTPROTO='static'
 
-LINK_REQUIRED='no'
 PRE_UP_SCRIPT='systemd:openvpn@client.service'
 PRE_DOWN_SCRIPT='systemd:openvpn@client.service'
 
