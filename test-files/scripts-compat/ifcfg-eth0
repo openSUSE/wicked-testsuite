@@ -1,0 +1,8 @@
+STARTMODE=auto
+BOOTPROTO=dhcp
+
+PRE_UP_SCRIPT=compat:suse:/tmp/tests/pre-up.sh
+POST_UP_SCRIPT=compat:suse:/tmp/tests/post-up.sh
+
+PRE_DOWN_SCRIPT=compat:suse:/tmp/tests/pre-down.sh
+POST_DOWN_SCRIPT=compat:suse:/tmp/tests/post-down.sh

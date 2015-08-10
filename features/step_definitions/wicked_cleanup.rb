@@ -232,9 +232,9 @@ def prepareSut()
   end
 
   # remove systemd scripts in any
-  out, local, remote, command = SUT.test_and_store_results_together \
+  out, err, local, remote, command = SUT.test_and_store_results_separately \
     "ls /usr/lib/systemd/system/*@eth0.service", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+  local.should == 0; remote.should == 0
   if out.include? "eth0.service"
     local, remote, command = SUT.test_and_drop_results \
       "rm /usr/lib/systemd/system/*@eth0.service"

@@ -3,16 +3,16 @@
 
   <scripts>
     <pre-up>
-      <script>systemd:pre@eth0.service</script>
+      <script>compat:suse:/tmp/tests/pre-up.sh</script>
     </pre-up>
     <post-up>
-      <script>systemd:post@eth0.service</script>
+      <script>compat:suse:/tmp/tests/post-up.sh</script>
     </post-up>
     <pre-down>
-      <script>systemd:pre@eth0.service</script>
+      <script>compat:suse:/tmp/tests/pre-down.sh</script>
     </pre-down>
     <post-down>
-      <script>systemd:post@eth0.service</script>
+      <script>compat:suse:/tmp/tests/post-down.sh</script>
     </post-down>
   </scripts>
 

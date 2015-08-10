@@ -1,7 +1,5 @@
 STARTMODE=auto
-BOOTPROTO=static
-
-IPADDR=10.11.12.123/24
+BOOTPROTO=dhcp
 
 PRE_UP_SCRIPT=systemd:pre@eth0.service
 POST_UP_SCRIPT=systemd:post@eth0.service

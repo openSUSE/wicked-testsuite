@@ -1,6 +1,7 @@
 [Unit]
 Description=Wicked testsuite pre-up,down service
 BindsTo=sys-subsystem-net-devices-eth0.device
+IgnoreOnIsolate=yes
 
 [Service]
 Type=oneshot

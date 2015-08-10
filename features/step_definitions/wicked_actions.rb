@@ -1742,6 +1742,113 @@ When /^I set up systemd scripts for eth0 from XML file$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+When /^I set up wicked scripts for eth0 from legacy file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up wicked scripts for eth0 from legacy file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I set up wicked scripts for eth0 from XML file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up wicked scripts for eth0 from XML file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/eth0.xml", "/tmp/tests/eth0.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-wicked/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I set up compat scripts for eth0 from legacy file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up compat scripts for eth0 from legacy file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I set up compat scripts for eth0 from XML file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up compat scripts for eth0 from XML file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/eth0.xml", "/tmp/tests/eth0.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-compat/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
+end
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} by ifreload\""
   local, remote, command = SUT.test_and_drop_results \
