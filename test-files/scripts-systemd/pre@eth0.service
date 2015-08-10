@@ -1,0 +1,9 @@
+[Unit]
+Description=Wicked testsuite pre-up,down service
+BindsTo=sys-subsystem-net-devices-eth0.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/tmp/tests/pre-up.sh
+ExecStop=/tmp/tests/pre-down.sh

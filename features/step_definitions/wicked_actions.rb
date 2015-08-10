@@ -49,10 +49,17 @@ When /^I bring up ([^ ]*)$/ do |interface|
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I bring up ([^ ]*) from config file$/ do |interface|
-  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from config file\""
+When /^I bring up ([^ ]*) from legacy file$/ do |interface|
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from legacy file\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup --ifconfig compat:/tmp/tests #{interface}"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
+When /^I bring up ([^ ]*) from XML file$/ do |interface|
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from XML file\""
+  local, remote, command = SUT.test_and_drop_results \
+    "wic.sh ifup --ifconfig /tmp/tests/#{interface}.xml #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
@@ -235,18 +242,6 @@ When /^I aggregate eth0 and eth1 from legacy files$/ do
     next
   end
   SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from legacy files\""
-# TODO: useless precaution?
-#       if yes, remove
-#       if not, apply each time we bond eth0 and eth1
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop dhcpd"
-#  local.should == 0; remote.should == 0; command.should == 0
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop radvd"
-#  local.should == 0; remote.should == 0; command.should == 0
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop dhcpd6"
-#  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -281,18 +276,6 @@ end
 
 When /^I aggregate eth0 and eth1 from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from XML files\""
-# TODO: useless precaution?
-#       if yes, remove
-#       if not, apply each time we bond eth0 and eth1
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop dhcpd"
-#  local.should == 0; remote.should == 0; command.should == 0
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop radvd"
-#  local.should == 0; remote.should == 0; command.should == 0
-#  local, remote, command = REF.test_and_drop_results \
-#    "systemctl stop dhcpd6"
-#  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
   local.should == 0; remote.should == 0; command.should == 0
@@ -1687,6 +1670,70 @@ When /^I create eth0.1\(eth0, 1\) and br2\(eth0\) and eth0.42\(eth0, 42\) from X
       "wic.sh ifup --ifconfig /tmp/tests/mix9.xml all"
     local.should == 0; remote.should == 0; command.should == 0
   end
+end
+
+When /^I set up systemd scripts for eth0 from legacy file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up systemd scripts for eth0 from legacy file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre@eth0.service", "/usr/lib/systemd/system/pre@eth0.service", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post@eth0.service", "/usr/lib/systemd/system/post@eth0.service", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+end
+
+When /^I set up systemd scripts for eth0 from XML file$/ do
+  SUT.test_and_drop_results "log.sh step \"When I set up systemd scripts for eth0 from XML file\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/eth0.xml", "/tmp/tests/eth0.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre@eth0.service", "/usr/lib/systemd/system/pre@eth0.service", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post@eth0.service", "/usr/lib/systemd/system/post@eth0.service", \
+    "root", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre-up.sh", "/tmp/tests/pre-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post-up.sh", "/tmp/tests/post-up.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/pre-down.sh", "/tmp/tests/pre-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/scripts-systemd/post-down.sh", "/tmp/tests/post-down.sh", \
+    "testuser", false
+  local.should == 0; remote.should == 0
 end
 
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|

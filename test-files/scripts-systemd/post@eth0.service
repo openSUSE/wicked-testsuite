@@ -1,0 +1,9 @@
+[Unit]
+Description=Wicked testsuite post-up,down service
+BindsTo=sys-subsystem-net-devices-eth0.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/tmp/tests/post-up.sh
+ExecStop=/tmp/tests/post-down.sh

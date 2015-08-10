@@ -1,0 +1,25 @@
+<interface>
+  <name>eth0</name>
+
+  <scripts>
+    <pre-up>
+      <script>systemd:pre@eth0.service</script>
+    </pre-up>
+    <post-up>
+      <script>systemd:post@eth0.service</script>
+    </post-up>
+    <pre-down>
+      <script>systemd:pre@eth0.service</script>
+    </pre-down>
+    <post-down>
+      <script>systemd:post@eth0.service</script>
+    </post-down>
+  </scripts>
+
+  <ipv4:static>
+    <address>
+      <local>10.11.12.123/24</local>
+    </address>
+  </ipv4:static>
+
+</interface>

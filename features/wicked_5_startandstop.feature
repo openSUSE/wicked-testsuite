@@ -13,6 +13,42 @@ Feature: Wicked 5 start and stop
     And the routing table is empty
     And there is no virtual interface left on any machine
 
+  Scenario: Ethernet - legacy file calling systemd scripts
+    When I set up systemd scripts for eth0 from legacy file
+    And I bring up eth0 from legacy file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
+  Scenario: Ethernet - XML file calling systemd scripts
+    When I set up systemd scripts for eth0 from XML file
+    And I bring up eth0 from XML file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
+  Scenario: Ethernet - legacy file calling wicked scripts
+    When I set up wicked scripts for eth0 from legacy file
+    And I bring up eth0 from legacy file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
+  Scenario: Ethernet - XML file calling wicked scripts
+    When I set up wicked scripts for eth0 from XML file
+    And I bring up eth0 from XML file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
+  Scenario: Ethernet - legacy file calling compat scripts
+    When I set up compat scripts for eth0 from legacy file
+    And I bring up eth0 from legacy file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
+  Scenario: Ethernet - XML file calling compat scripts
+    When I set up compat scripts for eth0 from XML file
+    And I bring up eth0 from XML file
+    And I bring down eth0
+    Then the scripts output should be as expected
+
   Scenario: Bridge - ifreload
     When I create a bridge on interface eth1 from legacy files by ifreload
     Then there should be a new br1 card
@@ -118,14 +154,14 @@ Feature: Wicked 5 start and stop
 
   Scenario: Complex layout - ifup twice
     When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files
-    And I bring up br1.42 from config file
+    And I bring up br1.42 from legacy file
     Then br1.42 should have the correct address
     And I should be able to ping bond0.42 on the other side
 
   Scenario: Complex layout - ifup 3 times
     When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files
-    And I bring up br1.42 from config file
-    And I bring up br1.42 from config file
+    And I bring up br1.42 from legacy file
+    And I bring up br1.42 from legacy file
     Then br1.42 should have the correct address
     And I should be able to ping bond0.42 on the other side
 
