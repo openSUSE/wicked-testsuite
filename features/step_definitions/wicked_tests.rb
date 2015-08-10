@@ -386,11 +386,11 @@ Then /^the scripts output should be as expected$/ do
   out, local, remote, command = SUT.test_and_store_results_together \
     "cat /tmp/tests/results", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-  out.should eql "pre-up eth0\n
-post-up eth0\n
-    inet 10.11.12.123/24 brd 10.11.12.255 scope global eth0\n
-pre-down eth0\n
-    inet 10.11.12.123/24 brd 10.11.12.255 scope global eth0\n
+  out.should eql "pre-up eth0
+post-up eth0
+    inet 10.11.12.123/24 brd 10.11.12.255 scope global eth0
+pre-down eth0
+    inet 10.11.12.123/24 brd 10.11.12.255 scope global eth0
 post-down eth0"
 end
 

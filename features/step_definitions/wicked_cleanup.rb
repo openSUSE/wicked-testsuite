@@ -231,6 +231,16 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # remove systemd scripts in any
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ls /usr/lib/systemd/system/*@eth0.service", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "eth0.service"
+    local, remote, command = SUT.test_and_drop_results \
+      "rm /usr/lib/systemd/system/*@eth0.service"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
   # start wicked daemons
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"

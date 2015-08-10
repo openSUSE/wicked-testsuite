@@ -1702,6 +1702,9 @@ When /^I set up systemd scripts for eth0 from legacy file$/ do
     "test-files/scripts-systemd/post-down.sh", "/tmp/tests/post-down.sh", \
     "testuser", false
   local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I set up systemd scripts for eth0 from XML file$/ do
@@ -1734,6 +1737,9 @@ When /^I set up systemd scripts for eth0 from XML file$/ do
     "test-files/scripts-systemd/post-down.sh", "/tmp/tests/post-down.sh", \
     "testuser", false
   local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "chmod +x /tmp/tests/*.sh"
+  local.should == 0; remote.should == 0; command.should == 0
 end
 
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
