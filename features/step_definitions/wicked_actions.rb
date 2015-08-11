@@ -481,15 +481,15 @@ When /^I create a tun interface from legacy files$/ do
     "test-files/tun/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
     "testuser", false
   local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev tun1\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests tun1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /^I create a tun interface from XML files$/ do
@@ -515,15 +515,15 @@ When /^I create a tun interface from XML files$/ do
     "test-files/tun/tun.xml", "/tmp/tests/tun.xml", \
     "testuser", false
   local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig /tmp/tests/tun.xml all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev tun1\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/tun.xml tun1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/tun.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /^I create a tap interface from legacy files$/ do
@@ -553,15 +553,15 @@ When /^I create a tap interface from legacy files$/ do
     "test-files/tap/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
     "testuser", false
   local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig compat:/tmp/tests all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev eth1 | grep #{STAT4_SUT1}\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev tap1\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests tap1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /^I create a tap interface from XML files$/ do
@@ -587,15 +587,15 @@ When /^I create a tap interface from XML files$/ do
     "test-files/tap/tap.xml", "/tmp/tests/tap.xml", \
     "testuser", false
   local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "(wic.sh ifup --ifconfig /tmp/tests/tap.xml all; echo $? >> /tmp/tests/w_done) > /dev/null 2>&1 &"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show eth1 | grep #{STAT4_SUT1}\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"ip address show dev tap1\"", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/tap.xml tap1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/tap.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
 end
 
 When /^I create a gre interface from legacy files$/ do
