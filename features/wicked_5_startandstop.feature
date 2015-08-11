@@ -215,6 +215,14 @@ Feature: Wicked 5 start and stop
     When I bring down sit1
     Then there should not be the sit1 card anymore
 
+  Scenario: OpenVPN tunnel - ifdown
+    When I create a tun interface from legacy files
+    Then both machines should have a new tun1 card
+    #
+    When I bring down tun1
+    Then there should not be the tun1 card anymore
+    And no more openvpn daemon should be left
+
 #  Scenario: Create many bridges and remove them
 #    When I create 512 bridges
 #    Then all 512 bridges should be UP
