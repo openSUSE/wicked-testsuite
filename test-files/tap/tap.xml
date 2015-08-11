@@ -7,9 +7,9 @@
     <pre-up>
       <script>systemd:openvpn@client.service</script>
     </pre-up>
-    <post-up>
+    <post-down>
       <script>systemd:openvpn@client.service</script>
-    </post-up>
+    </post-down>
   </scripts>
 
   <ipv4:static>
