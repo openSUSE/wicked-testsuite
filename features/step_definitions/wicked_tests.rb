@@ -436,8 +436,8 @@ Then /^the ([^ ]*) card should still be there$/ do |interface|
   out.should include ": #{interface}"
 end
 
-Then /^no more ([^ ]*) daemon should be left$/ do |process|
-  SUT.test_and_drop_results "log.sh step \"Then no more #{process} daemon should be left\""
+Then /^the ([^ ]*) daemon should not be running anymore$/ do |process|
+  SUT.test_and_drop_results "log.sh step \"Then the #{process} daemon should not be running anymore\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ps aux | grep -v grep | grep #{process}", "testuser"
   local.should == 0; remote.should == 0

@@ -221,7 +221,7 @@ Feature: Wicked 5 start and stop
     #
     When I bring down tun1
     Then there should not be the tun1 card anymore
-    And no more openvpn daemon should be left
+    And the openvpn daemon should not be running anymore
 
 #  Scenario: Create many bridges and remove them
 #    When I create 512 bridges
