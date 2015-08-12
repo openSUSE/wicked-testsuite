@@ -63,7 +63,7 @@ Install an operating system. You need at least a 3.7 kernel
 on the reference machine (because of IPv6 NAT).
 
 We suggest using:
-o openSUSE 13.1 on the reference machine,
+o openSUSE 13.2 on the reference machine,
 o SLES 12 on the system under tests.
 
 There's no need for a separate home partition.
@@ -89,7 +89,8 @@ On the reference server only:
 o Install radvd, dhcp-server, tcpdump, and openvpn
 
 On the system under tests only:
-o Install gdb, openvpn, and ndisc6
+o Install gdb, ndisc6, openvpn,
+  openvswitch, and openvswitch-switch
 
 Do the basic network and files configuration:
 o Run the scripts basic-config/setup-sut.sh

@@ -454,6 +454,60 @@ When /^I send an ARP ping to the reference machine$/ do
   local.should == 0; remote.should == 0
 end
 
+When /^I create an OVS bridge from legacy files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create an OVS bridge from legacy files\""
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start openvswitch"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/ovs-bridge/ifcfg-ovsbr1", "/tmp/tests/ifcfg-ovsbr1", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/ovs-bridge/ifcfg-dummy1", "/tmp/tests/ifcfg-dummy1", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_LOWERDEVS)
+    local, remote = SUT.inject_file \
+      "test-files/ovs-bridge/ifcfg-ovs-system", "/tmp/tests/ifcfg-ovs-system", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+    local, remote = SUT.inject_file \
+      "test-files/ovs-bridge/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+  end
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests ovsbr1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I create an OVS bridge from XML files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create an OVS bridge from XML files\""
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start openvswitch"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/ovs-bridge/ovs-bridge.xml", "/tmp/tests/ovs-bridge.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/ovs-bridge.xml ovsbr1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/ovs-bridge.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
 When /^I create a tun interface from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create a tun interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \

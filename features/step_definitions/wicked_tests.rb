@@ -479,6 +479,29 @@ Then /^I should receive the answer of the ARP ping on \/dev\/tapX$/ do
   out.should include "Success listening to tap device"
 end
 
+Then /^the OVS bridge should have the correct address$/ do
+  SUT.test_and_drop_results "log.sh step \"Then the OVS bridge should have the correct address\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev ovsbr1", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet #{OVS_4_SUT1}"
+  out.should include "inet6 #{OVS_6_SUT1}"
+end
+
+Then /^I should be able to ping through the OVS bridge$/ do
+  SUT.test_and_drop_results "log.sh step \"Then I should be able to ping through the OVS bridge\""
+# WORKAROUND: wicked does not wait for proper completion before it gives control back
+  local, remote, command = SUT.test_and_drop_results \
+    "sleep 2", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "ping -q -c1 -W1 #{STAT4_REF1} -I ovsbr1", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "ping6 -q -c1 -W1 #{STAT6_REF1} -I ovsbr1", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+end
+
 Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the layer 3 tunnel\""
   local, remote, command = SUT.test_and_drop_results \

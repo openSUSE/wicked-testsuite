@@ -221,13 +221,18 @@ end
 # wicked is used to do that -- that sounds deeply wrong, but it appeared there was no way around
 # besides, this code is very convoluted - again, no way around
 def prepareSut()
-  # stop openvpn if started
+  # stop openvpn and openvswitch if started
   out, local, remote, command = SUT.test_and_store_results_together \
     "ps aux", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   if out.include? "openvpn"
     local, remote, command = SUT.test_and_drop_results \
       "systemctl stop openvpn@client"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+  if out.include? "ovs-vswitchd"
+    local, remote, command = SUT.test_and_drop_results \
+      "systemctl stop openvswitch"
     local.should == 0; remote.should == 0; command.should == 0
   end
 
@@ -269,15 +274,16 @@ def prepareSut()
     "systemctl start wickedd-nanny.service"
   local.should == 0; remote.should == 0; command.should == 0
 
-  # stop tunnels if any
+  # stop tunnels and OVS switches if any
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "gre0:" or out.include? "gre0@" \
+  if out.include? "ovs-system:" \
+    or out.include? "gre0:" or out.include? "gre0@" \
     or out.include? "tunl0:" or out.include? "tunl0@" \
     or out.include? "sit0:" or out.include? "sit0@"
     local, remote, command = SUT.test_and_drop_results \
-      "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
+      "modprobe -r openvswitch ip_gre gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
 

@@ -29,3 +29,6 @@ chmod ugo+rx /usr/local/bin/check_macvtap
 
 ln -sf /etc/sysconfig/network/dhcp-keep-leases /etc/sysconfig/network/dhcp
 
+ovs-vsctl add-br ovsbr1
+ovs-vsctl add-port ovsbr1 eth1
+ovs-vsctl add-port ovsbr1 dummy1

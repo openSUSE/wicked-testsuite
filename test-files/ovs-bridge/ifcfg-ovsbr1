@@ -1,0 +1,7 @@
+NAME='OVS Bridge'
+STARTMODE='auto'
+BOOTPROTO='static'
+
+IPADDR='172.16.200.200/16'
+
+IPADDR6='fd00:c0de:ba5e:200::200/48'

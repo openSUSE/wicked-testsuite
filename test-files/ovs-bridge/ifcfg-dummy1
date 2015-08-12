@@ -1,2 +1,4 @@
 STARTMODE='hotplug'
 BOOTPROTO='none'
+
+LLADDR='42:41:40:3F:3E:3D'

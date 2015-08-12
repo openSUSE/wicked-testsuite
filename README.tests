@@ -57,7 +57,7 @@ br1 = eth1 + dummy1
 
 static tests           172.16/16              fd00:c0de:ba5e::/48
                        ref: .0.1              ref: ::1
-                       sut: .100.200          sut: ::100:200
+                       sut: .100.200          sut: :100::200
 
 macvtap -----------------------------------------------------------------------
 macvtap1 = eth1 MAC 0e:0e:0e:0e:0e:0e
@@ -104,6 +104,15 @@ sit1 = eth1 + SIT encapsulation
 static tests           N/A                    /128
                                               ref: fd00:333::1
                                               sut: fd00:333::123
+
+OVS bridge --------------------------------------------------------------------
+ovsbr1 = eth1 + dummy1
+
+                       IPv4                   IPv6
+
+static tests           172.16/16              fd00:c0de:ba5e::/48
+                       ref: .0.1              ref: ::1
+                       sut: .200.200          sut: :200::200
 
 
 3 - Physical interfaces tests
