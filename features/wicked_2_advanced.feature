@@ -29,7 +29,7 @@ Feature: Wicked 2 advanced
 
   Scenario: Hotplug constituants of aggregated links
     Given nanny is enabled
-    # WORKAROUND
+    # WORKAROUND to problem with virtualization
     And the system under tests in running on real hardware
     When I aggregate eth0 and eth1 from legacy files
     And I deconnect violently eth1
@@ -76,12 +76,14 @@ Feature: Wicked 2 advanced
     And I should receive the answer of the ARP ping on /dev/tapX
 
   Scenario: Create an OVS bridge from legacy ifcfg files
+    Given nanny is enabled
     When I create an OVS bridge from legacy files
     Then there should be a new ovsbr1 card
     And the OVS bridge should have the correct address
     And I should be able to ping through the OVS bridge
 
   Scenario: Create an OVS bridge from wicked XML files
+    Given nanny is enabled
     When I create an OVS bridge from XML files
     Then there should be a new ovsbr1 card
     And the OVS bridge should have the correct address

@@ -480,6 +480,11 @@ Then /^I should receive the answer of the ARP ping on \/dev\/tapX$/ do
 end
 
 Then /^the OVS bridge should have the correct address$/ do
+  if @skip_when_no_hotplug
+    puts "(skipped)"
+    sleep 1
+    next
+  end
   SUT.test_and_drop_results "log.sh step \"Then the OVS bridge should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev ovsbr1", "testuser"
@@ -489,6 +494,11 @@ Then /^the OVS bridge should have the correct address$/ do
 end
 
 Then /^I should be able to ping through the OVS bridge$/ do
+  if @skip_when_no_hotplug
+    puts "(skipped)"
+    sleep 1
+    next
+  end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping through the OVS bridge\""
 # WORKAROUND: wicked does not wait for proper completion before it gives control back
 #  local, remote, command = SUT.test_and_drop_results \
