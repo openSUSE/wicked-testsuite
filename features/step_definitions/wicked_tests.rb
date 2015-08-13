@@ -513,10 +513,11 @@ Then /^I should be able to ping through the OVS bridge$/ do
     next
   end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping through the OVS bridge\""
-# WORKAROUND: wicked does not wait for proper completion before it gives control back
-#  local, remote, command = SUT.test_and_drop_results \
-#    "sleep 2", "testuser"
-#  local.should == 0; remote.should == 0; command.should == 0
+# WORKAROUND of openvswitch bug bsc#941466:
+#  openvswitch does not wait for proper completion before it gives control back
+  local, remote, command = SUT.test_and_drop_results \
+    "sleep 2", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF1} -I ovsbr1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
