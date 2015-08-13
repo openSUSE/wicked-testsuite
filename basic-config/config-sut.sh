@@ -23,14 +23,9 @@ cp ./files-sut/dhcp-release-leases     /etc/sysconfig/network/dhcp-release-lease
 cp ./files-sut/ifcfg-eth0              /etc/sysconfig/network/ifcfg-eth0
 cp ./files-sut/ifcfg-eth1              /etc/sysconfig/network/ifcfg-eth1
 cp ./files-sut/ifroute-eth1            /etc/sysconfig/network/ifroute-eth1
+cp ./files-sut/conf.db                 /etc/openvswitch/conf.db
 
 chmod ugo+rx /usr/local/bin/*.sh
 chmod ugo+rx /usr/local/bin/check_macvtap
 
 ln -sf /etc/sysconfig/network/dhcp-keep-leases /etc/sysconfig/network/dhcp
-
-systemctl start openvswitch
-ovs-vsctl add-br ovsbr1
-ovs-vsctl add-port ovsbr1 eth1
-ovs-vsctl add-port ovsbr1 dummy1
-systemctl disable openvswitch
