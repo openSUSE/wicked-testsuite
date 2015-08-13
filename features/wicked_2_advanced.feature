@@ -79,6 +79,8 @@ Feature: Wicked 2 advanced
     Given nanny is enabled
     When I create an OVS bridge from legacy files
     Then there should be a new ovsbr1 card
+#    And eth1 should be part of the OVS bridge
+#    And dummy1 should be part of the OVS bridge
     And the OVS bridge should have the correct address
     And I should be able to ping through the OVS bridge
 
@@ -86,8 +88,10 @@ Feature: Wicked 2 advanced
     Given nanny is enabled
     When I create an OVS bridge from XML files
     Then there should be a new ovsbr1 card
-    And the OVS bridge should have the correct address
-    And I should be able to ping through the OVS bridge
+    And eth1 should be part of the OVS bridge
+    And dummy1 should be part of the OVS bridge
+#    And the OVS bridge should have the correct address
+#    And I should be able to ping through the OVS bridge
 
   Scenario: Create a tun interface from legacy ifcfg files
     When I create a tun interface from legacy files

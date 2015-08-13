@@ -479,6 +479,19 @@ Then /^I should receive the answer of the ARP ping on \/dev\/tapX$/ do
   out.should include "Success listening to tap device"
 end
 
+Then /^([^ ]*) should be part of the OVS bridge$/ do |interface|
+  if @skip_when_no_hotplug
+    puts "(skipped)"
+    sleep 1
+    next
+  end
+  SUT.test_and_drop_results "log.sh step \"Then #{interface} should be part of the OVS bridge\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev #{interface}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "master ovs-system"
+end
+
 Then /^the OVS bridge should have the correct address$/ do
   if @skip_when_no_hotplug
     puts "(skipped)"
