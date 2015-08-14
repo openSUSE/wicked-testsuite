@@ -101,7 +101,7 @@ o manually:
 o use rpm packages:
   * Add the following repository to both systems:
     - 'zypper ar http://download.opensuse.org/repositories/network:/wicked:/testsuite/<DISTRIBUTION>/ \
-       'wicked-testsuite-repo'
+       "wicked-testsuite-repo"'
   * On the reference server only:
     - execute 'zypper in wicked-testsuite-ref'
   * On the system under tests only:
