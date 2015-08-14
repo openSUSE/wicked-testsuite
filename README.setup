@@ -85,19 +85,27 @@ o Install twopence_test_server in /root directory on
   those machines, as described in Twopence's README
   (install it for example with scp).
 
-On the reference server only:
-o Install radvd, dhcp-server, tcpdump, and openvpn
-
-On the system under tests only:
-o Install gdb, ndisc6, openvpn,
-  openvswitch, and openvswitch-switch
-
-Do the basic network and files configuration:
-o Run the scripts basic-config/setup-sut.sh
-  and basic-config/setup-ref.sh
-  (you might need to change $ref and $sut variables
-   in those scripts to accomodate your setup)
-
+You have two options to set up the basic network and
+do the files configuration on system under test and the
+reference system:
+o manually:
+  * On the reference server only:
+    - Install radvd, dhcp-server, tcpdump and openvpn
+    - checkout the images-config/ directory and execute
+      config-sut.sh
+  * On the system under tests only:
+    - Install gdb, ndisc6, openvpn,
+      openvswitch and openvswitch-switch
+    - checkout the images-config/ directory and execute
+      config-ref.sh
+o use rpm packages:
+  * Add the following repository to both systems:
+    - 'zypper ar http://download.opensuse.org/repositories/network:/wicked:/testsuite/<DISTRIBUTION>/ \
+       'wicked-testsuite-repo'
+  * On the reference server only:
+    - execute 'zypper in wicked-testsuite-ref'
+  * On the system under tests only:
+    - execute 'zypper in wicked-testsuite-sut'
 
 Running the tests
 =================
