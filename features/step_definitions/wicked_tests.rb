@@ -480,11 +480,6 @@ Then /^I should receive the answer of the ARP ping on \/dev\/tapX$/ do
 end
 
 Then /^([^ ]*) should be part of the OVS bridge$/ do |interface|
-  if @skip_when_no_hotplug
-    puts "(skipped)"
-    sleep 1
-    next
-  end
   SUT.test_and_drop_results "log.sh step \"Then #{interface} should be part of the OVS bridge\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev #{interface}", "testuser"
@@ -493,11 +488,6 @@ Then /^([^ ]*) should be part of the OVS bridge$/ do |interface|
 end
 
 Then /^the OVS bridge should have the correct address$/ do
-  if @skip_when_no_hotplug
-    puts "(skipped)"
-    sleep 1
-    next
-  end
   SUT.test_and_drop_results "log.sh step \"Then the OVS bridge should have the correct address\""
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip address show dev ovsbr1", "testuser"
@@ -507,17 +497,11 @@ Then /^the OVS bridge should have the correct address$/ do
 end
 
 Then /^I should be able to ping through the OVS bridge$/ do
-  if @skip_when_no_hotplug
-    puts "(skipped)"
-    sleep 1
-    next
-  end
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping through the OVS bridge\""
-# WORKAROUND of openvswitch bug bsc#941466:
-#  openvswitch does not wait for proper completion before it gives control back
-  local, remote, command = SUT.test_and_drop_results \
-    "sleep 2", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
+# WORKAROUND for bsc#941466
+#  local, remote, command = SUT.test_and_drop_results \
+#    "sleep 2", "testuser"
+#  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF1} -I ovsbr1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
