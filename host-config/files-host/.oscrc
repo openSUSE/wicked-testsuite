@@ -1,0 +1,15 @@
+[general]
+apiurl = https://api.opensuse.org
+plaintext_passwd = 0
+
+[https://api.suse.de]
+aliases = ibs
+trusted_prj = SUSE:SLE-12:GA SUSE:SLE-12:Update SUSE:SLEnkins:ruby SUSE:SLEnkins:jenkins SUSE:SLEnkins
+user = foo
+pass = bar
+
+[https://api.opensuse.org]
+aliases = obs
+trusted_prj = openSUSE:13.2 openSUSE:Factory openSUSE:openSUSE:Tumbleweed
+user = foo
+pass = bar
