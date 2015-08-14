@@ -23,6 +23,7 @@ cp ./files-sut/dhcp-release-leases     /etc/sysconfig/network/dhcp-release-lease
 cp ./files-sut/ifcfg-eth0              /etc/sysconfig/network/ifcfg-eth0
 cp ./files-sut/ifcfg-eth1              /etc/sysconfig/network/ifcfg-eth1
 cp ./files-sut/ifroute-eth1            /etc/sysconfig/network/ifroute-eth1
+mkdir -p /etc/openvswitch
 cp ./files-sut/conf.db                 /etc/openvswitch/conf.db
 
 chmod ugo+rx /usr/local/bin/*.sh
