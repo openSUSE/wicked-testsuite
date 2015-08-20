@@ -508,6 +508,65 @@ When /^I create an OVS bridge from XML files$/ do
   end
 end
 
+When /^I team together eth0 and eth1 from legacy files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 from legacy files\""
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup bond0"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "test-files/teaming/ifcfg-team0", "/tmp/tests/ifcfg-team0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_LOWERDEVS)
+    local, remote = SUT.inject_file \
+      "test-files/teaming/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+    local, remote = SUT.inject_file \
+      "test-files/teaming/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+  end
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests team0"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
+When /^I team together eth0 and eth1 from XML files$/ do
+  SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 from XML files\""
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup bond0"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote = SUT.inject_file \
+    "test-files/teaming/teaming.xml", "/tmp/tests/teaming.xml", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  #
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/teaming.xml team0"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig /tmp/tests/teaming.xml all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
 When /^I create a tun interface from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create a tun interface from legacy files\""
   local, remote, command = REF.test_and_drop_results \

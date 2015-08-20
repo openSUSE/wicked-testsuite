@@ -171,6 +171,8 @@ When /^there is no virtual interface left on any machine$/ do
   outsut.should_not include "ovsbr1:"
   outsut.should_not include "ovs-system:"
   #
+  outsut.should_not include "team0:"
+  #
   outref.should_not include "tun1:"
   outsut.should_not include "tun1:"
   #

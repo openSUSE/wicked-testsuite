@@ -510,6 +510,14 @@ Then /^I should be able to ping through the OVS bridge$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+Then /^([^ ]*) should be part of the team$/ do |interface|
+  SUT.test_and_drop_results "log.sh step \"Then #{interface} should be part of the team\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev #{interface}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "master team0"
+end
+
 Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the layer 3 tunnel\""
   local, remote, command = SUT.test_and_drop_results \

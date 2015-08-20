@@ -287,6 +287,16 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # stop teams if any
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "lsmod"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "team"
+    local, remote, command = SUT.test_and_drop_results \
+      "modprobe -r team_mode_loadbalance team_mode_roundrobin team_mode_activebackup team_mode_random team_mode_broadcast team"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
   # prepare tests directory and restart loopback interface
   local, remote, command = SUT.test_and_drop_results \
     "rm -rf /tmp/tests"

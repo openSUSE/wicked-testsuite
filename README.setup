@@ -85,7 +85,7 @@ o Install twopence_test_server in /root directory on
   those machines, as described in Twopence's README
   (install it for example with scp).
 
-You have two options to set up the basic network and
+There are two ways to set up the basic network and
 do the files configuration on system under test and the
 reference system:
 o manually:
@@ -95,10 +95,11 @@ o manually:
       config-sut.sh
   * On the system under tests only:
     - Install gdb, ndisc6, openvpn,
-      openvswitch and openvswitch-switch
+      openvswitch, openvswitch-switch,
+      libteam-tools, libteam5, libteamdctl0, and kernel-*-extra
     - checkout the images-config/ directory and execute
       config-ref.sh
-o use rpm packages:
+o with rpm packages:
   * Add the following repository to both systems:
     - 'zypper ar http://download.opensuse.org/repositories/network:/wicked:/testsuite/<DISTRIBUTION>/ \
        "wicked-testsuite-repo"'
@@ -106,6 +107,7 @@ o use rpm packages:
     - execute 'zypper in wicked-testsuite-ref'
   * On the system under tests only:
     - execute 'zypper in wicked-testsuite-sut'
+
 
 Running the tests
 =================

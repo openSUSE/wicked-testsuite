@@ -1,0 +1,37 @@
+<interface>
+  <name>team0</name>
+  <team>
+    <runner name="roundrobin" />
+    <link_watch />
+    <ports>
+      <port>
+        <device>eth0</device>
+        <queue_id>0</queue_id>
+      </port>
+      <port>
+        <device>eth1</device>
+        <queue_id>1</queue_id>
+      </port>
+    </ports>
+  </team>
+
+  <ipv4:static>
+    <address>
+      <local>192.168.50.123/24</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:deca:fbad:50::123/64</local>
+    </address>
+  </ipv6:static>
+</interface>
+
+<interface>
+  <name>eth0</name>
+</interface>
+
+<interface>
+  <name>eth1</name>
+</interface>

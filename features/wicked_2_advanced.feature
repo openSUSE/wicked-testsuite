@@ -91,6 +91,20 @@ Feature: Wicked 2 advanced
     And the OVS bridge should have the correct address
     And I should be able to ping through the OVS bridge
 
+  Scenario: Create a team interface from legacy ifcfg files
+    When I team together eth0 and eth1 from legacy files
+    Then there should be a new team0 card
+    And eth0 should be part of the team
+    And eth1 should be part of the team
+    And I should be able to ping the other side of the aggregated link
+
+  Scenario: Create a team interface from wicked XML files
+    When I team together eth0 and eth1 from XML files
+    Then there should be a new team0 card
+    And eth0 should be part of the team
+    And eth1 should be part of the team
+    And I should be able to ping the other side of the aggregated link
+
   Scenario: Create a tun interface from legacy ifcfg files
     When I create a tun interface from legacy files
     Then both machines should have a new tun1 card
