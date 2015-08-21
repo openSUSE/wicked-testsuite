@@ -1,7 +1,7 @@
 <interface>
   <name>team0</name>
   <team>
-    <runner name="roundrobin" />
+    <runner name="activebackup" />
     <link_watch />
     <ports>
       <port>

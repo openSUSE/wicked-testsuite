@@ -78,7 +78,7 @@
   <name>bond0</name>
 
   <bond>
-    <mode>active-backup</mode>
+    <mode>balance-tlb</mode>
     <miimon>
       <frequency>100</frequency>
     </miimon>

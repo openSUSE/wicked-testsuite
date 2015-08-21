@@ -44,7 +44,7 @@
   <name>bond0</name>
 
   <bond>
-    <mode>active-backup</mode>
+    <mode>802.3ad</mode>
     <miimon>
       <frequency>100</frequency>
     </miimon>

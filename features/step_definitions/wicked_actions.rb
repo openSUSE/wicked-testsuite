@@ -243,7 +243,7 @@ When /^I aggregate eth0 and eth1 from legacy files$/ do
   end
   SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-rr /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -277,7 +277,7 @@ end
 When /^I aggregate eth0 and eth1 from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I aggregate eth0 and eth1 from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-rr /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -511,7 +511,7 @@ end
 When /^I team together eth0 and eth1 from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-ab /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -545,7 +545,7 @@ end
 When /^I team together eth0 and eth1 from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-ab /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1372,7 +1372,7 @@ end
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br1(bond0(eth0, eth1), dummy1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-xor /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1414,7 +1414,7 @@ end
 When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br1(bond0(eth0, eth1), dummy1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-xor /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1438,7 +1438,7 @@ end
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-bc /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1490,7 +1490,7 @@ end
 When /^I create br1.42\(br1\(bond0\(eth0, eth1\), dummy1\), 42\) from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br1.42(br1(bond0(eth0, eth1), dummy1), 42) from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-bc /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1520,7 +1520,7 @@ end
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-ieee /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1574,7 +1574,7 @@ end
 When /^I create bond0.42\(bond0\(eth0, eth1\), 42\) and bond0.73\(bond0, 73\) from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create bond0.42(bond0(eth0, eth1), 42) and bond0.73(bond0, 73) from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-ieee /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1610,7 +1610,7 @@ end
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-tlb /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
@@ -1680,7 +1680,7 @@ end
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from XML files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0 /etc/sysconfig/network/"
+    "ln -s pool/ifcfg-bond0-tlb /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"

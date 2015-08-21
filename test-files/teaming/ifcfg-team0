@@ -1,7 +1,7 @@
 STARTMODE=auto
 BOOTPROTO=static
 
-TEAM_RUNNER=roundrobin
+TEAM_RUNNER=activebackup
 TEAM_PORT_DEVICE=eth0
 TEAM_PORT_DEVICE_1=eth1
 

@@ -1,4 +1,3 @@
-NAME='Bond 0'
 STARTMODE='manual'
 BOOTPROTO='static'
 
@@ -6,3 +5,6 @@ BONDING_MASTER='yes'
 BONDING_SLAVE_0='eth0'
 BONDING_SLAVE_1='eth1'
 BONDING_MODULE_OPTS='mode=broadcast miimon=100'
+
+IPADDR='192.168.50.1/24'
+IPADDR6='fd00:deca:fbad:50::1/64'

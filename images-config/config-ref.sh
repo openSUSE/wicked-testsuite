@@ -9,7 +9,12 @@ cp ./files-ref/ifcfg-eth0              /etc/sysconfig/network/ifcfg-eth0
 cp ./files-ref/ifcfg-eth1              /etc/sysconfig/network/ifcfg-eth1
 cp ./files-ref/ifcfg-eth2              /etc/sysconfig/network/ifcfg-eth2
 cp ./files-ref/ifroute-eth1            /etc/sysconfig/network/ifroute-eth1
-cp ./files-ref/ifcfg-bond0             /etc/sysconfig/network/pool/ifcfg-bond0
+cp ./files-ref/ifcfg-bond0-rr          /etc/sysconfig/network/pool/ifcfg-bond0-rr
+cp ./files-ref/ifcfg-bond0-ab          /etc/sysconfig/network/pool/ifcfg-bond0-ab
+cp ./files-ref/ifcfg-bond0-xor         /etc/sysconfig/network/pool/ifcfg-bond0-xor
+cp ./files-ref/ifcfg-bond0-bc          /etc/sysconfig/network/pool/ifcfg-bond0-bc
+cp ./files-ref/ifcfg-bond0-ieee        /etc/sysconfig/network/pool/ifcfg-bond0-ieee
+cp ./files-ref/ifcfg-bond0-tlb         /etc/sysconfig/network/pool/ifcfg-bond0-tlb
 cp ./files-ref/ifcfg-bond1             /etc/sysconfig/network/pool/ifcfg-bond1
 cp ./files-ref/ifcfg-eth0.42           /etc/sysconfig/network/pool/ifcfg-eth0.42
 cp ./files-ref/ifcfg-eth1.42           /etc/sysconfig/network/pool/ifcfg-eth1.42
