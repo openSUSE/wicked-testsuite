@@ -1610,7 +1610,7 @@ end
 When /^I create br42\(bond0.42\(bond0\(eth0, eth1\), 42\), dummy0\) and br73\(bond0.73\(bond0, 73\), dummy1\) from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create br42(bond0.42(bond0(eth0, eth1), 42), dummy0) and br73(bond0.73(bond0, 73), dummy1) from legacy files\""
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0-tlb /etc/sysconfig/network/ifcfg-bond0"
+    "ln -s pool/ifcfg-bond0-rr /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
