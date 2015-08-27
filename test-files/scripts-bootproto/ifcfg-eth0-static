@@ -1,7 +1,7 @@
 STARTMODE=auto
 BOOTPROTO=static
 
-IPADDR=10.20.30.123
+IPADDR=10.11.12.123/24
 
 PRE_UP_SCRIPT=compat:suse:/tmp/tests/pre-up.sh
 POST_UP_SCRIPT=compat:suse:/tmp/tests/post-up.sh

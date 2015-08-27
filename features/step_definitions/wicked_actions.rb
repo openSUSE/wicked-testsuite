@@ -2349,6 +2349,14 @@ When /^I set up scripts for eth0 with BOOTPROTO="([^"]*)"$/ do |mode|
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+When /^I declare a non-matching route for eth0$/ do
+  SUT.test_and_drop_results "log.sh step \"When I declare a non-matching route for eth0\""
+  local, remote = SUT.inject_file \
+    "test-files/scripts-bootproto/ifroute-eth0-bad", "/tmp/tests/ifroute-eth0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+end
+
 When /^I bond together eth0 and eth1 in ([^ ]*) mode$/ do |mode|
   SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 in #{mode} mode\""
   #

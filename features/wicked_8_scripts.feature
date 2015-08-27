@@ -54,6 +54,12 @@ Feature: Wicked 8 scripts
     And I try to bring up eth0
     Then the post-up script should be called
 
+ Scenario: BOOTPROTO="static", bad route, scripts
+    When I set up scripts for eth0 with BOOTPROTO="static"
+    And I declare a non-matching route for eth0
+    And I try to bring up eth0
+    Then the post-up script should not be called
+
   Scenario: No dhcp server, BOOTPROTO="dhcp4", scripts
     When I set up scripts for eth0 with BOOTPROTO="dhcp4"
     And dhcpd is switched off
