@@ -1,0 +1,5 @@
+NAME='Mix 10 Ethernet'
+STARTMODE='hotplug'
+BOOTPROTO='none'
+
+MASTER_DEVICE='ovs-system'

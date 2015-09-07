@@ -1,0 +1,7 @@
+NAME='Mix 10 OVS bridge'
+STARTMODE='auto'
+BOOTPROTO='static'
+
+OVS_BRIDGE='yes'
+OVS_BRIDGE_PORT_DEVICE_2='eth0'
+OVS_BRIDGE_PORT_DEVICE_3='eth1'

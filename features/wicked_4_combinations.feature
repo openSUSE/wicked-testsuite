@@ -123,3 +123,8 @@ Feature: Wicked 4 combinations
     And I should be able to ping br2 on the other side
     And I should be able to ping eth0.42 on the other side
 
+  Scenario: ovsbridge{ovsbridge{Ethernet, Ethernet} tagged, dummy}
+    When I create ovsbr1((ovsbr0(eth0, eth1), 1), dummy1)
+    Then ovsbr1 should have the correct address
+    And I should be able to ping eth0.1 on the other side
+

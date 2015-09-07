@@ -1785,6 +1785,51 @@ When /^I create eth0.1\(eth0, 1\) and br2\(eth0\) and eth0.42\(eth0, 42\) from X
   end
 end
 
+When /^I create ovsbr1\(\(ovsbr0\(eth0, eth1\), 1\), dummy1\)$/ do
+  SUT.test_and_drop_results "log.sh step \"When I create ovsbr1((ovsbr0(eth0, eth1), 1), dummy1)\""
+  local, remote, command = REF.test_and_drop_results \
+    "ln -s pool/ifcfg-eth0.1 /etc/sysconfig/network/"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = REF.test_and_drop_results \
+    "ifup eth0.1"
+  local.should == 0; remote.should == 0; command.should == 0
+  #
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start openvswitch"
+  local.should == 0; remote.should == 0; command.should == 0
+  if (CONFIGURE_LOWERDEVS)
+    local, remote = SUT.inject_file \
+      "test-files/mix10/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+    local, remote = SUT.inject_file \
+      "test-files/mix10/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
+      "testuser", false
+    local.should == 0; remote.should == 0
+  end
+  local, remote = SUT.inject_file \
+    "test-files/mix10/ifcfg-dummy1", "/tmp/tests/ifcfg-dummy1", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/mix10/ifcfg-ovsbr0", "/tmp/tests/ifcfg-ovsbr0", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  local, remote = SUT.inject_file \
+    "test-files/mix10/ifcfg-ovsbr1", "/tmp/tests/ifcfg-ovsbr1", \
+    "testuser", false
+  local.should == 0; remote.should == 0
+  if (CONFIGURE_PRECISELY)
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests eth0 eth1 ovsbr0 ovsbr1"
+    local.should == 0; remote.should == 0; command.should == 0
+  else
+    local, remote, command = SUT.test_and_drop_results \
+      "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+end
+
 When /^I bring up ([^ ]*) by ifreload$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} by ifreload\""
   local, remote, command = SUT.test_and_drop_results \

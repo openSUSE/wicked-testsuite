@@ -782,6 +782,15 @@ Then /^br73 should have the correct address$/ do
   out.should include "inet6 #{V73_6_SUT}"
 end
 
+Then /^ovsbr1 should have the correct address$/ do
+  SUT.test_and_drop_results "log.sh step \"Then ovsbr1 should have the correct address\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev ovsbr1", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "inet #{VLAN4_SUT0}"
+  out.should include "inet6 #{VLAN6_SUT0}"
+end
+
 Then /^I should have the statically declared DNS server$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should have the statically declared DNS server\""
   out, local, remote, command = SUT.test_and_store_results_together \
