@@ -215,6 +215,11 @@ def prepareReference()
       "tcpdump.sh stop"
     local.should == 0; remote.should == 0; command.should == 0
   end
+
+  # THIS STATIC SETTING SHOULD MOVE TO DEFAULT MACHINE SETUP #####
+  out, local, remote, command = REF.test_and_store_results_together \
+    "echo 0 >  /proc/sys/net/ipv4/conf/all/rp_filter"
+  local.should == 0; remote.should == 0; command.should == 0
 end
 
 # Prepare the system under tests
@@ -318,5 +323,10 @@ def prepareSut()
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wicked ifup --ifconfig compat:/tmp/tests all"
+  local.should == 0; remote.should == 0; command.should == 0
+
+  # THIS STATIC SETTING SHOULD MOVE TO DEFAULT MACHINE SETUP #####
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "echo 0 >  /proc/sys/net/ipv4/conf/all/rp_filter"
   local.should == 0; remote.should == 0; command.should == 0
 end
