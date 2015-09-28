@@ -226,7 +226,47 @@ end
 # wicked is used to do that -- that sounds deeply wrong, but it appeared there was no way around
 # besides, this code is very convoluted - again, no way around
 def prepareSut()
-  # stop openvpn and openvswitch if started
+  # remove systemd scripts if any
+  out, err, local, remote, command = SUT.test_and_store_results_separately \
+    "ls /usr/lib/systemd/system/*@eth0.service", "testuser"
+  local.should == 0; remote.should == 0
+  if out.include? "eth0.service"
+    local, remote, command = SUT.test_and_drop_results \
+      "rm /usr/lib/systemd/system/*@eth0.service"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
+  # start openvswitch (if needed) and wicked daemons
+  # in order to be able to clean up the devices properly
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip link show", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "ovsbr"
+    local, remote, command = SUT.test_and_drop_results \
+      "systemctl start openvswitch"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start wickedd.service"
+  local.should == 0; remote.should == 0; command.should == 0
+
+  # ensure complete amnesia for wicked server
+  # note: when we stop or start wickedd.service, we also
+  #       stop or start wickedd-nanny because of dependancies
+  local, remote, command = SUT.test_and_drop_results \
+    "wicked ifdown --force device-down all"
+  local.should == 0; remote.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl stop wickedd.service"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "rm -rf /var/{run,lib}/wicked/*"
+  local.should == 0; remote.should == 0; command.should == 0
+  local, remote, command = SUT.test_and_drop_results \
+    "systemctl start wickedd.service"
+  local.should == 0; remote.should == 0; command.should == 0
+
+  # stop openvpn and openvswitch daemons if started
   out, local, remote, command = SUT.test_and_store_results_together \
     "ps aux", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -241,45 +281,7 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # remove systemd scripts in any
-  out, err, local, remote, command = SUT.test_and_store_results_separately \
-    "ls /usr/lib/systemd/system/*@eth0.service", "testuser"
-  local.should == 0; remote.should == 0
-  if out.include? "eth0.service"
-    local, remote, command = SUT.test_and_drop_results \
-      "rm /usr/lib/systemd/system/*@eth0.service"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-
-  # start wicked daemons
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start wickedd.service"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start wicked.service"
-  local.should == 0; remote.should == 0; command.should == 0
-
-  # ensure complete amnesia for wicked server
-  local, remote, command = SUT.test_and_drop_results \
-    "wicked ifdown --force device-down all"
-  local.should == 0; remote.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl stop wickedd-nanny.service"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl stop wickedd.service"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "rm -rf /var/{run,lib}/wicked/*"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start wickedd.service"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start wickedd-nanny.service"
-  local.should == 0; remote.should == 0; command.should == 0
-
-  # stop tunnels and OVS switches if any
+  # remove kernel modules for tunnels and openvswitch if any
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -292,7 +294,7 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # stop teams if any
+  # remove kernel modules for teams if any
   out, local, remote, command = SUT.test_and_store_results_together \
     "lsmod"
   local.should == 0; remote.should == 0; command.should == 0
@@ -323,10 +325,5 @@ def prepareSut()
   local.should == 0; remote.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "wicked ifup --ifconfig compat:/tmp/tests all"
-  local.should == 0; remote.should == 0; command.should == 0
-
-  # THIS STATIC SETTING SHOULD MOVE TO DEFAULT MACHINE SETUP #####
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "echo 0 >  /proc/sys/net/ipv4/conf/all/rp_filter"
   local.should == 0; remote.should == 0; command.should == 0
 end
