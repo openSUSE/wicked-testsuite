@@ -81,9 +81,8 @@ Also fix the hostname to something useful in yast2.
 
 Only if communicating with "reference" and "sut"
 through serial or virtio:
-o Install twopence_test_server in /root directory on
-  those machines, as described in Twopence's README
-  (install it for example with scp).
+o Install twopence_test_server package on
+  those machines.
 
 There are two ways to set up the basic network and
 do the files configuration on system under test and the
