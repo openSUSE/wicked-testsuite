@@ -96,7 +96,7 @@ o manually:
   * On the system under tests only:
     - Install gdb, ndisc6, openvpn,
       openvswitch, openvswitch-switch,
-      libteam-tools, libteam5, libteamdctl0
+      libteam-tools
     - checkout the images-config/ directory and execute
       config-ref.sh
 o with rpm packages:
