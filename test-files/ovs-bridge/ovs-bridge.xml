@@ -1,6 +1,17 @@
 <interface>
   <name>ovsbr1</name>
 
+  <ovs-bridge>
+    <ports>
+      <port>
+        <device>eth1</device>
+      </port>
+      <port>
+        <device>dummy1</device>
+      </port>
+    </ports>
+  </ovs-bridge>
+
   <ipv4:static>
     <address>
       <local>172.16.200.200/16</local>
@@ -21,10 +32,23 @@
 <interface>
   <name>eth1</name>
 
+  <link>
+    <master>ovs-system</master>
+    <port type="ovs-bridge">
+      <bridge>ovsbr1</bridge>
+    </port>
+  </link>
 </interface>
 
 <interface>
   <name>dummy1</name>
+
+  <link>
+    <master>ovs-system</master>
+    <port type="ovs-bridge">
+      <bridge>ovsbr1</bridge>
+    </port>
+  </link>
 
   <dummy>
     <address>42:41:40:3F:3E:3D</address>
