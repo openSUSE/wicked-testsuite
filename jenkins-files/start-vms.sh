@@ -29,15 +29,15 @@ read -e -i "1" id
 
 echo -n "   Reference machine disk image: "
 read -e -i "openSUSE_13_1-x86_64.qcow2" ref
-[ -f $images/ref/$ref ] || invalid_param
+[ -f $images/ref-$ref ] || invalid_param
 
 echo -n " Reference machine architecture: "
 read -e -i "x86_64" ref_arch
 [ "$ref_arch" = "x86_64" -o "$ref_arch" = "i586" ] || invalid_param
 
 echo -n "  System under tests disk image: "
-read -e -i "SLES_12_SP0-x86_64.qcow2" sut
-[ -f $images/sut/$sut ] || invalid_param
+read -e -i "SLES_12_SP1-x86_64.qcow2" sut
+[ -f $images/sut-$sut ] || invalid_param
 
 echo -n "System under tests architecture: "
 read -e -i "x86_64" sut_arch
@@ -52,8 +52,8 @@ read -e -i "with" nanny
 export WORKSPACE=$jenkins/jobs/$jobname/workspace
 
 rm -f $WORKSPACE/*.qcow2
-cp $images/ref/$ref $WORKSPACE/ref.qcow2
-cp $images/sut/$sut $WORKSPACE/sut.qcow2
+cp $images/ref-$ref $WORKSPACE/ref.qcow2
+cp $images/sut-$sut $WORKSPACE/sut.qcow2
 
 $scripts/config-net.sh $name $id 0
 $scripts/config-net.sh $name $(($id+50)) 1
