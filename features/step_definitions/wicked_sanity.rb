@@ -7,7 +7,6 @@ When /^the reference machine is set up correctly$/ do
   out.should include "dhcpd -4"
   out.should match /dhcpd6? -6/
   out.should include "radvd"
-  out.should include "ovs-vswitchd"
   out.should_not include "openvpn"
   out.should_not include "tcpdump"
   #
@@ -172,9 +171,6 @@ When /^there is no virtual interface left on any machine$/ do
   outsut.should_not include "bond0.73@"
   #
   outsut.should_not include "macvtap1:"
-  #
-  outsut.should_not include "ovsbr1:"
-  outsut.should_not include "ovs-system:"
   #
   outsut.should_not include "team0:"
   #
