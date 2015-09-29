@@ -215,17 +215,22 @@ def prepareReference()
       "tcpdump.sh stop"
     local.should == 0; remote.should == 0; command.should == 0
   end
-
-  # THIS STATIC SETTING SHOULD MOVE TO DEFAULT MACHINE SETUP #####
-  out, local, remote, command = REF.test_and_store_results_together \
-    "echo 0 >  /proc/sys/net/ipv4/conf/all/rp_filter"
-  local.should == 0; remote.should == 0; command.should == 0
 end
 
 # Prepare the system under tests
 # wicked is used to do that -- that sounds deeply wrong, but it appeared there was no way around
 # besides, this code is very convoluted - again, no way around
 def prepareSut()
+  # stop openvpn daemon if started
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ps aux", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  if out.include? "openvpn"
+    local, remote, command = SUT.test_and_drop_results \
+      "systemctl stop openvpn@client"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
   # remove systemd scripts if any
   out, err, local, remote, command = SUT.test_and_store_results_separately \
     "ls /usr/lib/systemd/system/*@eth0.service", "testuser"
@@ -236,16 +241,7 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # start openvswitch (if needed) and wicked daemons
-  # in order to be able to clean up the devices properly
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "ip link show", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "ovsbr"
-    local, remote, command = SUT.test_and_drop_results \
-      "systemctl start openvswitch"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
+  # start wicked daemons to be able to clean up the devices properly
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"
   local.should == 0; remote.should == 0; command.should == 0
@@ -266,31 +262,15 @@ def prepareSut()
     "systemctl start wickedd.service"
   local.should == 0; remote.should == 0; command.should == 0
 
-  # stop openvpn and openvswitch daemons if started
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "ps aux", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "openvpn"
-    local, remote, command = SUT.test_and_drop_results \
-      "systemctl stop openvpn@client"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-  if out.include? "ovs-vswitchd"
-    local, remote, command = SUT.test_and_drop_results \
-      "systemctl stop openvswitch"
-    local.should == 0; remote.should == 0; command.should == 0
-  end
-
-  # remove kernel modules for tunnels and openvswitch if any
+  # remove kernel modules for tunnels if any
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
-  if out.include? "ovs-system:" \
-    or out.include? "gre0:" or out.include? "gre0@" \
+  if out.include? "gre0:" or out.include? "gre0@" \
     or out.include? "tunl0:" or out.include? "tunl0@" \
     or out.include? "sit0:" or out.include? "sit0@"
     local, remote, command = SUT.test_and_drop_results \
-      "modprobe -r openvswitch ip_gre gre ipip sit ip_tunnel tunnel4"
+      "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
 

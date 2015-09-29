@@ -456,9 +456,6 @@ end
 
 When /^I create an OVS bridge from legacy files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create an OVS bridge from legacy files\""
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start openvswitch"
-  local.should == 0; remote.should == 0; command.should == 0
   local, remote = SUT.inject_file \
     "test-files/ovs-bridge/ifcfg-ovsbr1", "/tmp/tests/ifcfg-ovsbr1", \
     "testuser", false
@@ -490,9 +487,6 @@ end
 
 When /^I create an OVS bridge from XML files$/ do
   SUT.test_and_drop_results "log.sh step \"When I create an OVS bridge from XML files\""
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start openvswitch"
-  local.should == 0; remote.should == 0; command.should == 0
   local, remote = SUT.inject_file \
     "test-files/ovs-bridge/ovs-bridge.xml", "/tmp/tests/ovs-bridge.xml", \
     "testuser", false
@@ -1794,9 +1788,6 @@ When /^I create ovsbr1\(\(ovsbr0\(eth0, eth1\), 1\), dummy1\)$/ do
     "ifup eth0.1"
   local.should == 0; remote.should == 0; command.should == 0
   #
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start openvswitch"
-  local.should == 0; remote.should == 0; command.should == 0
   if (CONFIGURE_LOWERDEVS)
     local, remote = SUT.inject_file \
       "test-files/mix10/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \

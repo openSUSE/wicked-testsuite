@@ -8,7 +8,7 @@ Feature: Wicked 4 combinations
     When the reference machine is set up correctly
     And the system under test is set up correctly
     And there is no core dump
-    And the wicked services are started
+    And the network services are started
     And the interfaces are in a basic state
     And the routing table is empty
     And there is no virtual interface left on any machine
