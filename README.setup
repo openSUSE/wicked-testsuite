@@ -81,19 +81,22 @@ Also fix the hostname to something useful in yast2.
 
 Only if communicating with "reference" and "sut"
 through serial or virtio:
-o Install twopence_test_server package on
-  those machines.
+o install twopence_test_server package on
+  those machines,
+o do systemctl enable twopence-test-server.
 
 There are two ways to set up the basic network and
 do the files configuration on system under test and the
 reference system:
 o manually:
+  * On both machines:
+    - do systemctl start openvswitch.service
   * On the reference server only:
-    - Install radvd, dhcp-server, tcpdump and openvpn
+    - install radvd, dhcp-server, tcpdump and openvpn
     - checkout the images-config/ directory and execute
       config-sut.sh
   * On the system under tests only:
-    - Install gdb, ndisc6, openvpn,
+    - install gdb, ndisc6, openvpn,
       openvswitch, openvswitch-switch,
       libteam-tools
     - checkout the images-config/ directory and execute
