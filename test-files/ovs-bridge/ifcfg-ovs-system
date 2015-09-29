@@ -1,2 +1,6 @@
+#
+# optional config, an ifcfg-ovsbrX
+# causes to create it automatically
+#
 STARTMODE='hotplug'
 BOOTPROTO='none'
