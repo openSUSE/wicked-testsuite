@@ -1,4 +1,7 @@
 STARTMODE='hotplug'
 BOOTPROTO='none'
 
-MASTER_DEVICE='ovs-system'
+#
+# should be set by ifcfg-ovsbr1
+#
+#MASTER_DEVICE='ovs-system'
