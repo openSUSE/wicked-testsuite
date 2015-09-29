@@ -367,7 +367,7 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
     "ping -q -c1 -W1 #{BOND4_REF}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
-    "ping6 -q -c1 -W1 #{BOND6_REF}", "testuser"
+    "ping6 -q -c1 -W1 #{BOND6_REF} -I #{BOND6_SUT[/[^\/]*/}", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
 end
 
