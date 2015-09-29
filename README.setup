@@ -82,15 +82,13 @@ Also fix the hostname to something useful in yast2.
 Only if communicating with "reference" and "sut"
 through serial or virtio:
 o install twopence_test_server package on
-  those machines,
-o do systemctl enable twopence-test-server.
+  those machines
+o do 'systemctl enable twopence-test-server'
 
 There are two ways to set up the basic network and
 do the files configuration on system under test and the
 reference system:
 o manually:
-  * On both machines:
-    - do systemctl start openvswitch.service
   * On the reference server only:
     - install radvd, dhcp-server, tcpdump and openvpn
     - checkout the images-config/ directory and execute
@@ -101,6 +99,7 @@ o manually:
       libteam-tools
     - checkout the images-config/ directory and execute
       config-ref.sh
+    - do 'systemctl enable openvswitch.service'
 o with rpm packages:
   * Add the following repository to both systems:
     - 'zypper ar http://download.opensuse.org/repositories/network:/wicked:/testsuite/<DISTRIBUTION>/ \
