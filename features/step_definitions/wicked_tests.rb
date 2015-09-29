@@ -498,10 +498,10 @@ end
 
 Then /^I should be able to ping through the OVS bridge$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping through the OVS bridge\""
-# WORKAROUND for bsc#941466
-#  local, remote, command = SUT.test_and_drop_results \
-#    "sleep 2", "testuser"
-#  local.should == 0; remote.should == 0; command.should == 0
+# WORKAROUND for bsc#9414666, ovs just reports UP although there is no link detection yet
+  local, remote, command = SUT.test_and_drop_results \
+    "sleep 2", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = SUT.test_and_drop_results \
     "ping -q -c1 -W1 #{STAT4_REF1} -I ovsbr1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
