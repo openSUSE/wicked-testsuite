@@ -55,6 +55,7 @@ case "$DISTRIBUTION" in
     sut=SLES_12_SP0-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
+    tags_list="teams"
     ;;
   "SLES 12 SP1 (x86_64)")
     bs_api=ibs
@@ -64,6 +65,7 @@ case "$DISTRIBUTION" in
     sut=SLES_12_SP1-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
+    tags_list=""
     ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=obs
@@ -73,6 +75,7 @@ case "$DISTRIBUTION" in
     sut=openSUSE_13_2-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
+    tags_list=""
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
@@ -82,6 +85,7 @@ case "$DISTRIBUTION" in
     sut=openSUSE_13_2-i686.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=i686
+    tags_list=""
     ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
@@ -91,6 +95,7 @@ case "$DISTRIBUTION" in
     sut=openSUSE_Tumbleweed-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
+    tags_list=""
     ;;
   "Physical")
     bs_api=ibs
@@ -99,6 +104,7 @@ case "$DISTRIBUTION" in
     bs_arch=x86_64
     target_sut="ssh:10.161.8.133"
     target_ref="ssh:10.161.8.239"
+    tags_list=""
     ;;
   *)
     false
@@ -192,9 +198,10 @@ pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
 
 failed="no"
+tags=""; for tag in $tags_list; do tags="$tags --tag ~@$tag"; done
 export TARGET_SUT=$target_sut
 export TARGET_REF=$target_ref
-cucumber -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || failed="yes"
+cucumber $tags -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || failed="yes"
 
 twopence_extract $target_sut "/tmp/wicked-log.tgz" "$WORKSPACE/wicked-log.tgz"
 awk -i inplace -f $scripts/add-numbers.awk $WORKSPACE/wicked.json

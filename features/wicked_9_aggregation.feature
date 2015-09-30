@@ -48,31 +48,37 @@ Feature: Wicked 9 aggregation
     Then there should be a new bond0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, roundrobin
     When I team together eth0 and eth1 in roundrobin mode
     Then there should be a new team0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, random
     When I team together eth0 and eth1 in random mode
     Then there should be a new team0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, activebackup
     When I team together eth0 and eth1 in activebackup mode
     Then there should be a new team0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, broadcast
     When I team together eth0 and eth1 in broadcast mode
     Then there should be a new team0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, loadbalance
     When I team together eth0 and eth1 in broadcast mode
     Then there should be a new team0 card
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, lacp
     When I team together eth0 and eth1 in lacp mode
     Then there should be a new team0 card
@@ -80,6 +86,7 @@ Feature: Wicked 9 aggregation
 
   # The following tests assume eth1 is the primary interface:
 
+  @teams
   Scenario: Teaming, activebackup, ethtool
     When I team together eth0 and eth1 with ethtool link watcher
     Then there should be a new team0 card
@@ -89,6 +96,7 @@ Feature: Wicked 9 aggregation
     Then eth0 should be the active link
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, activebackup, arp_ping
     When I team together eth0 and eth1 with arp_ping link watcher
     Then there should be a new team0 card
@@ -98,6 +106,7 @@ Feature: Wicked 9 aggregation
     Then eth0 should be the active link
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, activebackup, nsna_ping
     When I team together eth0 and eth1 with arp_ping link watcher
     Then there should be a new team0 card
@@ -107,6 +116,7 @@ Feature: Wicked 9 aggregation
     Then eth0 should be the active link
     And I should be able to ping the other side of the aggregated link
 
+  @teams
   Scenario: Teaming, activebackup, all link watchers
     When I team together eth0 and eth1 with all link watchers
     Then there should be a new team0 card
