@@ -283,13 +283,13 @@ def prepareSut()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
-  # start wicked services, which as a side effect applies
-  # default configuration in /etc/sysconfig/network
+  # start wicked services
+  # note: we wait half a second to prevent systemd from refusing to
+  #       respawn too quickly; an alternative would be to declare
+  #       StartLimitInterval=0 in wickedd and wickedd-nanny service descriptions
+  sleep(0.5)
   local, remote, command = SUT.test_and_drop_results \
     "systemctl start wickedd.service"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "systemctl start wicked.service"
   local.should == 0; remote.should == 0; command.should == 0
 
   # prepare tests directory and restart loopback interface

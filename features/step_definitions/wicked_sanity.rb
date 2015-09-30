@@ -94,10 +94,12 @@ When /^the network services are started$/ do
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /\s[aA]ctive/
   #
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "systemctl status wicked.service", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out.should match /\s[aA]ctive/
+  # We don't verify anymore the wicked one-shot service as we don't use
+  # the addresses in /etc/sysconfig/network most of the time
+  #  out, local, remote, command = SUT.test_and_store_results_together \
+  #    "systemctl status wicked.service", "testuser"
+  #  local.should == 0; remote.should == 0; command.should == 0
+  #  out.should match /\s[aA]ctive/
 end
 
 When /^the interfaces are in a basic state$/ do
