@@ -260,6 +260,7 @@ def prepareSut()
   local.should == 0; remote.should == 0; command.should == 0
 
   # remove kernel modules for tunnels if any
+  # we can't remove gre module as it is needed for openvswitch
   out, local, remote, command = SUT.test_and_store_results_together \
     "ip link show", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
@@ -267,7 +268,7 @@ def prepareSut()
     or out.include? "tunl0:" or out.include? "tunl0@" \
     or out.include? "sit0:" or out.include? "sit0@"
     local, remote, command = SUT.test_and_drop_results \
-      "modprobe -r ip_gre gre ipip sit ip_tunnel tunnel4"
+      "modprobe -r ip_gre ipip sit ip_tunnel tunnel4"
     local.should == 0; remote.should == 0; command.should == 0
   end
 
