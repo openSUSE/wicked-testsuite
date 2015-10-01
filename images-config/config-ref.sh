@@ -70,7 +70,7 @@ chmod ugo+rx /usr/local/bin/*.sh
 
 sed -i 's/^DHCLIENT_BIN=.*$/DHCLIENT_BIN=\"dhclient\"/' /etc/sysconfig/network/dhcp
 
-SuSEfirewall2 off
+SuSEfirewall2 off || :
 insserv iptables
 
 ln -sf /etc/dhcpd-default.conf /etc/dhcpd.conf
