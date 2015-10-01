@@ -28,3 +28,5 @@ chmod ugo+rx /usr/local/bin/*.sh
 chmod ugo+rx /usr/local/bin/check_macvtap
 
 ln -sf /etc/sysconfig/network/dhcp-keep-leases /etc/sysconfig/network/dhcp
+
+systemctl enable openvswitch
