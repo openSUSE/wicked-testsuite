@@ -24,6 +24,7 @@ to use for the system under tests</description>
               <string>SLES 12 SP0 (x86_64)</string>
               <string>openSUSE 13.2 (x86_64)</string>
               <string>openSUSE 13.2 (i586)</string>
+              <string>openSUSE Leap 42.1 (x86_64)</string>
               <string>openSUSE Tumbleweed (x86_64)</string>
               <string>Physical</string>
             </a>

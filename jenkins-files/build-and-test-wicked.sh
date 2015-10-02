@@ -87,6 +87,16 @@ case "$DISTRIBUTION" in
     vm_arch=i686
     tags_list=""
     ;;
+  "openSUSE Leap 42.1 (x86_64)")
+    bs_api=obs
+    bs_proj=openSUSE:Leap:42.1:Update
+    bs_repo=standard
+    bs_arch=x86_64
+    sut=openSUSE_Leap_42_1-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
+    tags_list=""
+    ;;
   "openSUSE Tumbleweed (x86_64)")
     bs_api=obs
     bs_proj=openSUSE:Tumbleweed
