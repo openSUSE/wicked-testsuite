@@ -4,7 +4,7 @@
 # Published under the GNU Public Licence 2
 
 version="0.0.1"
-baseurl="http://download.suse.de/ibs/home:/jloeser:/wicked-testsuite/images"
+baseurl="http://download.suse.de/ibs/home:/wicked-maintainers:/testsuite:/stable:/images/images"
 destination="/tmp"
 
 sut_images=
@@ -90,11 +90,12 @@ for image in $all_images; do
     url="${baseurl}/${image}"
     filename="$(echo $image | grep -oE "^((\bref\b)|(\bsut\b))*(.*)((\bx86_64\b)|(\bi686\b)|(\bi586\b))")"
     filename="$(echo $filename | sed 's#\.#-#').qcow2"
+    echo " * found ${filename}..."
     wget -q "$url" -O "${destination}/${filename}"
     if [ "$?" -eq 0 ]; then
         sync
         size=`du -m "${destination}/${filename}" | cut -f1`
-        echo "found ${url} -> ${destination}/${filename} (${size}M)"
+        echo "${url} -> ${destination}/${filename} (${size}M)"
     else
         exit 1
     fi
