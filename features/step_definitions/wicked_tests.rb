@@ -355,6 +355,19 @@ Then /^([^ ]*) should be enslaved$/ do |interface|
   out.should include "SLAVE"
 end
 
+Then /^([^ ]*) should be slave of ([^ ]*)$/ do |interface,master|
+  if @skip_when_no_hotplug
+    puts "(skipped)"
+    sleep 1
+    next
+  end
+  SUT.test_and_drop_results "log.sh step \"Then #{interface} should be slave of #{master}\""
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "ip address show dev #{interface}", "testuser"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "master #{master}"
+end
+
 Then /^I should be able to ping the other side of the aggregated link$/ do
   # WORKAROUND (the @skip_when_virtual_machine part)
   if @skip_when_no_hotplug or @skip_when_virtual_machine
