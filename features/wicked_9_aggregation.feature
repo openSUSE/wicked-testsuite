@@ -53,14 +53,14 @@ Feature: Wicked 9 aggregation
     Then there should be a new bond0 card
     And eth0 should be slave of bond0
     And eth1 should be slave of bond0
-    And I should be able to ping the other side of the aggregated link
+  #  And I should be able to ping the other side of the aggregated link
 
   Scenario: Bonding, balance-alb
     When I bond together eth0 and eth1 in balance-alb mode
     Then there should be a new bond0 card
     And eth0 should be slave of bond0
     And eth1 should be slave of bond0
-    And I should be able to ping the other side of the aggregated link
+  #  And I should be able to ping the other side of the aggregated link
 
   @teams
   Scenario: Teaming, roundrobin
