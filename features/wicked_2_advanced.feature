@@ -75,6 +75,7 @@ Feature: Wicked 2 advanced
     And the macvtap interface should have the correct address
     And I should receive the answer of the ARP ping on /dev/tapX
 
+  @ovs
   Scenario: Create an OVS bridge from legacy ifcfg files
     When I create an OVS bridge from legacy files
     Then there should be a new ovsbr1 card
@@ -83,6 +84,7 @@ Feature: Wicked 2 advanced
     And the OVS bridge should have the correct address
     And I should be able to ping through the OVS bridge
 
+  @ovs
   Scenario: Create an OVS bridge from wicked XML files
     When I create an OVS bridge from XML files
     Then there should be a new ovsbr1 card
