@@ -46,7 +46,13 @@ Feature: Wicked 9 aggregation
     Then there should be a new bond0 card
     And eth0 should be slave of bond0
     And eth1 should be slave of bond0
-    And I should be able to ping the other side of the aggregated link
+    ###
+    ### The underlying bridges on the host, do not forward LACP -- verified:
+    ###   http://www.spinics.net/lists/linux-ethernet-bridging/msg05668.html
+    ### Bond may fallback to use of the slaves as-is also without LACP,
+    ### when reference corresponding slave, it works for 50% of the cases.
+    ### But it is unreliable and causes false errors. Don't blame wicked.
+    #And I should be able to ping the other side of the aggregated link
 
   Scenario: Bonding, balance-tlb
     When I bond together eth0 and eth1 in balance-tlb mode
