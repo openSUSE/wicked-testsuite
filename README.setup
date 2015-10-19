@@ -89,14 +89,16 @@ There are two ways to set up the basic network and
 do the files configuration on system under test and the
 reference system:
 o manually:
+  * On both machines:
+    - install openvpn and ethtool
   * On the reference server only:
-    - install radvd, dhcp-server, tcpdump and openvpn
+    - install radvd, dhcp-server, and tcpdump
     - checkout the images-config/ directory and execute
       config-sut.sh
   * On the system under tests only:
-    - install gdb, ndisc6, openvpn,
+    - install gdb, ndisc6,
       openvswitch, openvswitch-switch,
-      libteam-tools
+      and libteam-tools
     - checkout the images-config/ directory and execute
       config-ref.sh
     - do 'systemctl enable openvswitch.service'
