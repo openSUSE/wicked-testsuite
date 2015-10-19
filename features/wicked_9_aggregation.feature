@@ -36,7 +36,8 @@ Feature: Wicked 9 aggregation
   Scenario: Bonding, 802.3ad
     When I bond together eth0 and eth1 in 802.3ad mode
     Then there should be a new bond0 card
-    And I should be able to ping the other side of the aggregated link
+    # WORKAROUND: LACP packets are not forwarded by bridges on real host:
+    # And I should be able to ping the other side of the aggregated link
 
   Scenario: Bonding, balance-tlb
     When I bond together eth0 and eth1 in balance-tlb mode
@@ -82,7 +83,8 @@ Feature: Wicked 9 aggregation
   Scenario: Teaming, lacp
     When I team together eth0 and eth1 in lacp mode
     Then there should be a new team0 card
-    And I should be able to ping the other side of the aggregated link
+    # WORKAROUND: LACP packets are not forwarded by bridges on real host:
+    # And I should be able to ping the other side of the aggregated link
 
   # The following tests assume eth1 is the primary interface:
 
