@@ -2396,24 +2396,33 @@ end
 When /^I bond together eth0 and eth1 in ([^ ]*) mode$/ do |mode|
   SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 in #{mode} mode\""
   #
-  m = case mode
-    when "balance-rr" then "rr"
-    when "active-backup" then "ab"
-    when "balance-xor" then "xor"
-    when "broadcast" then "bc"
-    when "802.3ad" then "ieee"
-    when "balance-tlb" then "tlb"
-    when "balance-alb" then "alb"
+  ifref = case mode
+    when "balance-rr" then "bond0-rr"
+    when "active-backup" then "bond0-ab"
+    when "balance-xor" then "bond0-xor"
+    when "broadcast" then "bond0-bc"
+    when "802.3ad" then "bond0-ieee"
+    when "balance-tlb" then "br0"
+    when "balance-alb" then "br0"
   end
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-bond0-#{m} /etc/sysconfig/network/ifcfg-bond0"
+    "ln -s pool/ifcfg-#{ifref} /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  ifsut = case mode
+    when "balance-rr" then "bond0-rr"
+    when "active-backup" then "bond0-ab"
+    when "balance-xor" then "bond0-xor"
+    when "broadcast" then "bond0-bc"
+    when "802.3ad" then "bond0-ieee"
+    when "balance-tlb" then "bond0-tlb"
+    when "balance-alb" then "bond0-alb"
+  end
   local, remote = SUT.inject_file \
-    "test-files/bonding/ifcfg-bond0-#{m}", "/tmp/tests/ifcfg-bond0", \
+    "test-files/bonding/ifcfg-#{ifsut}", "/tmp/tests/ifcfg-bond0", \
     "testuser", false
   local.should == 0; remote.should == 0
   if (CONFIGURE_LOWERDEVS)

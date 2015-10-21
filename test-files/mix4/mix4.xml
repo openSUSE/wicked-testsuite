@@ -2,7 +2,7 @@
   <name>bond1</name>
 
   <bond>
-    <mode>balance-tlb</mode>
+    <mode>balance-rr</mode>
     <miimon>
       <frequency>80</frequency>
     </miimon>

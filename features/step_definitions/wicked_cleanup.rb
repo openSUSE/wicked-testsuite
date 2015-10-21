@@ -25,6 +25,16 @@ def prepareReference()
     local.should == 0; remote.should == 0; command.should == 0
   end
 
+  # stop the bridging if any
+  local, remote, command = REF.test_and_drop_results \
+    "ip link show dev br0", "testuser"
+  local.should == 0; remote.should == 0
+  if command == 0
+    local, remote, command = REF.test_and_drop_results \
+      "ip link delete dev br0"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+
   # stop the vlans if any
   out, local, remote, command = REF.test_and_store_results_together \
     "ip link show", "testuser"

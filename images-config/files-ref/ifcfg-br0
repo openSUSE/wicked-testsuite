@@ -1,0 +1,9 @@
+STARTMODE='manual'
+BOOTPROTO='static'
+
+BRIDGE='yes'
+BRIDGE_STP='off'
+BRIDGE_PORTS='eth0 eth1'
+
+IPADDR='192.168.50.1/24'
+IPADDR6='fd00:deca:fbad:50::1/64'

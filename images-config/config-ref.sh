@@ -14,8 +14,7 @@ cp ./files-ref/ifcfg-bond0-ab          /etc/sysconfig/network/pool/ifcfg-bond0-a
 cp ./files-ref/ifcfg-bond0-xor         /etc/sysconfig/network/pool/ifcfg-bond0-xor
 cp ./files-ref/ifcfg-bond0-bc          /etc/sysconfig/network/pool/ifcfg-bond0-bc
 cp ./files-ref/ifcfg-bond0-ieee        /etc/sysconfig/network/pool/ifcfg-bond0-ieee
-cp ./files-ref/ifcfg-bond0-tlb         /etc/sysconfig/network/pool/ifcfg-bond0-tlb
-cp ./files-ref/ifcfg-bond0-alb         /etc/sysconfig/network/pool/ifcfg-bond0-alb
+cp ./files-ref/ifcfg-br0               /etc/sysconfig/network/pool/ifcfg-br0
 cp ./files-ref/ifcfg-bond1             /etc/sysconfig/network/pool/ifcfg-bond1
 cp ./files-ref/ifcfg-eth0.42           /etc/sysconfig/network/pool/ifcfg-eth0.42
 cp ./files-ref/ifcfg-eth1.42           /etc/sysconfig/network/pool/ifcfg-eth1.42
