@@ -84,10 +84,12 @@ When /^the system under test is set up correctly$/ do
 end
 
 When /^the network services are started$/ do
-  out, local, remote, command = SUT.test_and_store_results_together \
-    "systemctl status openvswitch.service", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  out.should match /\s[aA]ctive/
+  if @ovs
+    out, local, remote, command = SUT.test_and_store_results_together \
+      "systemctl status openvswitch.service", "testuser"
+    local.should == 0; remote.should == 0; command.should == 0
+    out.should match /\s[aA]ctive/
+  end
   #
   out, local, remote, command = SUT.test_and_store_results_together \
     "systemctl status wickedd.service", "testuser"
