@@ -32,6 +32,18 @@ end
 puts "Reference server is accessed through: " + TARGET_REF
 REF = Twopence::init(TARGET_REF)
 
+# Tag definitions
+if (ENV["tag_teams"])
+  TAG_TEAMS = (ENV["tag_teams"] == "true")
+else
+  TAG_TEAMS = false
+end
+if (ENV["tag_ovs"])
+  TAG_OVS = (ENV["tag_ovs"] == "true")
+else
+  TAG_OVS = false
+end
+
 # Addresses for system under test
 DHCP4_SUT0 = "10.20.30."
 RADVD_SUT0 = "fd00:dead:beef:"

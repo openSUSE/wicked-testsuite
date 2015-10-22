@@ -75,7 +75,7 @@ case "$DISTRIBUTION" in
     sut=openSUSE_13_2-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
-    tags_list=""
+    tags_list="teams ovs"
     ;;
   "openSUSE 13.2 (i586)")
     bs_api=obs
@@ -85,7 +85,7 @@ case "$DISTRIBUTION" in
     sut=openSUSE_13_2-i686.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=i686
-    tags_list=""
+    tags_list="teams ovs"
     ;;
   "openSUSE Leap 42.1 (x86_64)")
     bs_api=obs
@@ -208,7 +208,9 @@ pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
 
 failed="no"
-tags=""; for tag in $tags_list; do tags="$tags --tag ~@$tag"; done
+tags=""
+for tag in $tags_list; do tags="$tags tag_$tag=true"; done
+for tag in $tags_list; do tags="$tags --tag ~@$tag"; done
 export TARGET_SUT=$target_sut
 export TARGET_REF=$target_ref
 cucumber $tags -f Cucumber::Formatter::JsonExpanded --out $WORKSPACE/wicked.json || failed="yes"
