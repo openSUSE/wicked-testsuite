@@ -999,6 +999,7 @@ end
 
 Then /^([^ ]*) should be the active link$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"Then #{interface} should be the active link\""
+  sleep 2
   out, local, remote, command = SUT.test_and_store_results_together \
     "teamdctl team0 state view"
   local.should == 0; remote.should == 0; command.should == 0
