@@ -26,11 +26,3 @@ end
 After do
   STDOUT.flush
 end
-
-# Associate global flags to the tags
-Before('@teams')
-  @teams = true
-end
-Before('@ovs')
-  @ovs = true
-end
