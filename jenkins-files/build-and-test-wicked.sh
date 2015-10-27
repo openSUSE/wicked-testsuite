@@ -160,7 +160,7 @@ ls -lh SRCs
 pushd SRCs
 release=$BUILD_NUMBER.$(date +%Y%m%d%H%M%S)
 osc -A $bs_api build \
-  --clean --local-package --debuginfo \
+  --clean --local-package --debuginfo --trust-all-projects \
   --release=$release \
   --alternative-project $bs_proj \
   --root $BUILD_ROOT_PREFIX/$JOB_NAME/$bs_repo-$bs_arch \
