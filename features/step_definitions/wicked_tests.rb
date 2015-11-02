@@ -1002,12 +1002,15 @@ Then /^([^ ]*) should be the active link$/ do |interface|
 
   # Wait for interface is up
   # or maximum number of missed ARP ping replies is reached
-  get_up="teamdctl team0 state item get ports.#{interface}.link_watches.up"
-  get_missed="teamdctl team0 state item get ports.#{interface}.link_watches.list.link_watch_0.missed"
-  get_missed_max="teamdctl team0 state item get ports.#{interface}.link_watches.list.link_watch_0.missed_max"
-  local, remote, command = SUT.test_and_drop_results \
-    "wait_for_cmd_success.sh \"test \\$(#{get_up}) = true -o \\$(#{get_missed}) -gt \\$(#{get_missed_max})\""
-  local.should == 0; remote.should == 0; command.should == 0
+  #get_up="teamdctl team0 state item get ports.#{interface}.link_watches.up"
+  #get_missed="teamdctl team0 state item get ports.#{interface}.link_watches.list.link_watch_0.missed"
+  #get_missed_max="teamdctl team0 state item get ports.#{interface}.link_watches.list.link_watch_0.missed_max"
+  #local, remote, command = SUT.test_and_drop_results \
+  #  "wait_for_cmd_success.sh \"test \\$(#{get_up}) = true -o \\$(#{get_missed}) -gt \\$(#{get_missed_max})\""
+  #local.should == 0; remote.should == 0; command.should == 0
+  #
+  # WORKAROUND against bsc#951674 -  libteam: libteam claims UP status while enslaved interfaces are still DOWN
+  sleep 2
 
   # Then check for active port
   out, local, remote, command = SUT.test_and_store_results_together \
