@@ -547,10 +547,14 @@ end
 
 Then /^the layer 3 tunnel owner and group are correct$/ do
   SUT.test_and_drop_results "log.sh step \"Then the layer 3 tunnel owner and group are correct\""
- owner, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tun1/owner"
- owner.strip.should == "#{OWNER_UID}"; local.should == 0; remote.should == 0
- group, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tun1/group"
- group.strip.should == "#{GROUP_GID}"; local.should == 0; remote.should == 0
+ owner, local, remote, command = SUT.test_and_store_results_together \
+   "cat /sys/class/net/tun1/owner"
+ local.should == 0; remote.should == 0; command.should == 0
+ owner.strip.should == "#{OWNER_UID}"
+ group, local, remote, command = SUT.test_and_store_results_together \
+   "cat /sys/class/net/tun1/group"
+ local.should == 0; remote.should == 0; command.should == 0
+ group.strip.should == "#{GROUP_GID}"
 end
 
 Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
@@ -565,10 +569,14 @@ end
 
 Then /^the layer 2 tunnel owner and group are correct$/ do
   SUT.test_and_drop_results "log.sh step \"Then the layer 2 tunnel owner and group are correct\""
-owner, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tap1/owner"
- owner.strip.should == "#{OWNER_UID}"; local.should == 0; remote.should == 0
- group, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tap1/group"
- group.strip.should == "#{GROUP_GID}"; local.should == 0; remote.should == 0
+ owner, local, remote, command = SUT.test_and_store_results_together \
+   "cat /sys/class/net/tap1/owner"
+ local.should == 0; remote.should == 0; command.should == 0
+ owner.strip.should == "#{OWNER_UID}"
+ group, local, remote, command = SUT.test_and_store_results_together \
+   "cat /sys/class/net/tap1/group"
+ local.should == 0; remote.should == 0; command.should == 0
+ group.strip.should == "#{GROUP_GID}"
 end
 
 
