@@ -545,6 +545,14 @@ Then /^I should be able to ping the other side of the layer 3 tunnel$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
+Then /^the layer 3 tunnel owner and group are correct$/ do
+  SUT.test_and_drop_results "log.sh step \"Then the layer 3 tunnel owner and group are correct\""
+ owner, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tun1/owner"
+ owner.strip.should == "#{OWNER_UID}"; local.should == 0; remote.should == 0
+ group, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tun1/group"
+ group.strip.should == "#{GROUP_GID}"; local.should == 0; remote.should == 0
+end
+
 Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the layer 2 tunnel\""
   local, remote, command = SUT.test_and_drop_results \
@@ -554,6 +562,15 @@ Then /^I should be able to ping the other side of the layer 2 tunnel$/ do
     "ping6 -q -c1 -W1 #{OVPN6_REF1} -I tap1", "testuser"
   local.should == 0; remote.should == 0; command.should == 0
 end
+
+Then /^the layer 2 tunnel owner and group are correct$/ do
+  SUT.test_and_drop_results "log.sh step \"Then the layer 2 tunnel owner and group are correct\""
+owner, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tap1/owner"
+ owner.strip.should == "#{OWNER_UID}"; local.should == 0; remote.should == 0
+ group, local, remote = SUT.test_and_store_results_together "cat /sys/class/net/tap1/group"
+ group.strip.should == "#{GROUP_GID}"; local.should == 0; remote.should == 0
+end
+
 
 Then /^I should be able to ping the other side of the GRE tunnel$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the GRE tunnel\""

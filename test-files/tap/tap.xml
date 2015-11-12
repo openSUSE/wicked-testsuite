@@ -1,8 +1,10 @@
 <interface>
   <name>tap1</name>
 
-  <tap />
-
+ <tap>
+    <owner>1000</owner>
+    <group>100</group>
+  </tap>
   <scripts>
     <pre-up>
       <script>systemd:openvpn@client.service</script>
