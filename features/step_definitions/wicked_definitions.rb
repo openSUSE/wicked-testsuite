@@ -125,3 +125,7 @@ puts "Workaround against bsc#904921..."
 SUT.test_and_drop_results \
   "sed -i \"/^Restart=/aKillSignal=SIGKILL\" /usr/lib/systemd/system/wickedd-nanny.service; systemctl daemon-reload"
 
+# For TUNNEL_SET_OWNER and TUNNEL_SET_GROUP defined in ifcfg-tun1, ifcfg-tap1, tun.xml and tap.xml
+OWNER_UID="1000"
+GROUP_GID="100"
+

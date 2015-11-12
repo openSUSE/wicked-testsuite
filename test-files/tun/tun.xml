@@ -1,8 +1,10 @@
 <interface>
   <name>tun1</name>
 
-  <tun />
-
+  <tun>
+    <owner>1000</owner>
+    <group>100</group>
+  </tun>
   <scripts>
     <pre-up>
       <script>systemd:openvpn@client.service</script>

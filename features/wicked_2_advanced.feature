@@ -113,25 +113,25 @@ Feature: Wicked 2 advanced
     When I create a tun interface from legacy files
     Then both machines should have a new tun1 card
     And I should be able to ping the other side of the layer 3 tunnel
+    And the layer 3 tunnel owner and group are correct
 
   Scenario: Create a tun interface from wicked XML files
     When I create a tun interface from XML files
     Then both machines should have a new tun1 card
     And I should be able to ping the other side of the layer 3 tunnel
-
-#TODO: test for tun owner and group
+    And the layer 3 tunnel owner and group are correct
 
   Scenario: Create a tap interface from legacy ifcfg files
     When I create a tap interface from legacy files
     Then both machines should have a new tap1 card
     And I should be able to ping the other side of the layer 2 tunnel
+    And the layer 2 tunnel owner and group are correct
 
   Scenario: Create a tap interface from wicked XML files
     When I create a tap interface from XML files
     Then both machines should have a new tap1 card
     And I should be able to ping the other side of the layer 2 tunnel
-
-#TODO: test for tap owner and group
+    And the layer 2 tunnel owner and group are correct
 
   Scenario: Create a gre interface from legacy ifcfg files
     When I create a gre interface from legacy files
