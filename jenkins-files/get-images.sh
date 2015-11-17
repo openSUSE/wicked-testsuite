@@ -4,7 +4,7 @@
 # Published under the GNU Public Licence 2
 
 version="0.0.1"
-baseurl="http://download.suse.de/ibs/home:/wicked-maintainers:/testsuite:/test:/images/images"
+baseurl="http://download.suse.de/ibs/home:/wicked-maintainers:/testsuite:/stable:/images/images"
 destination="/tmp"
 
 sut_images=
