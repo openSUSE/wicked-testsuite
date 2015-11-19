@@ -26,10 +26,6 @@
 </interface>
 
 <interface>
-  <name>ovs-system</name>
-</interface>
-
-<interface>
   <name>eth1</name>
 
   <link>

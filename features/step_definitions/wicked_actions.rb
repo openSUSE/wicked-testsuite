@@ -466,10 +466,6 @@ When /^I create an OVS bridge from legacy files$/ do
   local.should == 0; remote.should == 0
   if (CONFIGURE_LOWERDEVS)
     local, remote = SUT.inject_file \
-      "test-files/ovs-bridge/ifcfg-ovs-system", "/tmp/tests/ifcfg-ovs-system", \
-      "testuser", false
-    local.should == 0; remote.should == 0
-    local, remote = SUT.inject_file \
       "test-files/ovs-bridge/ifcfg-eth1", "/tmp/tests/ifcfg-eth1", \
       "testuser", false
     local.should == 0; remote.should == 0
