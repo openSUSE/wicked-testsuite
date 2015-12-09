@@ -405,9 +405,9 @@ Then /^the scripts output should be as expected$/ do
   local.should == 0; remote.should == 0; command.should == 0
   out.should match /^pre-up eth0
 post-up eth0
-    inet #{DHCP4_SUT0}.* brd #{DHCP4_SUT0}.* scope global eth0
+    inet #{DHCP4_SUT0}.* scope global eth0
 pre-down eth0
-    inet #{DHCP4_SUT0}.* brd #{DHCP4_SUT0}.* scope global eth0
+    inet #{DHCP4_SUT0}.* scope global eth0
 post-down eth0$/
 end
 
