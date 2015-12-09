@@ -26,6 +26,13 @@
 </interface>
 
 <interface>
+  <name>ovs-system</name>
+  <control>
+    <mode>hotplug</mode>
+  </control>
+</interface>
+
+<interface>
   <name>eth1</name>
 
   <link>
