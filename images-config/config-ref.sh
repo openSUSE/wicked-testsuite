@@ -14,6 +14,10 @@ cp ./files-ref/ifcfg-bond0-ab          /etc/sysconfig/network/pool/ifcfg-bond0-a
 cp ./files-ref/ifcfg-bond0-xor         /etc/sysconfig/network/pool/ifcfg-bond0-xor
 cp ./files-ref/ifcfg-bond0-bc          /etc/sysconfig/network/pool/ifcfg-bond0-bc
 cp ./files-ref/ifcfg-bond0-ieee        /etc/sysconfig/network/pool/ifcfg-bond0-ieee
+cp ./files-ref/ifcfg-bond0-ab-arping   /etc/sysconfig/network/pool/ifcfg-bond0-ab-arping
+cp ./files-ref/ifcfg-bond0-ab-arping-2ips   /etc/sysconfig/network/pool/bond0-ab-arping-2ips
+#cp ./files-ref/ifcfg-bond0-rr-0        /etc/sysconfig/network/pool/ifcfg-bond0-rr-0 # bonding.c: Bonding without monitoring is nonsense/unsupported
+#cp ./files-ref/ifcfg-bond0-ab-arping-0 /etc/sysconfig/network/pool/ifcfg-bond0-ab-arping-0 # bonding.c: Bonding without monitoring is nonsense/unsupported
 cp ./files-ref/ifcfg-br0               /etc/sysconfig/network/pool/ifcfg-br0
 cp ./files-ref/ifcfg-bond1             /etc/sysconfig/network/pool/ifcfg-bond1
 cp ./files-ref/ifcfg-eth0.42           /etc/sysconfig/network/pool/ifcfg-eth0.42

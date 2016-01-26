@@ -56,6 +56,36 @@ Feature: Wicked 9 aggregation
     And both cards should be enslaved to bond0
     And I should be able to ping the other side of the aggregated link
 
+  # Tests for different modes except mode 4 (802.3ad) because libvirt "eats" LACP (and STP) packets 
+
+  #Scenario: Bonding, balance-rr, miimon=0
+    # WORKAROUND BSC#962598: Can't create bond interface when miimon=0 (disabled) 
+    # bonding.c: Bonding without monitoring is nonsense/unsupported
+    #When I create a bonded interface using eth0 and eth1 with miimon=0
+    #Then there should be a new bond0 card
+    #And both cards should be enslaved to bond0
+    #And I should be able to ping the other side of the aggregated link
+
+  Scenario: Bonding, active-backup, arp_ip_target=two_ip_addresses
+    When I create a bonded interface using eth0 and eth1 with arp_ip_target=two_ip_addresses
+    Then there should be a new bond0 card
+    And both cards should be enslaved to bond0
+    And I should be able to ping the other side of the aggregated link
+
+  Scenario: Bonding, active-backup, arp_interval=60
+    When I create a bonded interface using eth0 and eth1 with arp_interval=60
+    Then there should be a new bond0 card
+    And both cards should be enslaved to bond0
+    And I should be able to ping the other side of the aggregated link
+
+
+  #Scenario: Bonding, active-backup, arp_interval=0
+    # bonding.c: Bonding without monitoring is nonsense/unsupported
+    #When I create a bonded interface using eth0 and eth1 with arp_interval=0
+    #Then there should be a new bond0 card
+    #And both cards should be enslaved to bond0
+    #And I should be able to ping the other side of the aggregated link
+
   @teams
   Scenario: Teaming, roundrobin
     When I team together eth0 and eth1 in roundrobin mode
