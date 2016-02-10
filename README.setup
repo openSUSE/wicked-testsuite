@@ -92,13 +92,13 @@ o manually:
   * On the reference server only:
     - install radvd, dhcp-server, tcpdump, and openvpn
     - checkout the images-config/ directory and execute
-      config-sut.sh
+      config-ref.sh
   * On the system under tests only:
     - install gdb, ndisc6, openvpn,
       openvswitch, openvswitch-switch,
       and libteam-tools
     - checkout the images-config/ directory and execute
-      config-ref.sh
+      config-sut.sh
     - do 'systemctl enable openvswitch.service'
 o with rpm packages:
   * Add the following repository to both systems:
@@ -132,7 +132,7 @@ You must then define four variables:
      If "false", do not provide configuration files for lower devices
      used for example in a bond.
 
-   CONFIGURE_PRECISE
+   CONFIGURE_PRECISELY
      If "false", use for example "wicked ifup all" instead of
      "wicked ifup" for every device name.
 
