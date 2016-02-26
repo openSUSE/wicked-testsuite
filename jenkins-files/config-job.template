@@ -127,7 +127,7 @@ export ID=&quot;@@ID@@&quot;
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>test-suite.tgz, wicked-log.tgz</artifacts>
+	    <artifacts>test-suite.tgz, wicked-log.tgz, RPMs/*</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
