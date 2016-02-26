@@ -46,72 +46,80 @@ scripts=$(dirname $(readlink -m $0))
 
 ### Determine build options and target test system
 
+flags="$FLAGS"
 case "$DISTRIBUTION" in
   "SLES 12 SP0 (x86_64)")
-    bs_api=ibs
-    bs_proj=SUSE:SLE-12:Update
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-ibs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-SUSE:SLE-12:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     sut=SLES_12_SP0-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list="teams"
     ;;
   "SLES 12 SP1 (x86_64)")
-    bs_api=ibs
-    bs_proj=SUSE:SLE-12-SP1:GA
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-ibs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-SUSE:SLE-12-SP1:GA}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     sut=SLES_12_SP1-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list=""
     ;;
   "openSUSE 13.2 (x86_64)")
-    bs_api=obs
-    bs_proj=openSUSE:13.2:Update
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-obs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-openSUSE:13.2:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     sut=openSUSE_13_2-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list="teams ovs"
     ;;
   "openSUSE 13.2 (i586)")
-    bs_api=obs
-    bs_proj=openSUSE:13.2:Update
-    bs_repo=standard
-    bs_arch=i586
+    bs_api=${BS_API:-obs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-openSUSE:13.2:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-i586}
     sut=openSUSE_13_2-i686.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=i686
     tags_list="teams ovs"
     ;;
   "openSUSE Leap 42.1 (x86_64)")
-    bs_api=obs
-    bs_proj=openSUSE:Leap:42.1:Update
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-obs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-openSUSE:Leap:42.1:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     sut=openSUSE_Leap_42_1-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list=""
     ;;
   "openSUSE Tumbleweed (x86_64)")
-    bs_api=obs
-    bs_proj=openSUSE:Tumbleweed
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-obs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-openSUSE:Tumbleweed}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     sut=openSUSE_Tumbleweed-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list=""
     ;;
   "Physical")
-    bs_api=ibs
-    bs_proj=SUSE:SLE-12:Update
-    bs_repo=standard
-    bs_arch=x86_64
+    bs_api=${BS_API:-ibs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-SUSE:SLE-12-SP1:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
     target_sut="ssh:10.161.8.133"
     target_ref="ssh:10.161.8.239"
     tags_list=""
@@ -146,30 +154,11 @@ else
   $scripts/config-sut.sh $JOB_NAME $(($ID+50)) $vm_arch
 fi
 
-### Build wicked with Open Build Service
-
-cd $WORKSPACE
-rm -rf SRCs RPMs
-mkdir SRCs RPMs
-
-./autogen.sh
-make dist
-cp wicked-*.tar.bz2 wicked-rpmlintrc wicked.spec SRCs
-ls -lh SRCs
-
-pushd SRCs
-release=$BUILD_NUMBER.$(date +%Y%m%d%H%M%S)
-osc -A $bs_api build \
-  --clean --local-package --debuginfo --trust-all-projects \
-  --release=$release \
-  --alternative-project $bs_proj \
-  --root $BUILD_ROOT_PREFIX/$JOB_NAME/$bs_repo-$bs_arch \
-  $bs_repo $bs_arch wicked.spec
-popd
-
-rpms_out=$BUILD_ROOT_PREFIX/$JOB_NAME/$bs_repo-$bs_arch/home/abuild/rpmbuild
-cp -a $rpms_out/RPMS/$bs_arch/*wicked*-$release.$bs_arch.rpm RPMs/
-ls -lh RPMs
+### Build wicked from git or fetch rpms from build system
+case $GIT_URL in
+"")	$scripts/osc-fetch-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags" ;;
+*)	$scripts/git-build-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags" ;;
+esac
 
 ## Wait until we can communicate with the test machines
 while true; do
@@ -185,10 +174,17 @@ while true; do
 done
 
 ### Run the tests
-
+count=0
+twopence_command $target_sut "rm -f /root/*wicked*"
 for pkg in $(ls RPMs); do
-  twopence_inject $target_sut RPMs/$pkg /root/$pkg
+  case $pkg in
+  *.$bs_arch.rpm)
+     twopence_inject $target_sut RPMs/$pkg /root/$pkg
+     count=$((count + 1))
+  ;;
+  esac
 done
+test $count -gt 0
 
 twopence_command $target_sut "service wicked stop"
 twopence_command $target_sut "service wickedd stop"
@@ -196,7 +192,7 @@ twopence_command $target_sut "service wickedd stop"
 twopence_command $target_sut "rpm -qc wicked > /tmp/config-files"
 twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\" | grep -v \"wicked-testsuite*\")"
 twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
-twopence_command $target_sut "rpm -ih /root/*wicked*-$release.$bs_arch.rpm"
+twopence_command $target_sut "rpm -ih /root/*wicked*.$bs_arch.rpm"
 
 twopence_inject $target_sut /var/lib/jenkins/cucumber/jenkins-files/wicked-$NANNY-nanny.xml /etc/wicked/local.xml
 twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
@@ -206,6 +202,9 @@ twopence_command $target_sut "service wicked start"
 
 pushd /var/lib/jenkins/$SUBDIR
 tar czf $WORKSPACE/test-suite.tgz features/ test-files/
+
+### stop here... probably caller wants to run cucumber manually
+if [[ $flags =~ prepare_only ]] ; then exit 0 ; fi
 
 failed="no"
 tags=""
