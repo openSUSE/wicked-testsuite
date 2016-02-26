@@ -62,7 +62,7 @@ case "$DISTRIBUTION" in
   "SLES 12 SP1 (x86_64)")
     bs_api=${BS_API:-ibs}
     bs_pkg=${BS_PKG:-wicked}
-    bs_proj=${BS_PROJ:-SUSE:SLE-12-SP1:GA}
+    bs_proj=${BS_PROJ:-SUSE:SLE-12-SP1:Update}
     bs_repo=${BS_REPO:-standard}
     bs_arch=${BS_ARCH:-x86_64}
     sut=SLES_12_SP1-x86_64.qcow2
