@@ -49,7 +49,40 @@ to use for the system under tests</description>
               <string>true</string>
             </a>
           </choices>
+        <hudson.model.StringParameterDefinition>
+          <name>FLAGS</name>
+          <description>Space separated list of behaviour flags -- currently supported flags are:
+- bs_check_success: check bs package published status
+- bs_remove_rpms: remove rpms from previous run first
+- prepare_only: do not run the testsuite, start VMs, install RPMs and exit</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
         </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BS_API</name>
+          <description>osc api url or alias</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BS_PKG</name>
+          <description>the package name in the build system (always wicked in git mode)</description>
+          <defaultValue>wicked</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BS_PROJ</name>
+          <description>build system project to use</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BS_REPO</name>
+          <description>build system repository (e.g. standard)</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BS_ARCH</name>
+          <description>build system architecture</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
