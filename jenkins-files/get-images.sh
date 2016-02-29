@@ -8,8 +8,11 @@ baseurl="http://download.suse.de/ibs/home:/wicked-maintainers:/testsuite:/stable
 destination="/tmp"
 
 sut_images=
+sut_packages=
 ref_images=
+ref_packages=
 other_images=
+other_packages=
 direct=
 
 print_help() {
@@ -17,12 +20,17 @@ print_help() {
 }
 
 images=`wget -qO - ${baseurl} | grep -o '<a href=['"'"'"][^"'"'"']*['"'"'"]' | \
-      sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//' | uniq -i | grep -E "^((\bref\b)|(\bsut\b))*(.*)qcow2$"`
+      sed -e 's/^<a href=["'"'"']//' -e 's/["'"'"']$//' | uniq -i | grep -E "^((\bref\b)|(\bsut\b))*(.*)(qcow2|packages)$"`
 
 for image in $images; do
-    sut_images="${sut_images} `echo $image | grep -e \"^sut\"`"
-    ref_images="${ref_images} `echo $image | grep -e \"^ref\"`"
-    other_images="${other_images} `echo $image | grep -vE \"^((\bsut\b)|(\bref\b))\"`"
+    case $image in
+    sut-*.packages)	sut_packages="$sut_packages $image";;
+    ref-*.packages)	ref_packages="$ref_packages $image";;
+    sut-*.qcow2)	sut_images="${sut_images} $image" ;;
+    ref-*.qcow2)	ref_images="${ref_images} $image" ;;
+    *.packages)		other_packages="$other_packages $image" ;;
+    *.qcow2)		other_images="${other_images} $image" ;;
+    esac
 done
 
 while test $# -gt 0
@@ -70,9 +78,9 @@ do
             echo "$1 needs a value"
         fi
         destination="$2"
-        if [ ! -d "$destination" ]; then
+        if [ ! -d "$destination/files" ]; then
             echo "create directory '${destination}'..."
-            mkdir -p "$destination"
+            mkdir -p "$destination/files"
         fi
         ;;
     esac
@@ -83,19 +91,36 @@ done
 if [ ! "$direct" == "" ]; then
     all_images="$direct"
 else
-    all_images="$sut_images $ref_images"
+    all_images="$sut_images $sut_packages $ref_images $ref_packages"
 fi
 
 for image in $all_images; do
     url="${baseurl}/${image}"
     filename="$(echo $image | grep -oE "^((\bref\b)|(\bsut\b))*(.*)((\bx86_64\b)|(\bi686\b)|(\bi586\b))")"
-    filename="$(echo $filename | sed 's#\.#-#').qcow2"
-    echo " * found ${filename}..."
-    wget -q "$url" -O "${destination}/${filename}"
-    if [ "$?" -eq 0 ]; then
+    case $image in
+	*.packages) filename="$(echo $filename | sed 's#\.#-#').packages" ;;
+	*.qcow2)    filename="$(echo $filename | sed 's#\.#-#').qcow2"    ;;
+    esac
+    tmpfile=`mktemp -q "${destination}/files/${image}.XXXXXXXXXX"`
+    if [ "x$tmpfile" != x ] && wget -q "$url" -O "${tmpfile}" ; then
         sync
-        size=`du -m "${destination}/${filename}" | cut -f1`
-        echo "${url} -> ${destination}/${filename} (${size}M)"
+	case $image in
+	*.packages)
+		rm -f `readlink -e "${destination}/files/${filename}"` \
+			"${destination}/files/${filename}"
+		ln -sf "$image" "${destination}/files/${filename}"
+		mv -f "$tmpfile" "${destination}/files/${image}" || exit 1
+	;;
+	*.qcow2)
+		rm -f `readlink -e "${destination}/${filename}"` \
+			"${destination}/${filename}"
+		ln -sf "files/$image" "${destination}/${filename}"
+		mv -f "$tmpfile" "${destination}/files/${image}" || exit 1
+	    	echo " * found ${filename}..."
+	        size=`du -m "${destination}/files/${image}" | cut -f1`
+	        echo "${url} -> ${destination}/${filename} (${size}M)"
+	;;
+	esac
     else
         exit 1
     fi
