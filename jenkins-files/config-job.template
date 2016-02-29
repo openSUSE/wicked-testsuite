@@ -20,6 +20,7 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
 to use for the system under tests</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
+              <string></string>
               <string>SLES 12 SP1 (x86_64)</string>
               <string>SLES 12 SP0 (x86_64)</string>
               <string>openSUSE 13.2 (x86_64)</string>
@@ -103,7 +104,7 @@ to use for the system under tests</description>
     <extensions/>
   </scm>
   <canRoam>true</canRoam>
-  <disabled>false</disabled>
+  <disabled>@@DISABLED@@</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
@@ -118,6 +119,8 @@ to use for the system under tests</description>
       <command>
 export NANNY=&quot;@@NANNY@@&quot;
 export SUBDIR=&quot;@@SUBDIR@@&quot;
+export DISTRIBUTION=&quot;${DISTRIBUTION:-@@DISTRIBUTION@@}&quot;
+
 # Please use a unique identifier below:
 export ID=&quot;@@ID@@&quot;
 
