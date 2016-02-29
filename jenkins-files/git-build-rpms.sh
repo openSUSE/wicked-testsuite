@@ -26,7 +26,7 @@ test "x$BUILD_ROOT_PREFIX" != "x"
 test "x$WORKSPACE" != "x" && cd "$WORKSPACE"
 
 rm -rf SRCs RPMs
-rm -rf wicked-*.tar.bz2 wicked-rpmlintrc wicked.spec
+rm -rf wicked-*.tar.bz2 wicked.spec
 mkdir SRCs RPMs
 
 ./autogen.sh
