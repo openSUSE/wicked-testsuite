@@ -47,6 +47,7 @@ scripts=$(dirname $(readlink -m $0))
 ### Determine build options and target test system
 
 flags="$FLAGS"
+rpms_required="yes"
 case "$DISTRIBUTION" in
   "SLES 12 SP0 (x86_64)")
     bs_api=${BS_API:-ibs}
@@ -156,8 +157,15 @@ fi
 
 ### Build wicked from git or fetch rpms from build system
 case $GIT_URL in
-"")	$scripts/osc-fetch-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags" ;;
-*)	$scripts/git-build-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags" ;;
+"")
+  $scripts/osc-fetch-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags"
+  # no override given, test what is in the sut when osc getbinaries did not found any RPMs;
+  # sut image is rebuilt on each package update, and contains last released RPMs already.
+  test "X$BS_API$BS_PKG$BS_PROJ$BS_REPO$BS_ARCH" = "X" && rpms_required="no"
+  ;;
+*)
+  $scripts/git-build-rpms.sh "$bs_api" "$bs_pkg" "$bs_proj" "$bs_repo" "$bs_arch" "$flags"
+  ;;
 esac
 
 ## Wait until we can communicate with the test machines
@@ -174,25 +182,28 @@ while true; do
 done
 
 ### Run the tests
-count=0
+rpms_count=0
 twopence_command $target_sut "rm -f /root/*wicked*"
 for pkg in $(ls RPMs); do
   case $pkg in
   *.$bs_arch.rpm)
      twopence_inject $target_sut RPMs/$pkg /root/$pkg
-     count=$((count + 1))
+     rpms_count=$((rpms_count + 1))
   ;;
   esac
 done
-test $count -gt 0
 
 twopence_command $target_sut "service wicked stop"
 twopence_command $target_sut "service wickedd stop"
 
-twopence_command $target_sut "rpm -qc wicked > /tmp/config-files"
-twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\" | grep -v \"wicked-testsuite*\")"
-twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
-twopence_command $target_sut "rpm -ih /root/*wicked*.$bs_arch.rpm"
+if test $rpms_count -gt 0 ; then
+  twopence_command $target_sut "rpm -qc wicked > /tmp/config-files"
+  twopence_command $target_sut "rpm -e --nodeps \$(rpm -qa \"*wicked*\" | grep -v \"wicked-testsuite*\")"
+  twopence_command $target_sut "rm -f \$(cat /tmp/config-files)"
+  twopence_command $target_sut "rpm -ih /root/*wicked*.$bs_arch.rpm"
+else
+  test "$rpms_required" = "no"
+fi
 
 twopence_inject $target_sut /var/lib/jenkins/cucumber/jenkins-files/wicked-$NANNY-nanny.xml /etc/wicked/local.xml
 twopence_command $target_sut "chmod u=rw,go=r /etc/wicked/local.xml"
