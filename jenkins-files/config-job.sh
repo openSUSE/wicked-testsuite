@@ -10,9 +10,19 @@ JOBS_DIR=/var/lib/jenkins/jobs
 # [on install or on update].
 DISABLED="true"
 
+dry_run=no
+while [ $# -gt 0 ]; do
+	case $1 in
+	--dry-run)	shift;	dry_run=yes			;;
+	-*)		echo 1>&2 "unknown option $1" ; exit 1	;;
+	*)		break					;;
+	esac
+done
+
 function configure()
 {
   printf "ID=%02u\t%-24s\t%-24s\t%s\t%s\n" "$ID" "$NAME" "$DISTRIBUTION" "$GIT_REPO" "$BRANCH_NAME"
+  test "x$dry_run" = "xyes" && return 0
   test -d "$JOBS_DIR/$NAME" || mkdir -p "$JOBS_DIR/$NAME" || exit 1
   if test "x$KEEP_DAYS" = x -o "x$KEEP_RUNS" = x ; then
     case $NAME in
@@ -38,45 +48,14 @@ function configure()
       config-job.template > "$JOBS_DIR/$NAME/config.xml"
 }
 
-DISTRIBUTION="SLES 12 SP1 (x86_64)"
-BRANCH_NAME="master"
-NANNY="without"
-NAME=wicked-master
-ID=1
-configure
-
-DISTRIBUTION="SLES 12 SP1 (x86_64)"
-BRANCH_NAME="master"
-NANNY="with"
-NAME=wicked-master-nanny
-ID=2
-configure
-
-DISTRIBUTION="SLES 12 SP1 (x86_64)"
-BRANCH_NAME="testing"
-NANNY="without"
-NAME=wicked-testing
-ID=3
-configure
-
-DISTRIBUTION="SLES 12 SP1 (x86_64)"
-BRANCH_NAME="testing"
-NANNY="with"
-NAME=wicked-testing-nanny
-ID=4
-configure
-
-DISTRIBUTION="SLES 12 SP0 (x86_64)"
-BRANCH_NAME="sle12"
-NANNY="without"
-NAME=wicked-sle12
-ID=5
-configure
-
-DISTRIBUTION="SLES 12 SP0 (x86_64)"
-BRANCH_NAME="sle12"
-NANNY="with"
-NAME=wicked-sle12-nanny
-ID=6
-configure
+if test -n "$HOSTNAME" ; then
+	if test -f "$HOSTNAME/config-job.sh" ; then
+		source "$HOSTNAME/config-job.sh"
+	else
+		source "default/config-job.sh"
+	fi
+else
+	echo >&2 "The HOSTNAME environment variable is not set"
+	exit 1
+fi
 
