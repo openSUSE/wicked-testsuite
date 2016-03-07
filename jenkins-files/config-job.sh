@@ -14,11 +14,25 @@ function configure()
 {
   printf "ID=%02u\t%-24s\t%-24s\t%s\t%s\n" "$ID" "$NAME" "$DISTRIBUTION" "$GIT_REPO" "$BRANCH_NAME"
   test -d "$JOBS_DIR/$NAME" || mkdir -p "$JOBS_DIR/$NAME" || exit 1
+  if test "x$KEEP_DAYS" = x -o "x$KEEP_RUNS" = x ; then
+    case $NAME in
+      *test*)
+        KEEP_DAYS="${KEEP_DAYS:-30}"
+        KEEP_RUNS="${KEEP_RUNS:-10}"
+      ;;
+      *)
+        KEEP_DAYS="${KEEP_DAYS:-365}"
+        KEEP_RUNS="${KEEP_RUNS:-20}"
+      ;;
+    esac
+  fi
   sed "s!@@SUBDIR@@!$SUBDIR!g;
        s!@@GIT_REPO@@!$GIT_REPO!g;
        s!@@DISTRIBUTION@@!$DISTRIBUTION!g;
        s!@@DISABLED@@!$DISABLED!g;
        s!@@BRANCH_NAME@@!$BRANCH_NAME!g;
+       s!@@KEEP_DAYS@@!$KEEP_DAYS!g;
+       s!@@KEEP_RUNS@@!$KEEP_RUNS!g;
        s!@@ID@@!$ID!g;
        s!@@NANNY@@!$NANNY!g" \
       config-job.template > "$JOBS_DIR/$NAME/config.xml"
