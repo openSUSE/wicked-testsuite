@@ -1,11 +1,15 @@
-STARTMODE='auto'
+STARTMODE='manual'
 BOOTPROTO='static'
 
-IPADDR='192.168.50.1/24'
-IPADDR6='fd00:deca:fbad:50::1/64'
+IPADDR_0='192.168.50.1/24'
+IPADDR_1='192.168.60.1/24'
+
+IPADDR6_0='fd00:deca:fbad:50::1/64'
+IPADDR6_1='fd00:deca:fbad:60::1/64'
+
 
 BONDING_MASTER='yes'
 BONDING_SLAVE_0='eth0'
 BONDING_SLAVE_1='eth1'
-BONDING_MODULE_OPTS='mode=active-backup primary=eth1 arp_ip_target=192.168.50.123,192.168.50.1 arp_interval=60'
+BONDING_MODULE_OPTS='mode=active-backup primary=eth1 arp_ip_target=192.168.50.123,192.168.60.123 arp_interval=60'
 
