@@ -1,4 +1,8 @@
 require_relative "../step_definitions/wicked_cleanup.rb"
+require_relative "../step_definitions/wicked_ref_support.rb"
+
+# Copying ifcg and other cfg files to REF
+copyRefFiles()
 
 # Initial preparation
 AfterConfiguration do
