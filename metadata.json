@@ -1,0 +1,16 @@
+{
+  "name": "wicked-testsuite",
+  "summary": "Test suite for wicked network interface broker",
+  "description": "Test suite used for Continuous Integration of development of the Wicked network interfaces broker",
+  "status": "development",
+  "maintainer": "Gaston Sanso <gsanso@suse.com>",
+  "rpm": []",
+  "arch": ["noarch"],
+  "product": "wicked openvpn openvswitch iptools bridge-utils iproute2 net-tools tunctl libteam-tools libteam5 libteamdctl0",
+  "fate": null,
+  "bnc": null,
+  "updated_at": "2016-05-05 14:00:00 UTC",
+  "tags": [],
+  "nodes": [],
+  "incompatible": []
+}
