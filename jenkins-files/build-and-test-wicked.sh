@@ -42,7 +42,9 @@ scripts=$(dirname $(readlink -m $0))
 [ -z "$BUILD_ROOT_PREFIX" ] && export BUILD_ROOT_PREFIX="/var/lib/jenkins/builds"
 [ -z "$NANNY" ] && export NANNY="without"
 [ -z "$SUBDIR" ] && export SUBDIR="cucumber"
-[ -z "$ID" ] && export ID="0"
+export ID=$("$scripts/job-id.sh" "$JOB_NAME" "${ID:0}")
+[ -z "$ID" ] && exit 1
+
 
 ### Determine build options and target test system
 
