@@ -71,7 +71,6 @@ Feature: Wicked 9 aggregation
     Then there should be a new bond0 card
     And both cards should be enslaved to bond0
     And I should be able to ping the other side of the aggregated link
-    And I should be able to ping the second ip of the aggregated link
 
   Scenario: Bonding, active-backup, arp_interval=60
     When I create a bonded interface using eth0 and eth1 with arp_interval=60
@@ -162,13 +161,13 @@ Feature: Wicked 9 aggregation
     Then eth0 should be the active link
     And I should be able to ping the other side of the aggregated link
 
-  #@teams
-  #Scenario: Teaming, activebackup, all link watchers
-   # When I team together eth0 and eth1 with all link watchers
-   # Then there should be a new team0 card
-   # And eth1 should be the active link
+  @teams
+  Scenario: Teaming, activebackup, all link watchers
+    When I team together eth0 and eth1 with all link watchers
+    Then there should be a new team0 card
+    And eth1 should be the active link
     #
-   # When I cut eth1's link
-   # Then eth0 should be the active link
-   # And I should be able to ping the other side of the aggregated link
+    When I cut eth1's link
+    Then eth0 should be the active link
+    And I should be able to ping the other side of the aggregated link
 

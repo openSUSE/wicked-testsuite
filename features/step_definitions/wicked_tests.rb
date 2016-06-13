@@ -388,22 +388,6 @@ Then /^I should be able to ping the other side of the aggregated link$/ do
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-Then /^I should be able to ping the second ip of the aggregated link$/ do
-  # WORKAROUND (the @skip_when_virtual_machine part)
-  if @skip_when_no_hotplug or @skip_when_virtual_machine
-    puts "(skipped)"
-    sleep 1
-    next
-  end
-  SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the second ip of the aggregated link\""
-  local, remote, command = SUT.test_and_drop_results \
-    "ping -q -c1 -W1 #{BOND4_REF1} -I #{BOND4_SUT1[/[^\/]*/]}", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-  local, remote, command = SUT.test_and_drop_results \
-    "ping6 -q -c1 -W1 #{BOND6_REF1} -I #{BOND6_SUT1[/[^\/]*/]}", "testuser"
-  local.should == 0; remote.should == 0; command.should == 0
-end
-
 Then /^I should be able to ping the other side of the VLAN$/ do
   SUT.test_and_drop_results "log.sh step \"Then I should be able to ping the other side of the VLAN\""
   local, remote, command = SUT.test_and_drop_results \

@@ -2546,6 +2546,7 @@ When /^I create a bonded interface using eth0 and eth1 with ([^ ]*)$/ do |param|
     "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   #
+    puts "param: #{param}"
   ifsut = case param
     #when "miimon=0" then "bond0-rr-0" # bonding.c: Bonding without monitoring is nonsense/unsupported
     when "arp_interval=60" then "bond0-ab-arping"
