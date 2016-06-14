@@ -73,6 +73,17 @@ case "$DISTRIBUTION" in
     vm_arch=x86_64
     tags_list=""
     ;;
+  "SLES 12 SP2 (x86_64)")
+    bs_api=${BS_API:-ibs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-SUSE:SLE-12-SP2:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
+    sut=SLES_12_SP2-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
+    tags_list=""
+    ;;
   "openSUSE 13.2 (x86_64)")
     bs_api=${BS_API:-obs}
     bs_pkg=${BS_PKG:-wicked}
@@ -102,6 +113,17 @@ case "$DISTRIBUTION" in
     bs_repo=${BS_REPO:-standard}
     bs_arch=${BS_ARCH:-x86_64}
     sut=openSUSE_Leap_42_1-x86_64.qcow2
+    ref=openSUSE_13_1-x86_64.qcow2
+    vm_arch=x86_64
+    tags_list=""
+    ;;
+  "openSUSE Leap 42.2 (x86_64)")
+    bs_api=${BS_API:-obs}
+    bs_pkg=${BS_PKG:-wicked}
+    bs_proj=${BS_PROJ:-openSUSE:Leap:42.2:Update}
+    bs_repo=${BS_REPO:-standard}
+    bs_arch=${BS_ARCH:-x86_64}
+    sut=openSUSE_Leap_42_2-x86_64.qcow2
     ref=openSUSE_13_1-x86_64.qcow2
     vm_arch=x86_64
     tags_list=""
