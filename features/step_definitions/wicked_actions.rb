@@ -1368,6 +1368,8 @@ When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from legacy files$/ do
     "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   #
+  sleep 5 ## let the ref some time to establish it's bond
+  #
   local, remote = SUT.inject_file \
     "test-files/mix5/ifcfg-br1", "/tmp/tests/ifcfg-br1", \
     "testuser", false
@@ -1409,6 +1411,8 @@ When /^I create br1\(bond0\(eth0, eth1\), dummy1\) from XML files$/ do
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
+  #
+  sleep 5 ## let the ref some time to establish it's bond
   #
   local, remote = SUT.inject_file \
     "test-files/mix5/mix5.xml", "/tmp/tests/mix5.xml", \
