@@ -7,7 +7,7 @@ bridge="wickedbr0"
 dummy="dummy0"
 dummy_out="wickedout0"
 git_repository="https://github.com/openSUSE/wicked-testsuite.git"
-git_branch=""
+git_branch="stable"
 
 jenkins_home="/var/lib/jenkins"
 jenkins_server="http://localhost"
