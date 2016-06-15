@@ -20,11 +20,13 @@ Github &quot;@@BRANCH_NAME@@&quot; branch, @@NANNY@@ nanny</description>
 to use for the system under tests</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string></string>
+              <string>default</string>
+              <string>SLES 12 SP2 (x86_64)</string>
               <string>SLES 12 SP1 (x86_64)</string>
               <string>SLES 12 SP0 (x86_64)</string>
               <string>openSUSE 13.2 (x86_64)</string>
               <string>openSUSE 13.2 (i586)</string>
+              <string>openSUSE Leap 42.2 (x86_64)</string>
               <string>openSUSE Leap 42.1 (x86_64)</string>
               <string>openSUSE Tumbleweed (x86_64)</string>
               <string>Physical</string>
@@ -119,7 +121,12 @@ to use for the system under tests</description>
       <command>
 export NANNY=&quot;@@NANNY@@&quot;
 export SUBDIR=&quot;@@SUBDIR@@&quot;
-export DISTRIBUTION=&quot;${DISTRIBUTION:-@@DISTRIBUTION@@}&quot;
+case ${DISTRIBUTION} in
+&quot;&quot;|&quot;default&quot;)
+  DISTRIBUTION=&quot;@@DISTRIBUTION@@&quot;
+;;
+esac
+export DISTRIBUTION
 
 # Please use a unique identifier below:
 export ID=&quot;@@ID@@&quot;

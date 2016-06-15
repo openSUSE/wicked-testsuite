@@ -4,7 +4,7 @@
   "description": "Test suite used for Continuous Integration of development of the Wicked network interfaces broker",
   "status": "development",
   "maintainer": "Gaston Sanso <gsanso@suse.com>",
-  "rpm": []",
+  "rpm": "",
   "arch": ["noarch"],
   "product": "wicked openvpn openvswitch iptools bridge-utils iproute2 net-tools tunctl libteam-tools libteam5 libteamdctl0",
   "fate": null,
