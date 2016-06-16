@@ -12,16 +12,19 @@ usermod -a -G qemu,libvirt jenkins
 
 # FIXME: ebischoffs way via polkit isn't working ATM
 # take libvirtd.conf for now
-echo "auth_unix_ro = \"none\"" >> /etc/libvirt/libvirtd.conf
-echo "auth_unix_rw = \"none\"" >> /etc/libvirt/libvirtd.conf
+grep -qs -E "^auth_unix_ro.*none\"" /etc/libvirt/libvirtd.conf || \
+    echo "auth_unix_ro = \"none\"" >> /etc/libvirt/libvirtd.conf
+
+grep -qs -E "^auth_unix_rw.*none\"" /etc/libvirt/libvirtd.conf || \
+    echo "auth_unix_rw = \"none\"" >> /etc/libvirt/libvirtd.conf
+
 systemctl restart libvirtd
 # allow libvirt group members accessing libvirtd
 #cp ./files-host/10-virt.rules /etc/polkit-1/rules.d/10-virt.rules
 #systemctl restart polkit
 
-echo """
-jenkins   ALL = NOPASSWD: /usr/bin/build
-""" >> /etc/sudoers
+grep -qs -E "^jenkins.*/usr/bin/build" /etc/sudoers || \
+    echo "jenkins   ALL = NOPASSWD: /usr/bin/build" >> /etc/sudoers
 
 if test -f "${jenkins_home}/.oscrc" ; then
     echo "WARNING: file '.oscrc' exists. Skip."
