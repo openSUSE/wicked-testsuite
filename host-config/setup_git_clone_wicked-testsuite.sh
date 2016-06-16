@@ -11,7 +11,7 @@ source ./include.sh || exit 1
 #-----------------------------------------------------------------------------
 echo " * clone git repo from '${git_repository}'..."
 if [ ! -d "${jenkins_home}/cucumber" ]; then
-    git clone "${git_branch:+-b $git_branch}" "$git_repository" ${jenkins_home}/cucumber
+    git clone ${git_branch:+-b "$git_branch"} "$git_repository" ${jenkins_home}/cucumber
     chown -R jenkins:jenkins ${jenkins_home}/cucumber
 
     ln -s "${jenkins_home}/cucumber/jenkins-files/build-and-test-wicked.sh"\
