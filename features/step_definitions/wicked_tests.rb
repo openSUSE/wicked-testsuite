@@ -855,6 +855,9 @@ end
 
 Then /^the capture file should contain a DHCP release$/ do
   SUT.test_and_drop_results "log.sh step \"Then the capture file should contain a DHCP release\""
+  #
+  sleep 2 # let time for DHCP release to arrive
+  #
   local, remote, command = REF.test_and_drop_results \
     "tcpdump.sh stop"
   local.should == 0; remote.should == 0; command.should == 0

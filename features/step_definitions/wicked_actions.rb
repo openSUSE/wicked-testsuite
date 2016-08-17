@@ -2425,6 +2425,12 @@ When /^I bond together eth0 and eth1 in ([^ ]*) mode$/ do |mode|
     "test-files/bonding/ifcfg-#{ifsut}", "/tmp/tests/ifcfg-bond0", \
     "testuser", false
   local.should == 0; remote.should == 0
+  if mode == "balance-tlb" or mode == "balance-alb"
+    # ARP or ICMPv6 looping back to bond0 might create duplicate addresses
+    local, remote, command = SUT.test_and_drop_results \
+      "echo 'net.ipv6.conf.bond0.accept_dad = 0' >> /etc/sysctl.conf"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
   if (CONFIGURE_LOWERDEVS)
     local, remote = SUT.inject_file \
       "test-files/bonding/ifcfg-eth0", "/tmp/tests/ifcfg-eth0", \
@@ -2442,6 +2448,12 @@ When /^I bond together eth0 and eth1 in ([^ ]*) mode$/ do |mode|
   else
     local, remote, command = SUT.test_and_drop_results \
       "wic.sh ifup --ifconfig compat:/tmp/tests all"
+    local.should == 0; remote.should == 0; command.should == 0
+  end
+  if mode == "balance-tlb" or mode == "balance-alb"
+    # ARP or ICMPv6 looping back to bond0 might create duplicate addresses
+    local, remote, command = SUT.test_and_drop_results \
+      "sed -i '$d' /etc/sysctl.conf"
     local.should == 0; remote.should == 0; command.should == 0
   end
 end
@@ -2534,14 +2546,12 @@ When /^I cut ([^']*)'s link$/ do |interface|
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I create a bonded interface using eth0 and eth1 with ([^ ]*)$/ do |param|
-  SUT.test_and_drop_results "log.sh step \"When I create a bonded interface using eth0 and eth1 with #{param}\""
+When /^I bond together eth0 and eth1 with arp_ping link watcher([^ ]*)$/ do |param|
+  SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 with arp_ping link watcher#{param}\""
   #
   ifref = case param
-    #when "miimon=0" then "bond0-rr-0" # bonding.c: Bonding without monitoring is nonsense/unsupported
-    when "arp_interval=60" then "bond0-ab-arping"
-    #when "arp_interval=0" then "bond0-ab-arping-0" # bonding.c: Bonding without monitoring is nonsense/unsupported
-    when "arp_ip_target=two_ip_addresses" then "bond0-ab-arping-2ips"
+    when "" then "bond0-ab-arping"
+    when " on two IP addresses" then "bond0-ab-arping-2ips"
   end
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-#{ifref} /etc/sysconfig/network/ifcfg-bond0"
@@ -2551,10 +2561,8 @@ When /^I create a bonded interface using eth0 and eth1 with ([^ ]*)$/ do |param|
   local.should == 0; remote.should == 0; command.should == 0
   #
   ifsut = case param
-    #when "miimon=0" then "bond0-rr-0" # bonding.c: Bonding without monitoring is nonsense/unsupported
-    when "arp_interval=60" then "bond0-ab-arping"
-    #when "arp_interval=0" then "bond0-ab-arping-0" # bonding.c: Bonding without monitoring is nonsense/unsupported
-    when "arp_ip_target=two_ip_addresses" then "bond0-ab-arping-2ips"
+    when "" then "bond0-ab-arping"
+    when " on two IP addresses" then "bond0-ab-arping-2ips"
   end
   local, remote = SUT.inject_file \
     "test-files/bonding/ifcfg-#{ifsut}", "/tmp/tests/ifcfg-bond0", \
