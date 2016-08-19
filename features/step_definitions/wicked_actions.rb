@@ -2547,7 +2547,7 @@ When /^I cut ([^']*)'s link$/ do |interface|
 end
 
 When /^I bond together eth0 and eth1 with arp_ping link watcher on ([^ ]*) IP addresses$/ do |param|
-  SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 with arp_ping link watcher on #{param} IP addre
+  SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 with arp_ping link watcher on #{param} IP addresses\""
   #
   # Normal miimon link-watcher on reference host, for sake of simplicity
   local, remote, command = REF.test_and_drop_results \

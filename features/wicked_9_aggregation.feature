@@ -58,16 +58,36 @@ Feature: Wicked 9 aggregation
 
   # We don't test mode 4 (802.3ad) because libvirt "eats" LACP (and STP) packets
 
-  Scenario: Bonding, active-backup, arp_ping
-    When I bond together eth0 and eth1 with arp_ping link watcher
+  # The following tests assume eth1 is the primary interface:
+
+  Scenario: Bonding, active-backup, miimon
+    When I bond together eth0 and eth1 in active-backup mode
     Then there should be a new bond0 card
-    And both cards should be enslaved to bond0
+    And eth1 should be the primary interface
+    And I should be able to ping the other side of the aggregated link
+    #
+    When I cut eth1's link
+    Then eth0 should be the primary interface
+    And I should be able to ping the other side of the aggregated link
+
+  Scenario: Bonding, active-backup, arp_ping
+    When I bond together eth0 and eth1 with arp_ping link watcher on 1 IP addresses
+    Then there should be a new bond0 card
+    And eth1 should be the primary interface
+    And I should be able to ping the other side of the aggregated link
+    #
+    When I cut eth1's link
+    Then eth0 should be the primary interface
     And I should be able to ping the other side of the aggregated link
 
   Scenario: Bonding, active-backup, arp_ping, two IP addresses
-    When I bond together eth0 and eth1 with arp_ping link watcher on two IP addresses
+    When I bond together eth0 and eth1 with arp_ping link watcher on 2 IP addresses
     Then there should be a new bond0 card
-    And both cards should be enslaved to bond0
+    And eth1 should be the primary interface
+    And I should be able to ping the other side of the aggregated link
+    #
+    When I cut eth1's link
+    Then eth0 should be the primary interface
     And I should be able to ping the other side of the aggregated link
 
   @teams
@@ -113,13 +133,14 @@ Feature: Wicked 9 aggregation
     # WORKAROUND: LACP packets are not forwarded by bridges on real host:
     # And I should be able to ping the other side of the aggregated link
 
-  # The following tests assume eth1 is the primary interface:
+  # The following tests assume eth1 is the active link:
 
   @teams
   Scenario: Teaming, activebackup, ethtool
     When I team together eth0 and eth1 with ethtool link watcher
     Then there should be a new team0 card
     And eth1 should be the active link
+    And I should be able to ping the other side of the aggregated link
     #
     When I cut eth1's link
     Then eth0 should be the active link
@@ -130,6 +151,7 @@ Feature: Wicked 9 aggregation
     When I team together eth0 and eth1 with arp_ping link watcher
     Then there should be a new team0 card
     And eth1 should be the active link
+    And I should be able to ping the other side of the aggregated link
     #
     When I cut eth1's link
     Then eth0 should be the active link
@@ -140,6 +162,7 @@ Feature: Wicked 9 aggregation
     When I team together eth0 and eth1 with arp_ping link watcher
     Then there should be a new team0 card
     And eth1 should be the active link
+    And I should be able to ping the other side of the aggregated link
     #
     When I cut eth1's link
     Then eth0 should be the active link
@@ -150,6 +173,7 @@ Feature: Wicked 9 aggregation
     When I team together eth0 and eth1 with all link watchers
     Then there should be a new team0 card
     And eth1 should be the active link
+    And I should be able to ping the other side of the aggregated link
     #
     When I cut eth1's link
     Then eth0 should be the active link

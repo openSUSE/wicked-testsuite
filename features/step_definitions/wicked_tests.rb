@@ -1021,10 +1021,18 @@ Then /^the setup should still be in progress$/ do
   @setup_in_progress.should be true
 end
 
+Then /^([^ ]*) should be the primary interface$/ do |interface|
+  SUT.test_and_drop_results "log.sh step \"Then #{interface} should be the primary interface\""
+
+  out, local, remote, command = SUT.test_and_store_results_together \
+    "cat /proc/net/bonding/bond0"
+  local.should == 0; remote.should == 0; command.should == 0
+  out.should include "Active Slave: #{interface}"
+end
+
 Then /^([^ ]*) should be the active link$/ do |interface|
   SUT.test_and_drop_results "log.sh step \"Then #{interface} should be the active link\""
 
-  # Then check for active port
   out, local, remote, command = SUT.test_and_store_results_together \
     "teamdctl team0 state view"
   local.should == 0; remote.should == 0; command.should == 0
