@@ -2545,9 +2545,6 @@ When /^I cut ([^']*)'s link$/ do |interface|
   local, remote, command = SUT.test_and_drop_results \
     "ip link set down #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
-  #
-  # Leave enough time to link watchers to detect the failure
-  sleep 1
 end
 
 When /^I bond together eth0 and eth1 with arp_ping link watcher on ([^ ]*) IP addresses$/ do |param|
