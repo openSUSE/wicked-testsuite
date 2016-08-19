@@ -2501,8 +2501,8 @@ When /^I team together eth0 and eth1 in ([^ ]*) mode$/ do |mode|
   end
 end
 
-When /^I team together eth0 and eth1 with ([^ ]*) link watcher$/ do |lw|
-  SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 with #{lw} link watcher\""
+When /^I team together eth0 and eth1 with ([^ ]*) link watcher(s?)$/ do |lw,plural|
+  SUT.test_and_drop_results "log.sh step \"When I team together eth0 and eth1 with #{lw} link watcher#{plural}\""
   #
   local, remote, command = REF.test_and_drop_results \
     "ln -s pool/ifcfg-bond0-ab /etc/sysconfig/network/ifcfg-bond0"
@@ -2541,9 +2541,13 @@ When /^I cut ([^']*)'s link$/ do |interface|
   local, remote, command = REF.test_and_drop_results \
     "ip link set down #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
+  #
   local, remote, command = SUT.test_and_drop_results \
     "ip link set down #{interface}"
   local.should == 0; remote.should == 0; command.should == 0
+  #
+  # Leave enough time to link watchers to detect the failure
+  sleep 1
 end
 
 When /^I bond together eth0 and eth1 with arp_ping link watcher on ([^ ]*) IP addresses$/ do |param|
