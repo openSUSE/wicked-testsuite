@@ -7,4 +7,5 @@ BONDING_SLAVE_1='eth1'
 BONDING_MODULE_OPTS='mode=active-backup primary=eth1 miimon=100'
 
 IPADDR='192.168.50.1/24'
+IPADDR_2='192.168.50.2/24'
 IPADDR6='fd00:deca:fbad:50::1/64'

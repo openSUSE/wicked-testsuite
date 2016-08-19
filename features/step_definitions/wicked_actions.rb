@@ -2546,23 +2546,20 @@ When /^I cut ([^']*)'s link$/ do |interface|
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I bond together eth0 and eth1 with arp_ping link watcher([^ ]*)$/ do |param|
-  SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 with arp_ping link watcher#{param}\""
+When /^I bond together eth0 and eth1 with arp_ping link watcher on ([^ ]*) IP addresses$/ do |param|
+  SUT.test_and_drop_results "log.sh step \"When I bond together eth0 and eth1 with arp_ping link watcher on #{param} IP addre
   #
-  ifref = case param
-    when "" then "bond0-ab-arping"
-    when " on two IP addresses" then "bond0-ab-arping-2ips"
-  end
+  # Normal miimon link-watcher on reference host, for sake of simplicity
   local, remote, command = REF.test_and_drop_results \
-    "ln -s pool/ifcfg-#{ifref} /etc/sysconfig/network/ifcfg-bond0"
+    "ln -s pool/ifcfg-bond0-ab /etc/sysconfig/network/ifcfg-bond0"
   local.should == 0; remote.should == 0; command.should == 0
   local, remote, command = REF.test_and_drop_results \
     "ifup bond0"
   local.should == 0; remote.should == 0; command.should == 0
   #
   ifsut = case param
-    when "" then "bond0-ab-arping"
-    when " on two IP addresses" then "bond0-ab-arping-2ips"
+    when "1" then "bond0-ab-arping"
+    when "2" then "bond0-ab-arping-2ips"
   end
   local, remote = SUT.inject_file \
     "test-files/bonding/ifcfg-#{ifsut}", "/tmp/tests/ifcfg-bond0", \
