@@ -10,7 +10,7 @@ export TARGET_SUT="virtio:/var/run/twopence/sut-wicked-testing.sock"
 
 export DISTRIBUTION="SLES 12 SP1 (x86_64)"
 export CONFIGURE_LOWERDEVS="true"
-export CONFIGURE_PRECISE="false"
+export CONFIGURE_PRECISELY="false"
 
 export BUILD_ROOT_PREFIX="/var/lib/jenkins/builds"
 export NANNY="without"

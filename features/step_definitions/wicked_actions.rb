@@ -49,8 +49,8 @@ When /^I bring up ([^ ]*)$/ do |interface|
   local.should == 0; remote.should == 0; command.should == 0
 end
 
-When /^I bring up ([^ ]*) from legacy file$/ do |interface|
-  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from legacy file\""
+When /^I bring up ([^ ]*) from legacy file(s?)$/ do |interface,plural|
+  SUT.test_and_drop_results "log.sh step \"When I bring up #{interface} from legacy file#{plural}\""
   local, remote, command = SUT.test_and_drop_results \
     "wic.sh ifup --ifconfig compat:/tmp/tests #{interface}"
   local.should == 0; remote.should == 0; command.should == 0

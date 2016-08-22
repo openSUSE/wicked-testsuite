@@ -76,7 +76,7 @@ Feature: Wicked 5 start and stop
     And I should be able to ping through the bridge
     #
     When I bring down all
-    And I bring up all
+    And I bring up all from legacy files
     Then I should be able to ping a reference machine from my dynamic address
 
   Scenario: Bridge - ifdown, remove one config, ifreload, ifdown, ifup
@@ -93,7 +93,7 @@ Feature: Wicked 5 start and stop
     And the eth1 card should still be there
     #
     When I bring down all
-    And I bring up all
+    And I bring up all from legacy files
     And I should be able to ping a reference machine from my dynamic address
 
   Scenario: VLAN - ifdown, modify one config, ifreload, ifdown, ifup
@@ -106,12 +106,12 @@ Feature: Wicked 5 start and stop
     And I should be able to ping the other side of the VLAN
     #
     When I bring down all
-    Then I bring up all
+    Then I bring up all from legacy files
     And I should be able to ping a reference machine from my dynamic address
 
   Scenario: VLAN - ifup all, ifdown one card
     When I create a VLAN on interface eth0 from legacy files
-    And I bring up all
+    And I bring up all from legacy files
     Then I bring down eth0.42
     And there should not be the eth0.42 card anymore
     But the eth0 card should still be there

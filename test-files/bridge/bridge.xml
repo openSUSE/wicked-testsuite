@@ -29,6 +29,21 @@
 
 <interface>
   <name>eth1</name>
+  <!-- We intentionally use a static setup here,
+       as there is a test to remove the bridge interface,
+       and we want the interface still to work afterwards -->
+
+  <ipv4:static>
+    <address>
+      <local>172.16.0.123/16</local>
+    </address>
+  </ipv4:static>
+
+  <ipv6:static>
+    <address>
+      <local>fd00:c0de:ba5e::123/48</local>
+    </address>
+  </ipv6:static>
 </interface>
 
 <interface>

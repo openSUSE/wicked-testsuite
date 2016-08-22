@@ -17,7 +17,7 @@
 #   $CONFIGURE_LOWERDEVS
 #     true
 #     false
-#   $CONFIGURE_PRECISE
+#   $CONFIGURE_PRECISELY
 #     true
 #     false
 #

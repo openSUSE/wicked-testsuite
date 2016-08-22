@@ -132,7 +132,7 @@ You must then define four variables:
      If "false", do not provide configuration files for lower devices
      used for example in a bond.
 
-   CONFIGURE_PRECISE
+   CONFIGURE_PRECISELY
      If "false", use for example "wicked ifup all" instead of
      "wicked ifup" for every device name.
 

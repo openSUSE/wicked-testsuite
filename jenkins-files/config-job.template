@@ -44,7 +44,7 @@ to use for the system under tests</description>
           </choices>
         </hudson.model.ChoiceParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
-          <name>CONFIGURE_PRECISE</name>
+          <name>CONFIGURE_PRECISELY</name>
           <description>If false, use &quot;all&quot; instead of every device name</description>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
