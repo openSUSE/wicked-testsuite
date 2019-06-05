@@ -159,7 +159,7 @@ Feature: Wicked 9 aggregation
 
   @teams
   Scenario: Teaming, activebackup, nsna_ping
-    When I team together eth0 and eth1 with arp_ping link watcher
+    When I team together eth0 and eth1 with nsna_ping link watcher
     Then there should be a new team0 card
     And eth1 should be the active link
     And I should be able to ping the other side of the aggregated link
